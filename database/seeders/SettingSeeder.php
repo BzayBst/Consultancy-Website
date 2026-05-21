@@ -20,9 +20,9 @@ class SettingSeeder extends Seeder
             ['group' => 'general', 'key' => 'general_copyright',    'value' => 'HASU Educational Consultancy. All Rights Reserved.', 'type' => 'text'],
 
             // ── Contact ─────────────────────────────────────────────────
-            ['group' => 'contact', 'key' => 'contact_phone_primary',   'value' => '+977-9856040895', 'type' => 'tel'],
-            ['group' => 'contact', 'key' => 'contact_phone_secondary', 'value' => '+977-9855040895', 'type' => 'tel'],
-            ['group' => 'contact', 'key' => 'contact_phone_landline',  'value' => '056-493528',      'type' => 'tel'],
+            ['group' => 'contact', 'key' => 'contact_phone_primary',   'value' => '+977-9800000001', 'type' => 'tel'],
+            ['group' => 'contact', 'key' => 'contact_phone_secondary', 'value' => '+977-9800000002', 'type' => 'tel'],
+            ['group' => 'contact', 'key' => 'contact_phone_landline',  'value' => '056-789523',      'type' => 'tel'],
             ['group' => 'contact', 'key' => 'contact_email_primary',   'value' => 'info@hasuedu.com', 'type' => 'email'],
             ['group' => 'contact', 'key' => 'contact_email_secondary', 'value' => null,               'type' => 'email'],
             ['group' => 'contact', 'key' => 'contact_address',         'value' => 'Chitwan', 'type' => 'textarea'],

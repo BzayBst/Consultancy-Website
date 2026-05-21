@@ -32,7 +32,7 @@
   <div class="nav-links">
     <a href="#hero">Home</a>
     <a href="#about">About Us</a>
-    <a href="#ventures">Our Ventures</a>
+    <a href="ventures.html">Our Ventures</a>
     <a href="#services">Courses ▾</a>
     <a href="#study-abroad">Study Abroad</a>
     <a href="#events">Gallery</a>
@@ -49,6 +49,7 @@
   <button class="close-btn" id="closeNav">✕</button>
   <a href="#hero">Home</a>
   <a href="#about">About Us</a>
+  <a href="ventures.html">Our Ventures</a>
   <a href="#services">Courses</a>
   <a href="#study-abroad">Study Abroad</a>
   <a href="#events">Gallery</a>
@@ -57,62 +58,127 @@
   <a href="#" class="btn btn-primary" style="text-align:center;margin-top:8px">Useful Links</a>
 </div>
 
-<!-- ===== HERO ===== -->
+<!-- ===== HERO SLIDER ===== -->
 <section id="hero">
-  <div class="container" style="position:relative;z-index:2;flex:1;display:flex;align-items:center">
+  <div class="container hero-container">
     <div class="hero-inner">
 
-      <!-- LEFT -->
-      <div class="hero-left fade-up">
-        <div class="hero-badge-top">Building Bright Futures With HASU</div>
-        <h1 class="hero-title">
-          Shaping Educational<br>
-          And Career <span class="highlight">Dreams</span><br>
-          With HASU
-        </h1>
-        <p class="hero-desc">Your trusted partner for global education and career success.</p>
+      <!-- Left: text slides + controls -->
+      <div class="hero-col-text">
+        <div class="hero-text-track" id="heroTextTrack">
 
-        <!-- Mini icon features -->
-        <div class="hero-features">
-          <div class="hero-feat">
-            <div class="hero-feat-icon">🎓</div>
-            <span>Study Abroad Guidance</span>
+          <div class="hero-text-slide active" data-slide="0">
+            <div class="hero-badge-top">Building Bright Futures With HASU</div>
+            <h1 class="hero-title">
+              Shaping Educational<br>
+              And Career <span class="highlight">Dreams</span><br>
+              With HASU
+            </h1>
+            <p class="hero-desc">Your trusted partner for global education and career success.</p>
+            <div class="hero-features">
+              <div class="hero-feat"><div class="hero-feat-icon">🎓</div><span>Study Abroad Guidance</span></div>
+              <div class="hero-feat"><div class="hero-feat-icon">🏫</div><span>University Admissions</span></div>
+              <div class="hero-feat"><div class="hero-feat-icon">🛂</div><span>Visa Assistance</span></div>
+              <div class="hero-feat"><div class="hero-feat-icon">💼</div><span>Career Counseling</span></div>
+            </div>
+            <div class="hero-btns">
+              <a href="#about" class="btn btn-primary">Get Started</a>
+              <a href="#services" class="btn-ghost">Our Services</a>
+            </div>
           </div>
-          <div class="hero-feat">
-            <div class="hero-feat-icon">🏫</div>
-            <span>University Admissions</span>
+
+          <div class="hero-text-slide" data-slide="1">
+            <div class="hero-badge-top">Study in Japan · Since 2013</div>
+            <h1 class="hero-title">
+              Your Gateway to<br>
+              <span class="highlight">Japan</span> Starts<br>
+              Here
+            </h1>
+            <p class="hero-desc">Expert guidance for Japanese universities, NAT/JLPT prep, and student visa processing.</p>
+            <div class="hero-features">
+              <div class="hero-feat"><div class="hero-feat-icon">🇯🇵</div><span>Japan Admissions</span></div>
+              <div class="hero-feat"><div class="hero-feat-icon">📝</div><span>NAT &amp; JLPT Prep</span></div>
+              <div class="hero-feat"><div class="hero-feat-icon">🛂</div><span>Visa Processing</span></div>
+              <div class="hero-feat"><div class="hero-feat-icon">🏫</div><span>Partner Schools</span></div>
+            </div>
+            <div class="hero-btns">
+              <a href="#study-abroad" class="btn btn-primary">Study in Japan</a>
+              <a href="#courses" class="btn-ghost">Language Courses</a>
+            </div>
           </div>
-          <div class="hero-feat">
-            <div class="hero-feat-icon">🛂</div>
-            <span>Visa Assistance</span>
+
+          <div class="hero-text-slide" data-slide="2">
+            <div class="hero-badge-top">HASU Language Institute</div>
+            <h1 class="hero-title">
+              Master Languages.<br>
+              Unlock <span class="highlight">Global</span><br>
+              Opportunities
+            </h1>
+            <p class="hero-desc">IELTS, PTE, and Japanese language classes with certified trainers and proven results.</p>
+            <div class="hero-features">
+              <div class="hero-feat"><div class="hero-feat-icon">🇬🇧</div><span>IELTS Coaching</span></div>
+              <div class="hero-feat"><div class="hero-feat-icon">🇦🇺</div><span>PTE Academic</span></div>
+              <div class="hero-feat"><div class="hero-feat-icon">🗣️</div><span>Japanese Classes</span></div>
+              <div class="hero-feat"><div class="hero-feat-icon">📊</div><span>Mock Tests</span></div>
+            </div>
+            <div class="hero-btns">
+              <a href="#courses" class="btn btn-primary">View Courses</a>
+              <a href="#cta-banner" class="btn-ghost">Enroll Now</a>
+            </div>
           </div>
-          <div class="hero-feat">
-            <div class="hero-feat-icon">💼</div>
-            <span>Career Counseling</span>
-          </div>
+
         </div>
 
-        <div class="hero-btns">
-          <a href="#about" class="btn btn-primary">Get Started</a>
-          <a href="#services" class="btn-ghost">Our Services</a>
-        </div>
-
-        <div class="hero-dots">
-          <div class="hero-dot-slide active"></div>
-          <div class="hero-dot-slide"></div>
-          <div class="hero-dot-slide"></div>
+        <div class="hero-controls" id="heroControls">
+          <button type="button" class="hero-arrow hero-arrow-prev" id="heroPrev" aria-label="Previous slide">←</button>
+          <div class="hero-dots" id="heroDots">
+            <button type="button" class="hero-dot-slide active" data-slide="0" aria-label="Slide 1"></button>
+            <button type="button" class="hero-dot-slide" data-slide="1" aria-label="Slide 2"></button>
+            <button type="button" class="hero-dot-slide" data-slide="2" aria-label="Slide 3"></button>
+          </div>
+          <button type="button" class="hero-arrow hero-arrow-next" id="heroNext" aria-label="Next slide">→</button>
         </div>
       </div>
 
-      <!-- RIGHT -->
-      <div class="hero-right">
-        <div class="hero-circle-bg"></div>
-        <div class="hero-circle-ring"></div>
-        <div class="hero-plane">✈️</div>
-        <div class="hero-dot-tl"></div>
-        <div class="hero-dot-tr"></div>
-        <div class="hero-img-wrap">
-          <img src="https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?w=600&q=80" alt="Student looking at globe">
+      <!-- Right: image slides -->
+      <div class="hero-col-visual">
+        <div class="hero-visual-track" id="heroVisualTrack">
+          <div class="hero-visual-slide active" data-slide="0">
+            <div class="hero-right">
+              <div class="hero-circle-bg"></div>
+              <div class="hero-circle-ring"></div>
+              <div class="hero-plane">✈️</div>
+              <div class="hero-dot-tl"></div>
+              <div class="hero-dot-tr"></div>
+              <div class="hero-img-wrap hero-img-portrait">
+                <img src="https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?w=600&q=80" alt="Student looking at globe">
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual-slide" data-slide="1">
+            <div class="hero-right">
+              <div class="hero-circle-bg"></div>
+              <div class="hero-circle-ring"></div>
+              <div class="hero-plane">🇯🇵</div>
+              <div class="hero-dot-tl"></div>
+              <div class="hero-dot-tr"></div>
+              <div class="hero-img-wrap">
+                <img src="https://images.unsplash.com/photo-1493976040374-85c8e912f1f9?w=600&q=80" alt="Traditional Japanese lantern street">
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual-slide" data-slide="2">
+            <div class="hero-right">
+              <div class="hero-circle-bg"></div>
+              <div class="hero-circle-ring"></div>
+              <div class="hero-plane">📚</div>
+              <div class="hero-dot-tl"></div>
+              <div class="hero-dot-tr"></div>
+              <div class="hero-img-wrap">
+                <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80" alt="Student preparing for exams">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -184,7 +250,7 @@
           <p>Our flagship company guiding Nepali students to top universities in Japan, Australia, UK, Canada, and beyond since 2013.</p>
         </div>
         <div class="venture-links">
-          <a href="#about" class="venture-link primary">Learn More →</a>
+          <a href="venture-detail.html" class="venture-link primary">Learn More →</a>
           <a href="#cta-banner" class="venture-link outline">Contact</a>
         </div>
       </div>
@@ -358,39 +424,117 @@
 </section>
 
 <!-- ===== TESTIMONIALS & SUCCESS STORIES ===== -->
-<section id="testimonials" class="section">
+<section id="testimonials" class="section testimonials-slider-section">
   <div class="container">
     <div class="section-head test-head fade-up">
       <div class="section-label">Testimonials And Success Stories</div>
       <h2 class="section-title">What Our Students Say</h2>
+      <p class="section-sub">Real words from students, parents, and partners whose lives were changed by HASU.</p>
     </div>
-    <div class="test-grid">
-      <div class="test-card fade-up">
-        <div class="stars">★★★★★</div>
-        <p>"As a parent, I was looking for a reliable consultancy for my son's study in Japan. HASU improved us with their transparency and professionalism. They took care of everything and kept us updated at every stage."</p>
-        <div class="test-author">
-          <div class="test-avatar-placeholder">👤</div>
-          <div>
-            <strong>Mr. Pramod Adhikari</strong>
-            <span>Parent</span>
+
+    <div class="test-slider fade-up">
+      <div class="test-slider-viewport">
+        <div class="test-slider-track" id="testSliderTrack">
+
+          <div class="test-slide active">
+            <div class="test-card">
+              <div class="stars">★★★★★</div>
+              <p class="test-quote">"As a parent, I was looking for a reliable consultancy for my son's study in Japan. HASU guided us with transparency and professionalism. They took care of everything and kept us updated at every stage."</p>
+              <div class="test-author">
+                <div class="test-avatar-placeholder">👤</div>
+                <div>
+                  <strong>Mr. Pramod Adhikari</strong>
+                  <span>Parent · Study in Japan</span>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <div class="test-slide">
+            <div class="test-card">
+              <div class="stars">★★★★★</div>
+              <p class="test-quote">"We have partnered with HASU for several years and are consistently impressed by the quality of students they recommend. Their team prepares students academically and culturally for life in Japan."</p>
+              <div class="test-author">
+                <div class="test-avatar-placeholder">🏫</div>
+                <div>
+                  <strong>Mr. Takunari Nakamura</strong>
+                  <span>Principal, Kyoto International Academy of Language</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="test-slide">
+            <div class="test-card">
+              <div class="stars">★★★★★</div>
+              <p class="test-quote">"HASU made my dream of studying in Japan a reality. From JLPT coaching to visa processing, every step was handled with professionalism. I am now enrolled at Osaka University!"</p>
+              <div class="test-author">
+                <div class="test-avatar-placeholder">👦</div>
+                <div>
+                  <strong>Anil Thapa</strong>
+                  <span>Osaka University, Japan</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="test-slide">
+            <div class="test-card">
+              <div class="stars">★★★★★</div>
+              <p class="test-quote">"I was confused about studying in Australia, but HASU's counselors cleared every doubt. They got me into my first-choice university and helped with the entire visa process. Highly recommend!"</p>
+              <div class="test-author">
+                <div class="test-avatar-placeholder">👧</div>
+                <div>
+                  <strong>Sita Gurung</strong>
+                  <span>University of Melbourne, Australia</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="test-slide">
+            <div class="test-card">
+              <div class="stars">★★★★★</div>
+              <p class="test-quote">"The team at HASU is incredibly dedicated. They went above and beyond to ensure my documents were perfect. My student visa was approved on the first attempt — something I didn't expect!"</p>
+              <div class="test-author">
+                <div class="test-avatar-placeholder">👨</div>
+                <div>
+                  <strong>Rajan Bhattarai</strong>
+                  <span>University of Toronto, Canada</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="test-slide">
+            <div class="test-card">
+              <div class="stars">★★★★★</div>
+              <p class="test-quote">"HASU's IELTS coaching was a game changer. I scored an 8.0 band and secured a scholarship to the University of Leeds. The trainers are exceptionally skilled and supportive."</p>
+              <div class="test-author">
+                <div class="test-avatar-placeholder">👩</div>
+                <div>
+                  <strong>Kabita Shrestha</strong>
+                  <span>University of Leeds, United Kingdom</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-      <div class="test-card fade-up" style="transition-delay:.1s">
-        <div class="stars">★★★★★</div>
-        <p>"We have been partnering with HASU for several years and have consistently been impressed by the quality of students they recommend. HASU's team is thorough in preparing students academically and culturally for life in Japan."</p>
-        <div class="test-author">
-          <div class="test-avatar-placeholder">🏫</div>
-          <div>
-            <strong>Mr. Takunari Nakamura</strong>
-            <span>Principal, Kyoto International Academy of Language</span>
-          </div>
+
+      <div class="test-slider-controls">
+        <button type="button" class="test-arrow test-prev" id="testPrev" aria-label="Previous testimonial">←</button>
+        <div class="test-dots" id="testDots">
+          <button type="button" class="test-dot active" data-slide="0" aria-label="Testimonial 1"></button>
+          <button type="button" class="test-dot" data-slide="1" aria-label="Testimonial 2"></button>
+          <button type="button" class="test-dot" data-slide="2" aria-label="Testimonial 3"></button>
+          <button type="button" class="test-dot" data-slide="3" aria-label="Testimonial 4"></button>
+          <button type="button" class="test-dot" data-slide="4" aria-label="Testimonial 5"></button>
+          <button type="button" class="test-dot" data-slide="5" aria-label="Testimonial 6"></button>
         </div>
+        <button type="button" class="test-arrow test-next" id="testNext" aria-label="Next testimonial">→</button>
       </div>
-    </div>
-    <div class="test-nav">
-      <button>←</button>
-      <button>→</button>
     </div>
   </div>
 </section>
@@ -603,26 +747,133 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 fadeEls.forEach(el => observer.observe(el));
 
-// Hero dots
-const heroDots = document.querySelectorAll('.hero-dot-slide');
-heroDots.forEach((dot, i) => {
-  dot.addEventListener('click', () => {
-    heroDots.forEach(d => d.classList.remove('active'));
-    dot.classList.add('active');
-  });
-});
+// Hero slider
+(function () {
+  const textSlides = document.querySelectorAll('.hero-text-slide');
+  const visualSlides = document.querySelectorAll('.hero-visual-slide');
+  const dots = document.querySelectorAll('.hero-dot-slide');
+  const prevBtn = document.getElementById('heroPrev');
+  const nextBtn = document.getElementById('heroNext');
+  const hero = document.getElementById('hero');
+  const textTrack = document.getElementById('heroTextTrack');
+  if (!textSlides.length) return;
 
-// Testimonials navigation (basic)
-const testCards = document.querySelectorAll('.test-card');
-const testNavBtns = document.querySelectorAll('.test-nav button');
-testNavBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    testCards.forEach(c => {
-      c.style.opacity = '0.5';
-      setTimeout(() => c.style.opacity = '1', 200);
+  let current = 0;
+  let timer = null;
+  const INTERVAL = 5500;
+
+  function setTrackHeight() {
+    const active = textSlides[current];
+    if (active && textTrack) textTrack.style.minHeight = active.offsetHeight + 'px';
+  }
+
+  function goTo(index) {
+    current = (index + textSlides.length) % textSlides.length;
+    textSlides.forEach((slide, i) => slide.classList.toggle('active', i === current));
+    visualSlides.forEach((slide, i) => slide.classList.toggle('active', i === current));
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === current));
+    requestAnimationFrame(setTrackHeight);
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  function startAutoplay() {
+    stopAutoplay();
+    timer = setInterval(next, INTERVAL);
+  }
+
+  function stopAutoplay() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  function resetAutoplay() {
+    stopAutoplay();
+    startAutoplay();
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      goTo(parseInt(dot.dataset.slide, 10));
+      resetAutoplay();
     });
   });
-});
+
+  prevBtn?.addEventListener('click', () => { prev(); resetAutoplay(); });
+  nextBtn?.addEventListener('click', () => { next(); resetAutoplay(); });
+
+  hero?.addEventListener('mouseenter', stopAutoplay);
+  hero?.addEventListener('mouseleave', startAutoplay);
+
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? stopAutoplay() : startAutoplay();
+  });
+
+  setTrackHeight();
+  window.addEventListener('resize', setTrackHeight);
+  startAutoplay();
+})();
+
+// Testimonials slider
+(function () {
+  const track = document.getElementById('testSliderTrack');
+  const section = document.querySelector('.testimonials-slider-section');
+  if (!track || !section) return;
+
+  const slides = track.querySelectorAll('.test-slide');
+  const dots = section.querySelectorAll('.test-dot');
+  const prevBtn = document.getElementById('testPrev');
+  const nextBtn = document.getElementById('testNext');
+  let current = 0;
+  let timer = null;
+  const INTERVAL = 6000;
+
+  function goTo(index) {
+    current = (index + slides.length) % slides.length;
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  function startAutoplay() {
+    stopAutoplay();
+    timer = setInterval(next, INTERVAL);
+  }
+
+  function stopAutoplay() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  function resetAutoplay() {
+    stopAutoplay();
+    startAutoplay();
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      goTo(parseInt(dot.dataset.slide, 10));
+      resetAutoplay();
+    });
+  });
+
+  prevBtn?.addEventListener('click', () => { prev(); resetAutoplay(); });
+  nextBtn?.addEventListener('click', () => { next(); resetAutoplay(); });
+
+  section.addEventListener('mouseenter', stopAutoplay);
+  section.addEventListener('mouseleave', startAutoplay);
+
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? stopAutoplay() : startAutoplay();
+  });
+
+  goTo(0);
+  startAutoplay();
+})();
 </script>
 </body>
 </html>
