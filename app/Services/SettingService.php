@@ -14,23 +14,18 @@ class SettingService
 
     /**
      * Save a group of settings.
-     * $data    = ['key' => 'value', ...]  (text/textarea/url/etc.)
-     * $files   = ['key' => UploadedFile]  (image fields)
-     * $group   = 'general' | 'contact' | 'social' | 'seo'
+     * $data  = ['key' => 'value', ...]  plain text/url/etc fields
+     * $files = ['key' => UploadedFile]  image fields
      */
     public function saveGroup(string $group, array $data, array $files = []): void
     {
-        // Handle file uploads first
         foreach ($files as $key => $file) {
             if ($file instanceof UploadedFile && $file->isValid()) {
-                // Delete old file if it exists
                 $oldPath = $this->settingRepository->get($key);
                 if ($oldPath && Storage::disk('public')->exists($oldPath)) {
                     Storage::disk('public')->delete($oldPath);
                 }
-
-                $path = $file->store("settings/{$group}", 'public');
-                $data[$key] = $path;
+                $data[$key] = $file->store("settings/{$group}", 'public');
             }
         }
 
@@ -38,13 +33,15 @@ class SettingService
     }
 
     /**
-     * Get all settings for a group as a flat key=>value array.
+     * Get all settings for a group as a guaranteed flat ['key' => 'string'] array.
+     * Every value is cast to string — null becomes empty string.
      */
     public function getGroupValues(string $group): array
     {
-        return $this->settingRepository
-            ->getByGroup($group)
-            ->mapWithKeys(fn ($setting, $key) => [$key => $setting->value])
+        // Query directly — no cache object risk, returns plain string values
+        return \App\Models\Setting::where('group', $group)
+            ->get(['key', 'value'])
+            ->mapWithKeys(fn ($row) => [$row->key => (string) ($row->value ?? '')])
             ->toArray();
     }
 

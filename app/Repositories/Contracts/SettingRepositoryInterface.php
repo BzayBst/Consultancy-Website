@@ -7,14 +7,19 @@ use Illuminate\Support\Collection;
 interface SettingRepositoryInterface
 {
     /**
-     * Get all settings for a given group, keyed by 'key'.
+     * Get all settings as a flat ['key' => 'value'] array (cached).
      */
-    public function getByGroup(string $group): Collection;
+    public function getAllFlat(): array;
 
     /**
-     * Get all settings across all groups, keyed by 'key'.
+     * Get all settings as a Collection (wraps getAllFlat).
      */
     public function getAll(): Collection;
+
+    /**
+     * Get all Setting models for a given group, keyed by 'key'.
+     */
+    public function getByGroup(string $group): Collection;
 
     /**
      * Get a single setting value by key.
@@ -22,7 +27,7 @@ interface SettingRepositoryInterface
     public function get(string $key, mixed $default = null): mixed;
 
     /**
-     * Update or create a setting by key.
+     * Update a single setting by key.
      */
     public function set(string $key, mixed $value): void;
 
