@@ -33,7 +33,15 @@
     <a href="#hero">Home</a>
     <a href="#about">About Us</a>
     <a href="ventures.html">Our Ventures</a>
-    <a href="#services">Courses ▾</a>
+    <div class="nav-dropdown">
+      <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">Courses ▾</button>
+      <div class="nav-dropdown-menu">
+        <a href="courses.html">All Courses</a>
+        <a href="course-detail.html">Japanese Language Course</a>
+        <a href="course-detail-ielts.html">IELTS</a>
+        <a href="course-detail-pte.html">PTE</a>
+      </div>
+    </div>
     <a href="#study-abroad">Study Abroad</a>
     <a href="#events">Gallery</a>
     <a href="#blog">Blogs</a>
@@ -50,7 +58,11 @@
   <a href="#hero">Home</a>
   <a href="#about">About Us</a>
   <a href="ventures.html">Our Ventures</a>
-  <a href="#services">Courses</a>
+  <span class="mobile-nav-label">Courses</span>
+  <a href="courses.html" class="mobile-nav-sub">All Courses</a>
+  <a href="course-detail.html" class="mobile-nav-sub">Japanese Language</a>
+  <a href="course-detail-ielts.html" class="mobile-nav-sub">IELTS</a>
+  <a href="course-detail-pte.html" class="mobile-nav-sub">PTE</a>
   <a href="#study-abroad">Study Abroad</a>
   <a href="#events">Gallery</a>
   <a href="#blog">Blogs</a>
@@ -342,7 +354,7 @@
       <p class="section-sub">Prepare for your future with internationally recognized language and aptitude certifications.</p>
     </div>
     <div class="courses-grid">
-      <div class="course-card fade-up">
+      <a href="course-detail.html" class="course-card course-card-link fade-up">
         <div class="course-img">
           <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Japanese Language">
           <div class="course-flag">🇯🇵 Japanese</div>
@@ -350,9 +362,10 @@
         <div class="course-body">
           <h4>Japanese Language Course</h4>
           <p>NAT, JLPT, J-TEST preparation for students aiming to study or work in Japan.</p>
+          <span class="course-card-cta">View Course →</span>
         </div>
-      </div>
-      <div class="course-card fade-up" style="transition-delay:.1s">
+      </a>
+      <a href="course-detail-ielts.html" class="course-card course-card-link fade-up" style="transition-delay:.1s">
         <div class="course-img">
           <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80" alt="IELTS">
           <div class="course-flag">🇬🇧 IELTS</div>
@@ -360,9 +373,10 @@
         <div class="course-body">
           <h4>IELTS Preparation</h4>
           <p>Expert coaching for IELTS with IDP-certified trainers and mock test sessions.</p>
+          <span class="course-card-cta">View Course →</span>
         </div>
-      </div>
-      <div class="course-card fade-up" style="transition-delay:.2s">
+      </a>
+      <a href="course-detail-pte.html" class="course-card course-card-link fade-up" style="transition-delay:.2s">
         <div class="course-img">
           <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" alt="PTE">
           <div class="course-flag">🇦🇺 PTE</div>
@@ -370,10 +384,11 @@
         <div class="course-body">
           <h4>PTE Academic</h4>
           <p>Pearson Test of English preparation with proven strategies and practice materials.</p>
+          <span class="course-card-cta">View Course →</span>
         </div>
-      </div>
+      </a>
     </div>
-    <div class="courses-cta"><a href="#" class="btn btn-primary">More Courses</a></div>
+    <div class="courses-cta"><a href="courses.html" class="btn btn-primary">More Courses</a></div>
   </div>
 </section>
 
@@ -737,6 +752,21 @@ const closeNav = document.getElementById('closeNav');
 hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
 closeNav.addEventListener('click', () => mobileNav.classList.remove('open'));
 mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
+
+document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+  const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = dropdown.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+});
+document.addEventListener('click', () => {
+  document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+    d.classList.remove('open');
+    d.querySelector('.nav-dropdown-toggle')?.setAttribute('aria-expanded', 'false');
+  });
+});
 
 // Scroll reveal
 const fadeEls = document.querySelectorAll('.fade-up');
