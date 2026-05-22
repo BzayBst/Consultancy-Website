@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Repositories\AdminRepository;
 use App\Repositories\Contracts\AdminRepositoryInterface;
+use App\Repositories\Contracts\HeroSlideRepositoryInterface;
 use App\Repositories\Contracts\SettingRepositoryInterface;
+use App\Repositories\HeroSlideRepository;
 use App\Repositories\SettingRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,14 +17,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            AdminRepositoryInterface::class,
-            AdminRepository::class,
-        );
+        $this->app->bind(AdminRepositoryInterface::class, AdminRepository::class);
 
         $this->app->bind(
             SettingRepositoryInterface::class,
             SettingRepository::class,
+        );
+
+        $this->app->bind(
+            HeroSlideRepositoryInterface::class,
+            HeroSlideRepository::class,
         );
     }
 

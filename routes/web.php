@@ -2,6 +2,7 @@
 
 use App\Livewire\Admin\Auth\Login;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Hero\HeroSlides;
 use App\Livewire\Admin\Settings\SiteSettings;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,9 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
         Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
         Route::get('/settings', SiteSettings::class)->name('settings');
+
+        // Hero Slides
+        Route::get('/hero-slides', HeroSlides::class)->name('hero-slides');
 
         // Logout (POST to prevent CSRF-free logouts)
         Route::post('/logout', function () {
