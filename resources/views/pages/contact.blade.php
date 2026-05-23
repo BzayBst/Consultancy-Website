@@ -1,0 +1,696 @@
+{{-- resources/views/pages/contact.blade.php --}}
+@extends('layouts.app', ['active' => 'contact'])
+
+@section('title', 'Contact Us – ' . setting('general_site_name', 'HASU Educational Consultancy'))
+@section('meta_description', 'Contact HASU Educational Consultancy — reach us by phone, email, or visit our office in Bhairahawa.')
+
+@push('head')
+<style>
+/* ====== RESET ====== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:#333;background:#fff;overflow-x:hidden;line-height:1.6}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+input,textarea,select,button{font-family:inherit}
+
+/* ====== VARIABLES ====== */
+:root{
+  --blue:#2952e3;--blue-dark:#1a3ed4;--blue-light:#e8edfd;
+  --red:#cc2222;--red-dark:#a81a1a;--red-light:#fdeaea;
+  --navy:#0d1560;--text:#555;--light:#f0f4fd;
+  --border:#e2e8f0;--radius:8px;--shadow:0 4px 24px rgba(0,0,0,.09);
+}
+
+/* ====== UTILITIES ====== */
+.container{max-width:1160px;margin:0 auto;padding:0 24px}
+.section{padding:88px 0}
+.section-label{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.section-label::before,.section-label::after{content:'';display:block;width:32px;height:2px;background:var(--red)}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(24px,3.2vw,40px);color:var(--navy);line-height:1.22;margin-bottom:14px}
+.section-sub{font-size:15px;color:var(--text);max-width:600px;margin:0 auto}
+.btn{display:inline-block;padding:12px 30px;border-radius:4px;font-weight:600;font-size:14px;cursor:pointer;transition:all .25s;border:2px solid transparent}
+.btn-primary{background:var(--red);color:#fff;border-color:var(--red)}
+.btn-primary:hover{background:var(--red-dark);border-color:var(--red-dark)}
+.btn-secondary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-secondary:hover{background:var(--blue-dark)}
+.btn-ghost{background:transparent;border:2px solid rgba(255,255,255,.55);color:#fff;padding:12px 30px;border-radius:4px;font-weight:600;font-size:14px;cursor:pointer;transition:all .25s}
+.btn-ghost:hover{background:rgba(255,255,255,.15)}
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .65s,transform .65s}
+.fade-up.visible{opacity:1;transform:none}
+.fade-left{opacity:0;transform:translateX(-32px);transition:opacity .65s,transform .65s}
+.fade-left.visible{opacity:1;transform:none}
+.fade-right{opacity:0;transform:translateX(32px);transition:opacity .65s,transform .65s}
+.fade-right.visible{opacity:1;transform:none}
+
+/* ====== TOPBAR ====== */
+.topbar{background:var(--navy);color:rgba(255,255,255,.8);font-size:12px;padding:7px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.topbar a{color:rgba(255,255,255,.8);transition:color .2s}
+.topbar a:hover{color:#fff}
+.topbar-left{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.topbar-right{display:flex;gap:16px;align-items:center}
+
+/* ====== NAVBAR ====== */
+nav{position:sticky;top:0;z-index:1000;background:#fff;border-bottom:2px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:68px;transition:box-shadow .3s}
+nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.1)}
+.nav-logo-img{display:flex;align-items:center;flex-shrink:0}
+.nav-logo-img img{height:54px;width:auto;display:block;object-fit:contain}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:var(--navy);transition:color .2s;position:relative;padding:4px 0}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--red);transition:width .25s}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-links a:hover,.nav-links a.active{color:var(--red)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{width:24px;height:2px;background:var(--navy);display:block;transition:all .3s}
+.mobile-nav{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:2000;padding:32px 24px;display:flex;flex-direction:column;gap:16px;transform:translateX(-100%);transition:transform .35s}
+.mobile-nav.open{transform:none}
+.mobile-nav .close-btn{align-self:flex-end;font-size:24px;cursor:pointer;color:var(--navy);background:none;border:none}
+.mobile-nav a{font-size:16px;font-weight:500;color:var(--navy);padding:10px 0;border-bottom:1px solid var(--border)}
+
+/* ====== PAGE HERO ====== */
+.page-hero{background:linear-gradient(120deg,#0d1560 0%,#1a237e 45%,#283593 70%,#3949ab 100%);padding:72px 0 80px;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.page-hero-wave{position:absolute;bottom:-2px;left:0;right:0;height:64px;background:#fff;clip-path:ellipse(55% 100% at 50% 100%)}
+.page-hero-inner{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:32px}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.6);margin-bottom:16px}
+.breadcrumb a{color:rgba(255,255,255,.6)}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{color:rgba(255,255,255,.35)}
+.page-hero-title{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,52px);color:#fff;line-height:1.15;margin-bottom:12px}
+.page-hero-title span{color:#f4c842}
+.page-hero-sub{font-size:15px;color:rgba(255,255,255,.78);max-width:480px;margin-bottom:28px}
+.hero-quick-contacts{display:flex;gap:20px;flex-wrap:wrap}
+.hero-qc{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 18px;backdrop-filter:blur(6px);transition:background .25s}
+.hero-qc:hover{background:rgba(255,255,255,.18)}
+.hero-qc-icon{font-size:22px}
+.hero-qc-text strong{display:block;font-size:13px;font-weight:700;color:#fff}
+.hero-qc-text span{font-size:11px;color:rgba(255,255,255,.65)}
+
+/* ====== QUICK INFO STRIP ====== */
+.info-strip{background:#fff;border-bottom:1px solid var(--border)}
+.info-strip-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.info-strip-item{display:flex;align-items:center;gap:16px;padding:24px 28px;border-right:1px solid var(--border);transition:background .25s}
+.info-strip-item:last-child{border-right:none}
+.info-strip-item:hover{background:var(--light)}
+.info-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.info-icon.blue{background:var(--blue-light)}
+.info-icon.red{background:var(--red-light)}
+.info-icon.navy{background:linear-gradient(135deg,var(--blue-light),var(--red-light))}
+.info-text strong{display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.info-text span{font-size:12px;color:var(--text)}
+.info-text a{font-size:12px;color:var(--blue);font-weight:500}
+.info-text a:hover{color:var(--red)}
+
+/* ====== MAIN CONTACT LAYOUT ====== */
+#contact-main{background:var(--light)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:start}
+
+/* ---- CONTACT FORM ---- */
+.form-card{background:#fff;border-radius:16px;padding:40px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.form-card h3{font-family:'Playfair Display',serif;font-size:24px;color:var(--navy);margin-bottom:6px}
+.form-card p{font-size:14px;color:var(--text);margin-bottom:28px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px}
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width:100%;padding:12px 14px;border:1.5px solid var(--border);
+  border-radius:6px;font-size:14px;color:var(--navy);
+  background:#fff;transition:border-color .25s,box-shadow .25s;outline:none
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(41,82,227,.12)}
+.form-group textarea{resize:vertical;min-height:120px}
+.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%23555'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+.form-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:22px;font-size:13px;color:var(--text)}
+.form-check input{margin-top:3px;accent-color:var(--blue);flex-shrink:0}
+.form-submit{width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;transition:background .25s;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.5px}
+.form-submit:hover{background:var(--red-dark)}
+.form-submit .arrow{transition:transform .25s}
+.form-submit:hover .arrow{transform:translateX(4px)}
+.success-msg{display:none;background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0;border-radius:8px;padding:14px 18px;font-size:14px;font-weight:600;margin-top:16px;text-align:center}
+
+/* ---- BRANCH INFO PANEL ---- */
+.branch-panel{}
+.branch-panel-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:6px}
+.branch-panel-sub{font-size:14px;color:var(--text);margin-bottom:24px}
+
+/* branch tabs */
+.branch-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.branch-tab{
+  padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;
+  border:2px solid var(--border);color:var(--navy);background:#fff;
+  cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px
+}
+.branch-tab:hover{border-color:var(--blue);color:var(--blue)}
+.branch-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.branch-tab .tab-dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* map container */
+.map-wrap{border-radius:14px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:20px;position:relative;border:2px solid var(--border)}
+.map-wrap iframe{width:100%;height:340px;display:block;border:none;transition:opacity .35s}
+.map-wrap.loading iframe{opacity:.4}
+.map-loading-bar{position:absolute;top:0;left:0;height:3px;background:var(--blue);border-radius:2px;width:0;transition:width .5s;z-index:3}
+.map-loading-bar.active{width:70%}
+.map-loading-bar.done{width:100%;opacity:0;transition:width .3s,opacity .3s .3s}
+
+/* branch detail card */
+.branch-detail{background:#fff;border-radius:12px;padding:24px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.branch-detail-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.branch-flag{width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.branch-name-wrap h4{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.branch-name-wrap span{font-size:12px;color:var(--text)}
+.branch-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-left:8px}
+.badge-hq{background:var(--blue-light);color:var(--blue)}
+.badge-branch{background:var(--red-light);color:var(--red)}
+.branch-info-list{display:flex;flex-direction:column;gap:10px}
+.branch-info-row{display:flex;align-items:flex-start;gap:12px}
+.bri-icon{width:32px;height:32px;border-radius:8px;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:1px}
+.bri-text strong{display:block;font-size:12px;font-weight:700;color:var(--navy);margin-bottom:1px}
+.bri-text span,.bri-text a{font-size:13px;color:var(--text)}
+.bri-text a{color:var(--blue)}
+.bri-text a:hover{color:var(--red)}
+.branch-hours{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.hours-item{flex:1;background:var(--light);border-radius:8px;padding:10px 12px;text-align:center}
+.hours-item strong{display:block;font-size:12px;color:var(--navy);font-weight:700}
+.hours-item span{font-size:11px;color:var(--text)}
+
+/* ====== FAQ STRIP ====== */
+#faq-strip{background:#fff}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px}
+.faq-item{background:var(--light);border-radius:10px;padding:20px 22px;border-left:3px solid transparent;transition:border-color .25s,box-shadow .25s;cursor:pointer}
+.faq-item:hover{border-left-color:var(--blue);box-shadow:var(--shadow)}
+.faq-item.open{border-left-color:var(--red);background:#fff;box-shadow:var(--shadow)}
+.faq-q{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.faq-q span{font-size:14px;font-weight:600;color:var(--navy)}
+.faq-toggle{width:26px;height:26px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;transition:all .25s}
+.faq-item.open .faq-toggle{background:var(--red);color:#fff;transform:rotate(45deg)}
+.faq-a{font-size:13px;color:var(--text);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .35s,padding .3s}
+.faq-item.open .faq-a{max-height:160px;padding-top:12px}
+
+/* ====== SOCIAL / CONNECT ====== */
+#social-strip{background:var(--light);padding:64px 0}
+.social-strip-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.social-left h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,34px);color:var(--navy);margin-bottom:10px}
+.social-left p{font-size:15px;color:var(--text)}
+.social-links-grid{display:flex;flex-wrap:wrap;gap:14px}
+.social-card{display:flex;align-items:center;gap:12px;padding:14px 20px;border-radius:10px;border:1.5px solid var(--border);background:#fff;transition:all .25s;min-width:160px}
+.social-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.social-card.fb:hover{border-color:#1877f2;color:#1877f2}
+.social-card.yt:hover{border-color:#ff0000;color:#ff0000}
+.social-card.ig:hover{border-color:#e1306c;color:#e1306c}
+.social-card.li:hover{border-color:#0a66c2;color:#0a66c2}
+.social-card.wa:hover{border-color:#25d366;color:#25d366}
+.sc-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.sc-icon.fb{background:#e7f0fd}
+.sc-icon.yt{background:#fff0f0}
+.sc-icon.ig{background:#fdf0f7}
+.sc-icon.li{background:#e8f0fc}
+.sc-icon.wa{background:#edfbf1}
+.sc-text strong{display:block;font-size:13px;font-weight:700;color:var(--navy)}
+.sc-text span{font-size:11px;color:var(--text)}
+
+/* ====== FOOTER ====== */
+footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%);color:rgba(255,255,255,.75);padding:72px 0 0}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:48px;margin-bottom:48px}
+.footer-logo{font-family:'Playfair Display',serif;font-size:26px;color:#fff;font-weight:700;margin-bottom:4px}
+.footer-logo span{color:var(--red)}
+.footer-logo small{display:block;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:2px;font-weight:600;color:var(--blue);text-transform:uppercase}
+.footer-desc{font-size:13px;line-height:1.75;margin-bottom:20px;margin-top:10px}
+.footer-socials{display:flex;gap:10px}
+.social-link{width:34px;height:34px;background:rgba(255,255,255,.08);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(255,255,255,.6);transition:all .2s}
+.social-link:hover{background:var(--red);color:#fff}
+.footer-col h5{font-size:14px;font-weight:700;color:#fff;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--red);display:inline-block}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{font-size:13px;color:rgba(255,255,255,.6);transition:color .2s;display:flex;align-items:center;gap:8px}
+.footer-col ul li a:hover{color:var(--red)}
+.footer-col ul li a::before{content:"›";color:var(--red);font-size:16px}
+.footer-contact-list li{display:flex;gap:10px;margin-bottom:12px;font-size:13px;color:rgba(255,255,255,.65);align-items:flex-start}
+.footer-contact-list li .ic{font-size:16px;flex-shrink:0;margin-top:1px}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding:20px 0;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.35);flex-wrap:wrap;gap:8px}
+
+/* ====== RESPONSIVE ====== */
+@media(max-width:960px){
+  .nav-links,.nav-right{display:none}
+  .hamburger{display:flex}
+  .contact-grid{grid-template-columns:1fr}
+  .info-strip-inner{grid-template-columns:1fr 1fr}
+  .info-strip-item:nth-child(2){border-right:none}
+  .info-strip-item:nth-child(3){border-right:1px solid var(--border)}
+  .info-strip-item:nth-child(4){border-right:none}
+  .faq-grid{grid-template-columns:1fr}
+  .social-strip-inner{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .page-hero-inner{flex-direction:column}
+}
+@media(max-width:560px){
+  .info-strip-inner{grid-template-columns:1fr}
+  .info-strip-item{border-right:none;border-bottom:1px solid var(--border)}
+  .form-row{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .hero-quick-contacts{flex-direction:column}
+  .branch-tabs{flex-direction:column}
+  .branch-tab{width:100%;justify-content:flex-start}
+}
+</style>
+@endpush
+
+@section('content')
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-wave"></div>
+  <div class="container">
+    <div class="page-hero-inner">
+      <div class="fade-up">
+        <div class="breadcrumb">
+          <a href="index.html">Home</a><span>›</span>
+          <span style="color:rgba(255,255,255,.9)">Contact Us</span>
+        </div>
+        <h1 class="page-hero-title">Get In <span>Touch</span><br>With HASU</h1>
+        <p class="page-hero-sub">Have questions about studying abroad, visa processing, or our courses? Our counselors are ready to guide you — reach out anytime.</p>
+        <div class="hero-quick-contacts">
+          <a href="tel:+97756493528" class="hero-qc">
+            <div class="hero-qc-icon">📞</div>
+            <div class="hero-qc-text"><strong>Call Us</strong><span>056-493528</span></div>
+          </a>
+          <a href="mailto:info@hasuedu.com" class="hero-qc">
+            <div class="hero-qc-icon">✉️</div>
+            <div class="hero-qc-text"><strong>Email Us</strong><span>info@hasuedu.com</span></div>
+          </a>
+          <a href="https://wa.me/9779853646493" target="_blank" class="hero-qc">
+            <div class="hero-qc-icon">💬</div>
+            <div class="hero-qc-text"><strong>WhatsApp</strong><span>9853646493</span></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK INFO STRIP -->
+<div class="info-strip">
+  <div class="container">
+    <div class="info-strip-inner">
+      <div class="info-strip-item">
+        <div class="info-icon blue">📍</div>
+        <div class="info-text">
+          <strong>Headquarters</strong>
+          <span>Birendra Campus Gate, Bhairahawa-11</span>
+        </div>
+      </div>
+      <div class="info-strip-item">
+        <div class="info-icon red">📞</div>
+        <div class="info-text">
+          <strong>Phone Numbers</strong>
+          <a href="tel:+97756493528">056-493528</a> &nbsp;|&nbsp; <a href="tel:+9779853646493">9853646493</a>
+        </div>
+      </div>
+      <div class="info-strip-item">
+        <div class="info-icon blue">⏰</div>
+        <div class="info-text">
+          <strong>Working Hours</strong>
+          <span>Sun–Fri: 9:00 AM – 5:00 PM</span>
+        </div>
+      </div>
+      <div class="info-strip-item">
+        <div class="info-icon navy">✉️</div>
+        <div class="info-text">
+          <strong>Email Address</strong>
+          <a href="mailto:info@hasuedu.com">info@hasuedu.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN: FORM + BRANCHES + MAP -->
+<section id="contact-main" class="section">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- CONTACT FORM -->
+      <div class="form-card fade-left">
+        <h3>Send Us a Message</h3>
+        <p>Fill out the form below and our team will get back to you within 24 hours.</p>
+
+        <div id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input type="text" id="fname" placeholder="Your first name" required>
+            </div>
+            <div class="form-group">
+              <label>Last Name *</label>
+              <input type="text" id="lname" placeholder="Your last name" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input type="email" id="email" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="phone" placeholder="+977-98XXXXXXXX">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Study Destination</label>
+            <select id="destination">
+              <option value="">-- Select a country --</option>
+              <option>🇯🇵 Japan</option>
+              <option>🇦🇺 Australia</option>
+              <option>🇬🇧 United Kingdom</option>
+              <option>🇨🇦 Canada</option>
+              <option>🇺🇸 United States</option>
+              <option>🇳🇿 New Zealand</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Service Interested In</label>
+            <select id="service">
+              <option value="">-- Select a service --</option>
+              <option>Admission Guidance</option>
+              <option>Study Visa Counseling</option>
+              <option>IELTS / PTE Preparation</option>
+              <option>Japanese Language Course</option>
+              <option>Financial Assistance</option>
+              <option>Visa Assistance</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Your Message *</label>
+            <textarea id="message" placeholder="Tell us about your goals and any questions you have…" required></textarea>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" id="consent">
+            <label for="consent">I agree to be contacted by HASU Educational Consultancy for counseling purposes. My information will not be shared with third parties.</label>
+          </div>
+          <button class="form-submit" onclick="handleSubmit(event)">
+            Send Message <span class="arrow">→</span>
+          </button>
+          <div class="success-msg" id="successMsg">✅ Your message has been sent! We'll get back to you within 24 hours.</div>
+        </div>
+      </div>
+
+      <!-- BRANCHES + MAP -->
+      <div class="branch-panel fade-right">
+        <h3 class="branch-panel-title">Our Office Locations</h3>
+        <p class="branch-panel-sub">We have multiple branches across Nepal. Click on a branch to see its exact location on the map.</p>
+
+        <!-- Branch Tabs -->
+        <div class="branch-tabs" id="branchTabs">
+          <button class="branch-tab active" data-branch="0" onclick="switchBranch(0)">
+            <span class="tab-dot"></span> Bhairahawa HQ
+          </button>
+          <button class="branch-tab" data-branch="1" onclick="switchBranch(1)">
+            <span class="tab-dot"></span> Kathmandu
+          </button>
+          <button class="branch-tab" data-branch="2" onclick="switchBranch(2)">
+            <span class="tab-dot"></span> Pokhara
+          </button>
+          <button class="branch-tab" data-branch="3" onclick="switchBranch(3)">
+            <span class="tab-dot"></span> Chitwan
+          </button>
+        </div>
+
+        <!-- Map Container -->
+        <div class="map-wrap" id="mapWrap">
+          <div class="map-loading-bar" id="mapLoadingBar"></div>
+          <iframe
+            id="branchMap"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.791!2d83.4498!3d27.5029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3996864f1f0f0f0f%3A0x0!2sBhairahawa%2C+Nepal!5e0!3m2!1sen!2snp!4v1700000000000!5m2!1sen!2snp"
+            allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+
+        <!-- Branch Detail Card -->
+        <div class="branch-detail" id="branchDetail">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ STRIP -->
+<section id="faq-strip" class="section">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:0" class="fade-up">
+      <div class="section-label">Quick Answers</div>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-sub" style="margin-bottom:0">Common questions from students and parents before reaching out to us.</p>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item fade-up" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>How long does a free counseling session take?</span><div class="faq-toggle">+</div></div>
+        <div class="faq-a">Our free initial counseling session typically takes 30–45 minutes. We discuss your academic background, goals, and the best country/university options for you.</div>
+      </div>
+      <div class="faq-item fade-up" style="transition-delay:.05s" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Do I need an appointment or can I walk in?</span><div class="faq-toggle">+</div></div>
+        <div class="faq-a">You are welcome to walk into any of our branches during working hours. However, booking an appointment in advance ensures you get dedicated time with a senior counselor.</div>
+      </div>
+      <div class="faq-item fade-up" style="transition-delay:.1s" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>What documents do I need for the first consultation?</span><div class="faq-toggle">+</div></div>
+        <div class="faq-a">For your first visit, bring your academic transcripts, passport (if available), and any previous English or Japanese test scores. These help us give you the most accurate guidance.</div>
+      </div>
+      <div class="faq-item fade-up" style="transition-delay:.15s" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>How much does your consultancy service cost?</span><div class="faq-toggle">+</div></div>
+        <div class="faq-a">The initial consultation is completely free. Service fees vary depending on the country and complexity of your application. We provide a full fee breakdown before any commitment.</div>
+      </div>
+      <div class="faq-item fade-up" style="transition-delay:.2s" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Can I contact you via WhatsApp or Viber?</span><div class="faq-toggle">+</div></div>
+        <div class="faq-a">Yes! You can reach us on WhatsApp and Viber at 9853646493. We typically respond within 1–2 hours during business hours.</div>
+      </div>
+      <div class="faq-item fade-up" style="transition-delay:.25s" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Do you offer online counseling sessions?</span><div class="faq-toggle">+</div></div>
+        <div class="faq-a">Absolutely. We offer Zoom and Google Meet counseling sessions for students outside Bhairahawa or Nepal. Book through our contact form or WhatsApp to schedule.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL / CONNECT -->
+<section id="social-strip">
+  <div class="container">
+    <div class="social-strip-inner">
+      <div class="fade-left">
+        <div class="section-label" style="justify-content:flex-start"><span style="width:32px;height:2px;background:var(--red);display:block"></span> Follow Us</div>
+        <h2>Connect With Us on Social Media</h2>
+        <p>Stay updated with the latest news, events, scholarship alerts, student success stories, and study abroad tips by following our social channels.</p>
+      </div>
+      <div class="social-links-grid fade-right">
+        <a href="#" class="social-card fb">
+          <div class="sc-icon fb">📘</div>
+          <div class="sc-text"><strong>Facebook</strong><span>@HASUEducational</span></div>
+        </a>
+        <a href="#" class="social-card yt">
+          <div class="sc-icon yt">▶️</div>
+          <div class="sc-text"><strong>YouTube</strong><span>HASU Edu Channel</span></div>
+        </a>
+        <a href="#" class="social-card ig">
+          <div class="sc-icon ig">📸</div>
+          <div class="sc-text"><strong>Instagram</strong><span>@hasu_educational</span></div>
+        </a>
+        <a href="#" class="social-card li">
+          <div class="sc-icon li">💼</div>
+          <div class="sc-text"><strong>LinkedIn</strong><span>HASU Consultancy</span></div>
+        </a>
+        <a href="https://wa.me/9779853646493" class="social-card wa">
+          <div class="sc-icon wa">💬</div>
+          <div class="sc-text"><strong>WhatsApp</strong><span>9853646493</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ---- BRANCH DATA ---- */
+const branches = [
+  {
+    name: 'Bhairahawa Headquarters',
+    type: 'hq',
+    emoji: '🏢',
+    color: 'background:linear-gradient(135deg,var(--blue-light),var(--blue-light))',
+    badge: '<span class="branch-badge badge-hq">Headquarters</span>',
+    address: 'Birendra Campus Gate, Bhairahawa-11, Rupandehi, Nepal',
+    phone: '056-493528 | 9853646493',
+    email: 'info@hasuedu.com',
+    hours: { weekday: 'Sun–Fri 9AM–5PM', saturday: 'Sat 10AM–3PM' },
+    mapSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56519.23!2d83.38!3d27.505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3996864c32d4b3f1%3A0xf1eb7a94dba73b72!2sBhairahawa%2C%20Rupandehi!5e0!3m2!1sen!2snp!4v1700000000001!5m2!1sen!2snp'
+  },
+  {
+    name: 'Kathmandu Branch',
+    type: 'branch',
+    emoji: '🏙️',
+    color: 'background:linear-gradient(135deg,#fdf4ff,#fdf4ff)',
+    badge: '<span class="branch-badge badge-branch">Branch Office</span>',
+    address: 'New Baneshwor, Kathmandu, Bagmati Province, Nepal',
+    phone: '01-XXXXXXX | 9841XXXXXX',
+    email: 'kathmandu@hasuedu.com',
+    hours: { weekday: 'Sun–Fri 9AM–5PM', saturday: 'Sat 10AM–2PM' },
+    mapSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56516.31!2d85.3131!3d27.7172!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb198a307baabf%3A0xb96f1f9986b7c3f9!2sKathmandu!5e0!3m2!1sen!2snp!4v1700000000002!5m2!1sen!2snp'
+  },
+  {
+    name: 'Pokhara Branch',
+    type: 'branch',
+    emoji: '⛰️',
+    color: 'background:linear-gradient(135deg,#f0fdf4,#f0fdf4)',
+    badge: '<span class="branch-badge badge-branch">Branch Office</span>',
+    address: 'Lakeside, Pokhara-8, Kaski, Gandaki Province, Nepal',
+    phone: '061-XXXXXX | 9856XXXXXX',
+    email: 'pokhara@hasuedu.com',
+    hours: { weekday: 'Sun–Fri 9AM–5PM', saturday: 'Sat 10AM–2PM' },
+    mapSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112968.64!2d83.9564!3d28.2096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3995937bbf0376ff%3A0xf6cf823b25802164!2sPokhara!5e0!3m2!1sen!2snp!4v1700000000003!5m2!1sen!2snp'
+  },
+  {
+    name: 'Chitwan Branch',
+    type: 'branch',
+    emoji: '🌿',
+    color: 'background:linear-gradient(135deg,#fff7ed,#fff7ed)',
+    badge: '<span class="branch-badge badge-branch">Branch Office</span>',
+    address: 'Narayangadh, Bharatpur-10, Chitwan, Bagmati Province, Nepal',
+    phone: '056-XXXXXX | 9855XXXXXX',
+    email: 'chitwan@hasuedu.com',
+    hours: { weekday: 'Sun–Fri 9AM–5PM', saturday: 'Sat 10AM–2PM' },
+    mapSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56604.27!2d84.4322!3d27.6868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3994fb4069a78c65%3A0xd5fc2e29a3d0cb96!2sBharatpur%2C%20Chitwan!5e0!3m2!1sen!2snp!4v1700000000004!5m2!1sen!2snp'
+  }
+];
+
+let currentBranch = 0;
+
+function renderBranchDetail(b) {
+  document.getElementById('branchDetail').innerHTML = `
+    <div class="branch-detail-header">
+      <div class="branch-flag" style="${b.color}">${b.emoji}</div>
+      <div class="branch-name-wrap">
+        <h4>${b.name} ${b.badge}</h4>
+        <span>${b.address.split(',').slice(-2).join(',').trim()}</span>
+      </div>
+    </div>
+    <div class="branch-info-list">
+      <div class="branch-info-row">
+        <div class="bri-icon">📍</div>
+        <div class="bri-text"><strong>Address</strong><span>${b.address}</span></div>
+      </div>
+      <div class="branch-info-row">
+        <div class="bri-icon">📞</div>
+        <div class="bri-text"><strong>Phone</strong><a href="tel:${b.phone.replace(/\s/g,'')}">${b.phone}</a></div>
+      </div>
+      <div class="branch-info-row">
+        <div class="bri-icon">✉️</div>
+        <div class="bri-text"><strong>Email</strong><a href="mailto:${b.email}">${b.email}</a></div>
+      </div>
+    </div>
+    <div class="branch-hours">
+      <div class="hours-item"><strong>Weekdays</strong><span>${b.hours.weekday}</span></div>
+      <div class="hours-item"><strong>Saturday</strong><span>${b.hours.saturday}</span></div>
+    </div>
+  `;
+}
+
+function switchBranch(index) {
+  if (index === currentBranch) return;
+  currentBranch = index;
+
+  // update tabs
+  document.querySelectorAll('.branch-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === index);
+  });
+
+  // animate map
+  const bar = document.getElementById('mapLoadingBar');
+  const mapWrap = document.getElementById('mapWrap');
+  const mapFrame = document.getElementById('branchMap');
+
+  bar.className = 'map-loading-bar active';
+  mapWrap.classList.add('loading');
+
+  setTimeout(() => {
+    mapFrame.src = branches[index].mapSrc;
+    mapFrame.onload = () => {
+      bar.className = 'map-loading-bar done';
+      mapWrap.classList.remove('loading');
+      setTimeout(() => { bar.className = 'map-loading-bar'; }, 600);
+    };
+    renderBranchDetail(branches[index]);
+  }, 300);
+}
+
+// initial render
+renderBranchDetail(branches[0]);
+
+/* ---- FORM SUBMIT ---- */
+function handleSubmit(e) {
+  e.preventDefault();
+  const fname = document.getElementById('fname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const message = document.getElementById('message').value.trim();
+  const consent = document.getElementById('consent').checked;
+
+  if (!fname || !email || !message) {
+    alert('Please fill in your name, email, and message.'); return;
+  }
+  if (!consent) {
+    alert('Please agree to the consent checkbox.'); return;
+  }
+
+  const btn = document.querySelector('.form-submit');
+  btn.innerHTML = '⏳ Sending…';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    btn.innerHTML = '✅ Message Sent!';
+    document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('fname').value = '';
+    document.getElementById('lname').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('message').value = '';
+    document.getElementById('consent').checked = false;
+    document.getElementById('destination').selectedIndex = 0;
+    document.getElementById('service').selectedIndex = 0;
+    setTimeout(() => {
+      btn.innerHTML = 'Send Message <span class="arrow">→</span>';
+      btn.disabled = false;
+    }, 3000);
+  }, 1200);
+}
+
+/* ---- FAQ ---- */
+function toggleFaq(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
+}
+
+/* ---- NAVBAR ---- */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+
+/* ---- MOBILE NAV ---- */
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+const closeNav = document.getElementById('closeNav');
+hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
+closeNav.addEventListener('click', () => mobileNav.classList.remove('open'));
+mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
+
+/* ---- SCROLL REVEAL ---- */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fade-up,.fade-left,.fade-right').forEach(el => revealObserver.observe(el));
+</script>
+@endsection

@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Repositories\AboutHeroSectionRepository;
+use App\Repositories\AboutRepository;
 use App\Repositories\AdminRepository;
+use App\Repositories\Contracts\AboutHeroSectionRepositoryInterface;
+use App\Repositories\Contracts\AboutRepositoryInterface;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use App\Repositories\Contracts\HeroSlideRepositoryInterface;
 use App\Repositories\Contracts\SettingRepositoryInterface;
@@ -27,6 +31,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             HeroSlideRepositoryInterface::class,
             HeroSlideRepository::class,
+        );
+
+        $this->app->bind(
+            AboutRepositoryInterface::class,
+            AboutRepository::class
         );
     }
 

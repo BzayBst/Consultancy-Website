@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Blog Detail – HASU Educational Consultancy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Blog Detail Specific Styles */
+  .blog-hero {
+    position: relative;
+    padding: 120px 0 80px;
+    background-size: cover;
+    background-position: center;
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=80');
+    color: #fff;
+    text-align: center;
+  }
+  .blog-hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  .blog-meta-top {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+  .blog-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  
+  /* Layout */
+  .blog-detail-section { padding: 60px 0; }
+  .blog-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+  .blog-main {
+    flex: 1 1 65%;
+    min-width: 300px;
+  }
+  .blog-sidebar {
+    flex: 1 1 30%;
+    min-width: 250px;
+  }
+
+  /* Main Article Styling */
+  .article-content {
+    font-family: 'DM Sans', sans-serif;
+    color: #444;
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+  .article-content h2, .article-content h3 {
+    font-family: 'Playfair Display', serif;
+    color: #1a1a1a;
+    margin-top: 40px;
+    margin-bottom: 15px;
+  }
+  .article-content p { margin-bottom: 20px; }
+  .article-content img {
+    width: 100%;
+    border-radius: 8px;
+    margin: 30px 0;
+  }
+  .article-content ul {
+    margin-bottom: 20px;
+    padding-left: 20px;
+  }
+  .article-content li { margin-bottom: 10px; }
+  .article-quote {
+    border-left: 4px solid var(--blue);
+    background: #f8f9fa;
+    padding: 20px 30px;
+    font-style: italic;
+    font-size: 1.2rem;
+    margin: 30px 0;
+    color: #333;
+    border-radius: 0 8px 8px 0;
+  }
+
+  /* Sidebar Styling */
+  .sidebar-widget {
+    background: #f8f9fa;
+    border: 1px solid #eaeaea;
+    padding: 24px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+  }
+  .sidebar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--blue-light);
+  }
+  .sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .sidebar-list li {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eaeaea;
+  }
+  .sidebar-list li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .sidebar-list a {
+    color: #555;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-size: 0.95rem;
+    display: block;
+  }
+  .sidebar-list a:hover { color: var(--blue); }
+  
+  .recent-post-date {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 4px;
+  }
+  
+  /* Quick Form in Sidebar */
+  .sidebar-form input, .sidebar-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+  }
+  .sidebar-form button { width: 100%; }
+
+  @media(max-width: 768px) {
+    .blog-hero-title { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="mailto:info@hasuedu.com">✉ info@hasuedu.com</a>
+    <a href="tel:+9779856040895">📞 +977-9856040895</a>
+  </div>
+  <div class="topbar-right">
+    <a href="#">FAQs</a>
+    <a href="#" class="btn btn-primary" style="padding:4px 14px;font-size:11px;border-radius:2px">Useful Links</a>
+  </div>
+</div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo-img">
+    <img src="logo.png" alt="HASU" style="height:54px;width:auto;display:block;object-fit:contain">
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="ventures.html">Our Ventures</a>
+    <div class="nav-dropdown">
+      <button type="button" class="nav-dropdown-toggle">Courses ▾</button>
+      <div class="nav-dropdown-menu">
+        <a href="courses.html">All Courses</a>
+      </div>
+    </div>
+    <a href="study-abroad.html">Study Abroad</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="blog.html" class="active">Blogs</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a href="contact.html" class="btn btn-primary">Contact Us</a>
+  </div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <button class="close-btn" id="closeNav">✕</button>
+  <a href="index.html">Home</a>
+  <a href="blog.html" class="active">Blogs</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="blog-hero">
+  <div class="container">
+    <div class="blog-hero-content fade-up">
+      <div class="blog-meta-top">
+        <span style="background:var(--blue); color:#fff; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;">Study Guide</span>
+        <span>📅 Oct 15, 2025</span>
+        <span>✍️ HASU Experts</span>
+      </div>
+      <h1 class="blog-hero-title">Top 5 Reasons to Choose Japan for Your Higher Education</h1>
+      <div class="breadcrumb" style="justify-content: center;">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <a href="blog.html">Blogs</a>
+        <span>›</span>
+        <span style="color:rgba(255,255,255,.85)">Study in Japan</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="blog-detail-section">
+  <div class="container">
+    <div class="blog-container">
+      
+      <main class="blog-main fade-up">
+        <div class="article-content">
+          <p>Choosing the right destination for your higher education is one of the most critical decisions of your academic journey. While traditional destinations like the US, UK, and Australia remain popular, Japan is rapidly emerging as a top choice for international students. Here at HASU Educational Consultancy, we've helped hundreds of students successfully transition to Japanese universities.</p>
+          
+          <div class="article-quote">
+            "Japan offers a unique blend of world-class technology, rich cultural heritage, and increasing opportunities for international students to build a global career."
+          </div>
+
+          <h2>1. World-Class Education System</h2>
+          <p>Japan is home to some of the highest-ranking universities in Asia and the world. Institutions like the University of Tokyo, Kyoto University, and Waseda University are globally recognized for their rigorous academic standards, particularly in the fields of STEM (Science, Technology, Engineering, and Mathematics), Business, and the Arts.</p>
+          
+          <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Japanese Architecture and Nature">
+
+          <h2>2. Extremely Safe and Welcoming Environment</h2>
+          <p>Safety is a primary concern for international students and their parents. Japan consistently ranks among the top 10 safest countries globally in the Global Peace Index. The crime rate is exceptionally low, and the public transportation system is renowned for its safety and punctuality.</p>
+
+          <h2>3. Plentiful Work Opportunities</h2>
+          <p>Unlike many other countries that place strict limits on student employment, Japan is highly accommodating. With the "Permission to Engage in Activity Other than that Permitted under the Status of Residence," international students can work up to <strong>28 hours per week</strong> during the semester and up to 40 hours during long vacations.</p>
+
+          <h3>Common Part-Time Jobs for Students:</h3>
+          <ul>
+            <li>Language tutoring (English or native languages)</li>
+            <li>Convenience store and retail staff</li>
+            <li>Restaurant and cafe service</li>
+            <li>Translation and freelance writing</li>
+          </ul>
+
+          <h2>4. Generous Scholarships</h2>
+          <p>The Japanese government and various private institutions offer extensive financial aid to attract international talent. The <strong>MEXT Scholarship</strong> is one of the most prestigious, covering full tuition, a monthly stipend, and even round-trip airfare.</p>
+
+          <h2>5. Seamless Post-Graduation Career Path</h2>
+          <p>Faced with an aging population, Japan is actively seeking skilled international graduates to join its workforce. The government has made it increasingly easier to transition from a Student Visa to a Working Visa, making Japan an excellent choice for long-term settlement.</p>
+
+          <hr style="border:0; border-top:1px solid #eaeaea; margin:40px 0;">
+          
+          <p><strong>Ready to start your journey to Japan?</strong> Book a free counseling session with our expert advisors at HASU Educational Consultancy today, and let us guide you step-by-step through the application and visa process.</p>
+        </div>
+      </main>
+
+      <aside class="blog-sidebar fade-up" style="transition-delay:.1s;">
+        
+        <div class="sidebar-widget">
+          <h4 class="sidebar-title">Categories</h4>
+          <ul class="sidebar-list">
+            <li><a href="#">Study Guides (12)</a></li>
+            <li><a href="#">Test Preparation (8)</a></li>
+            <li><a href="#">Visa Information (15)</a></li>
+            <li><a href="#">Scholarships (5)</a></li>
+            <li><a href="#">Student Life (10)</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-widget">
+          <h4 class="sidebar-title">Recent Posts</h4>
+          <ul class="sidebar-list">
+            <li>
+              <a href="#">How to Score a Band 7.5+ in the IELTS Speaking Test</a>
+              <span class="recent-post-date">Oct 02, 2025</span>
+            </li>
+            <li>
+              <a href="#">A Complete Guide to Fully Funded Scholarships in 2026</a>
+              <span class="recent-post-date">Sep 20, 2025</span>
+            </li>
+            <li>
+              <a href="#">Ace Your Student Visa Interview: Common Questions</a>
+              <span class="recent-post-date">Sep 12, 2025</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-widget sidebar-form">
+          <h4 class="sidebar-title">Free Consultation</h4>
+          <p style="font-size:14px; color:#555; margin-bottom:15px;">Have questions about studying abroad? Leave your details below.</p>
+          <form action="#">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <input type="tel" placeholder="Phone Number" required>
+            <button type="submit" class="btn btn-primary">Request Call</button>
+          </form>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<section id="cta-banner" class="cta-courses">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-text fade-up">
+        <h2>Take the Next Step Towards Your Future</h2>
+        <p>Our experienced counselors are ready to help you navigate university selection, test prep, and visa applications.</p>
+        <div class="cta-actions">
+          <a href="contact.html" class="btn btn-cta-primary">Contact Us Today</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// Navbar Scroll Logic
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+
+// Mobile Nav Logic
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+const closeNav = document.getElementById('closeNav');
+hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
+closeNav.addEventListener('click', () => mobileNav.classList.remove('open'));
+
+// Fade Animation Logic
+const fadeEls = document.querySelectorAll('.fade-up');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+fadeEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

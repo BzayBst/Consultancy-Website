@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gallery – HASU Educational Consultancy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Specific styles for Gallery */
+  .gallery-section { padding: 80px 0; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .gallery-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .gallery-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 30px 20px 20px;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+  }
+  .gallery-item:hover img {
+    transform: scale(1.08);
+  }
+  .gallery-item:hover .gallery-overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .gallery-overlay h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="mailto:info@hasuedu.com">✉ info@hasuedu.com</a>
+    <a href="tel:+9779856040895">📞 +977-9856040895</a>
+    <a href="tel:+9779855040895">📞 +977-9855040895</a>
+  </div>
+  <div class="topbar-right">
+    <a href="#">FAQs</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#" class="btn btn-primary" style="padding:4px 14px;font-size:11px;border-radius:2px">Useful Links</a>
+  </div>
+</div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo-img">
+    <img src="logo.png" alt="HASU Educational Consultancy" style="height:54px;width:auto;display:block;object-fit:contain">
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="ventures.html">Our Ventures</a>
+    <div class="nav-dropdown">
+      <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">Courses ▾</button>
+      <div class="nav-dropdown-menu">
+        <a href="courses.html">All Courses</a>
+        <a href="course-detail.html">Japanese Language Course</a>
+        <a href="course-detail-ielts.html">IELTS</a>
+        <a href="course-detail-pte.html">PTE</a>
+      </div>
+    </div>
+    <a href="study-abroad.html">Study Abroad</a>
+    <a href="gallery.html" class="active">Gallery</a>
+    <a href="blog.html">Blogs</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a href="contact.html" class="btn btn-primary">Useful Links</a>
+  </div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <button class="close-btn" id="closeNav">✕</button>
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="courses.html">Courses</a>
+  <a href="study-abroad.html">Study Abroad</a>
+  <a href="gallery.html" class="active">Gallery</a>
+  <a href="blog.html">Blogs</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section id="page-hero">
+  <div class="ph-dot ph-dot-1"></div>
+  <div class="ph-dot ph-dot-2"></div>
+  <div class="ph-dot ph-dot-3"></div>
+  <div class="container">
+    <div class="page-hero-inner">
+      <div class="hero-badge-top">Our Campus & Events</div>
+      <h1>HASU <span class="highlight">Gallery</span></h1>
+      <p>Glimpses of our vibrant classes, study abroad seminars, and successful visa grant celebrations.</p>
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span style="color:rgba(255,255,255,.85)">Gallery</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-section">
+  <div class="container">
+    <div class="courses-listing-head fade-up">
+      <div>
+        <div class="section-label" style="margin-bottom:8px">Visual Journey</div>
+        <h2 class="section-title" style="margin-bottom:0;text-align:left">Life at HASU</h2>
+      </div>
+      <div class="course-filters" id="galleryFilters">
+        <button type="button" class="cf-filter-btn active" data-filter="all">All</button>
+        <button type="button" class="cf-filter-btn" data-filter="classes">Classes</button>
+        <button type="button" class="cf-filter-btn" data-filter="events">Seminars</button>
+        <button type="button" class="cf-filter-btn" data-filter="success">Success Stories</button>
+      </div>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      
+      <div class="gallery-item fade-up" data-category="classes">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80" alt="Japanese Language Class">
+        <div class="gallery-overlay">
+          <h4>Interactive Japanese Class</h4>
+        </div>
+      </div>
+
+      <div class="gallery-item fade-up" data-category="events" style="transition-delay:.1s">
+        <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=800&q=80" alt="Study Abroad Seminar">
+        <div class="gallery-overlay">
+          <h4>Study in Australia Seminar</h4>
+        </div>
+      </div>
+
+      <div class="gallery-item fade-up" data-category="success" style="transition-delay:.2s">
+        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80" alt="Visa Success">
+        <div class="gallery-overlay">
+          <h4>Recent Visa Approvals</h4>
+        </div>
+      </div>
+
+      <div class="gallery-item fade-up" data-category="classes" style="transition-delay:.3s">
+        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80" alt="IELTS Mock Test">
+        <div class="gallery-overlay">
+          <h4>Weekly IELTS Mock Test</h4>
+        </div>
+      </div>
+
+      <div class="gallery-item fade-up" data-category="events" style="transition-delay:.1s">
+        <img src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=800&q=80" alt="Pre-Departure Briefing">
+        <div class="gallery-overlay">
+          <h4>Pre-Departure Briefing</h4>
+        </div>
+      </div>
+
+      <div class="gallery-item fade-up" data-category="success" style="transition-delay:.2s">
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80" alt="Graduating Students">
+        <div class="gallery-overlay">
+          <h4>Alumni Success in Japan</h4>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="cta-banner" class="cta-courses">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-text fade-up">
+        <h2>Ready to Be Part of Our Success Story?</h2>
+        <p>Enroll in our classes today or consult with our experts to start your study abroad journey.</p>
+        <div class="cta-actions">
+          <a href="contact.html" class="btn btn-cta-primary">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+
+// Mobile Nav Logic
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+const closeNav = document.getElementById('closeNav');
+hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
+closeNav.addEventListener('click', () => mobileNav.classList.remove('open'));
+
+// Fade Animation
+const fadeEls = document.querySelectorAll('.fade-up');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+fadeEls.forEach(el => observer.observe(el));
+
+// Gallery Filtering Logic
+const filterBtns = document.querySelectorAll('.cf-filter-btn');
+const galleryItems = document.querySelectorAll('#galleryGrid .gallery-item');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    galleryItems.forEach(item => {
+      const cat = item.dataset.category;
+      item.style.display = (filter === 'all' || cat === filter) ? '' : 'none';
+    });
+  });
+});
+</script>
+</body>
+</html>
