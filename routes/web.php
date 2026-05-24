@@ -1,6 +1,8 @@
 <?php
 
 use App\Livewire\Admin\About\AboutPage;
+use App\Livewire\Admin\About\Team;
+use App\Livewire\Admin\About\WhyUs;
 use App\Livewire\Admin\Auth\Login;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Hero\HeroSlides;
@@ -82,6 +84,11 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
         Route::get('/hero-slides', HeroSlides::class)->name('hero-slides');
 
         Route::get('/about-page', AboutPage::class)->name('about-page');
+
+         // About page sections
+        Route::get('/about-page/why-us', WhyUs::class)->name('about-page.why-us');
+
+        Route::get('/teams', Team::class)->name('teams.index');
 
         // Logout (POST to prevent CSRF-free logouts)
         Route::post('/logout', function () {

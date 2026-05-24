@@ -85,7 +85,7 @@
 
     <div class="footer-bottom">
       <p>© {{ $year }} {{ $siteName }}. All Rights Reserved.</p>
-      <p>Designed with ❤ for Nepali Students</p>
+      
     </div>
   </div>
 </footer>

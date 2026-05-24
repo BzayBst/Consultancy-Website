@@ -10,8 +10,12 @@ use App\Repositories\Contracts\AboutRepositoryInterface;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use App\Repositories\Contracts\HeroSlideRepositoryInterface;
 use App\Repositories\Contracts\SettingRepositoryInterface;
+use App\Repositories\Contracts\TeamRepositoryInterface;
+use App\Repositories\Contracts\WhyUsRepositoryInterface;
 use App\Repositories\HeroSlideRepository;
 use App\Repositories\SettingRepository;
+use App\Repositories\TeamRepository;
+use App\Repositories\WhyUsRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -37,6 +41,14 @@ class AppServiceProvider extends ServiceProvider
             AboutRepositoryInterface::class,
             AboutRepository::class
         );
+
+        
+        $this->app->bind(
+            WhyUsRepositoryInterface::class,
+            WhyUsRepository::class,
+        );
+
+         $this->app->bind(TeamRepositoryInterface::class, TeamRepository::class);
     }
 
     /**
