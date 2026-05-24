@@ -1,10 +1,12 @@
 <?php
 
 use App\Livewire\Admin\About\AboutPage;
+use App\Livewire\Admin\About\CoreValues;
 use App\Livewire\Admin\About\Team;
 use App\Livewire\Admin\About\WhyUs;
 use App\Livewire\Admin\Auth\Login;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Event;
 use App\Livewire\Admin\Hero\HeroSlides;
 use App\Livewire\Admin\Settings\SiteSettings;
 use Illuminate\Support\Facades\Route;
@@ -89,6 +91,10 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
         Route::get('/about-page/why-us', WhyUs::class)->name('about-page.why-us');
 
         Route::get('/teams', Team::class)->name('teams.index');
+
+        Route::get('/events', Event::class)->name('events.index');
+
+         Route::get('/about/core-values', CoreValues::class)->name('about.core-values');
 
         // Logout (POST to prevent CSRF-free logouts)
         Route::post('/logout', function () {

@@ -8,10 +8,12 @@ use App\Repositories\AdminRepository;
 use App\Repositories\Contracts\AboutHeroSectionRepositoryInterface;
 use App\Repositories\Contracts\AboutRepositoryInterface;
 use App\Repositories\Contracts\AdminRepositoryInterface;
+use App\Repositories\Contracts\CoreValuesRepositoryInterface;
 use App\Repositories\Contracts\HeroSlideRepositoryInterface;
 use App\Repositories\Contracts\SettingRepositoryInterface;
 use App\Repositories\Contracts\TeamRepositoryInterface;
 use App\Repositories\Contracts\WhyUsRepositoryInterface;
+use App\Repositories\CoreValuesRepository;
 use App\Repositories\HeroSlideRepository;
 use App\Repositories\SettingRepository;
 use App\Repositories\TeamRepository;
@@ -46,6 +48,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             WhyUsRepositoryInterface::class,
             WhyUsRepository::class,
+        );
+
+         $this->app->bind(
+            CoreValuesRepositoryInterface::class,
+            CoreValuesRepository::class,
         );
 
          $this->app->bind(TeamRepositoryInterface::class, TeamRepository::class);

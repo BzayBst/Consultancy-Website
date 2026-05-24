@@ -2,150 +2,175 @@
 
 namespace App\Livewire\Admin\About;
 
-
 use App\Services\TeamService;
+use Illuminate\Support\Str;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Title;
 
 #[Layout('admin.layouts.app')]
 #[Title('Team Page – HASU Admin')]
 class Team extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     /* ------------------------------------------------------------------ */
-    /*  List / filter state                                                 */
+    /*  List / filter state */
     /* ------------------------------------------------------------------ */
 
-    public string $search  = '';
-    public string $status  = '';       // '' | 'active' | 'inactive' | 'trashed'
-    public int    $perPage = 10;
+    public string $search = '';
+
+    public string $status = '';       // '' | 'active' | 'inactive' | 'trashed'
+
+    public int $perPage = 10;
+
+    // public string $activeTab = 'members';
 
     /* ------------------------------------------------------------------ */
-    /*  Modal state                                                         */
+    /*  Modal state */
     /* ------------------------------------------------------------------ */
 
-    public bool   $showModal   = false;
-    public bool   $isEdit      = false;
-    public ?int   $editingId   = null;
+    public bool $showModal = false;
+
+    public bool $isEdit = false;
+
+    public ?int $editingId = null;
 
     /* ------------------------------------------------------------------ */
-    /*  Form fields                                                         */
+    /*  Form fields */
     /* ------------------------------------------------------------------ */
 
-    public string $name        = '';
-    public string $slug        = '';
+    public string $name = '';
+
+    public string $slug = '';
+
     public string $designation = '';
-    public string $bio         = '';
-    public string $email       = '';
-    public string $phone       = '';
-    public int    $order       = 0;
-    public bool   $is_active   = true;
-    public bool   $removePhoto = false;
+
+    public string $bio = '';
+
+    public string $email = '';
+
+    public string $phone = '';
+
+    public int $order = 0;
+
+    public bool $is_active = true;
+
+    public bool $removePhoto = false;
 
     public string $social_facebook = '';
-    public string $social_linkedin = '';
-    public string $social_twitter  = '';
 
-    public        $photo;                  // Livewire temp upload
+    public string $social_linkedin = '';
+
+    public string $social_twitter = '';
+
+    public $photo;                  // Livewire temp upload
+
     public ?string $existingPhoto = null;  // Current stored path
 
     /* ------------------------------------------------------------------ */
-    /*  Delete / Restore confirm                                            */
+    /*  Delete / Restore confirm */
     /* ------------------------------------------------------------------ */
 
-    public ?int $confirmingDeleteId  = null;
+    public ?int $confirmingDeleteId = null;
+
     public ?int $confirmingRestoreId = null;
 
     /* ------------------------------------------------------------------ */
-    /*  Query string                                                        */
+    /*  Query string */
     /* ------------------------------------------------------------------ */
 
     protected $queryString = [
-        'search'  => ['except' => ''],
-        'status'  => ['except' => ''],
+        'search' => ['except' => ''],
+        'status' => ['except' => ''],
         'perPage' => ['except' => 10],
     ];
 
     /* ------------------------------------------------------------------ */
-    /*  Validation                                                          */
+    /*  Validation */
     /* ------------------------------------------------------------------ */
 
     protected function rules(): array
     {
         return [
-            'name'            => ['required', 'string', 'max:100'],
-            'slug'            => ['nullable', 'string', 'max:120'],
-            'designation'     => ['required', 'string', 'max:100'],
-            'bio'             => ['nullable', 'string', 'max:500'],
-            'email'           => ['nullable', 'email', 'max:150'],
-            'phone'           => ['nullable', 'string', 'max:20'],
-            'order'           => ['required', 'integer', 'min:0'],
-            'is_active'       => ['boolean'],
-            'photo'           => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'name' => ['required', 'string', 'max:100'],
+            'slug' => ['nullable', 'string', 'max:120'],
+            'designation' => ['required', 'string', 'max:100'],
+            'bio' => ['nullable', 'string', 'max:500'],
+            'email' => ['nullable', 'email', 'max:150'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'order' => ['required', 'integer', 'min:0'],
+            'is_active' => ['boolean'],
+            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'social_facebook' => ['nullable', 'url', 'max:255'],
             'social_linkedin' => ['nullable', 'url', 'max:255'],
-            'social_twitter'  => ['nullable', 'url', 'max:255'],
+            'social_twitter' => ['nullable', 'url', 'max:255'],
         ];
     }
 
     protected $validationAttributes = [
-        'name'        => 'full name',
+        'name' => 'full name',
         'designation' => 'designation / role',
-        'photo'       => 'profile photo',
+        'photo' => 'profile photo',
     ];
 
     /* ------------------------------------------------------------------ */
-    /*  Lifecycle hooks                                                     */
+    /*  Lifecycle hooks */
     /* ------------------------------------------------------------------ */
 
-    public function updatingSearch(): void { $this->resetPage(); }
-    public function updatingStatus(): void { $this->resetPage(); }
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingStatus(): void
+    {
+        $this->resetPage();
+    }
 
     public function updatedName(string $value): void
     {
         // Auto-fill slug only on create
         if (! $this->isEdit) {
-            $this->slug = \Illuminate\Support\Str::slug($value);
+            $this->slug = Str::slug($value);
         }
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Modal open / close                                                  */
+    /*  Modal open / close */
     /* ------------------------------------------------------------------ */
 
     public function openCreate(): void
     {
         $this->resetForm();
-        $this->isEdit    = false;
+        $this->isEdit = false;
         $this->showModal = true;
     }
 
     public function openEdit(int $id, TeamService $service): void
     {
         $this->resetForm();
-        $this->isEdit    = true;
+        $this->isEdit = true;
         $this->editingId = $id;
 
         $team = $service->find($id);
 
-        $this->name        = $team->name;
-        $this->slug        = $team->slug;
+        $this->name = $team->name;
+        $this->slug = $team->slug;
         $this->designation = $team->designation;
-        $this->bio         = $team->bio         ?? '';
-        $this->email       = $team->email        ?? '';
-        $this->phone       = $team->phone        ?? '';
-        $this->order       = $team->order;
-        $this->is_active   = $team->is_active;
+        $this->bio = $team->bio ?? '';
+        $this->email = $team->email ?? '';
+        $this->phone = $team->phone ?? '';
+        $this->order = $team->order;
+        $this->is_active = $team->is_active;
         $this->existingPhoto = $team->photo;
 
         $social = $team->social_links ?? [];
         $this->social_facebook = $social['facebook'] ?? '';
         $this->social_linkedin = $social['linkedin'] ?? '';
-        $this->social_twitter  = $social['twitter']  ?? '';
+        $this->social_twitter = $social['twitter'] ?? '';
 
         $this->showModal = true;
     }
@@ -157,7 +182,7 @@ class Team extends Component
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Save (create + update)                                              */
+    /*  Save (create + update) */
     /* ------------------------------------------------------------------ */
 
     public function save(TeamService $service): void
@@ -165,18 +190,18 @@ class Team extends Component
         $this->validate();
 
         $data = [
-            'name'         => $this->name,
-            'slug'         => $this->slug ?: null,
-            'designation'  => $this->designation,
-            'bio'          => $this->bio   ?: null,
-            'email'        => $this->email ?: null,
-            'phone'        => $this->phone ?: null,
-            'order'        => $this->order,
-            'is_active'    => $this->is_active,
+            'name' => $this->name,
+            'slug' => $this->slug ?: null,
+            'designation' => $this->designation,
+            'bio' => $this->bio ?: null,
+            'email' => $this->email ?: null,
+            'phone' => $this->phone ?: null,
+            'order' => $this->order,
+            'is_active' => $this->is_active,
             'social_links' => array_filter([
                 'facebook' => $this->social_facebook,
                 'linkedin' => $this->social_linkedin,
-                'twitter'  => $this->social_twitter,
+                'twitter' => $this->social_twitter,
             ]),
         ];
 
@@ -193,7 +218,7 @@ class Team extends Component
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Toggle active inline                                                */
+    /*  Toggle active inline */
     /* ------------------------------------------------------------------ */
 
     public function toggleActive(int $id, TeamService $service): void
@@ -204,7 +229,7 @@ class Team extends Component
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Delete                                                              */
+    /*  Delete */
     /* ------------------------------------------------------------------ */
 
     public function confirmDelete(int $id): void
@@ -219,14 +244,16 @@ class Team extends Component
 
     public function delete(TeamService $service): void
     {
-        if (! $this->confirmingDeleteId) return;
+        if (! $this->confirmingDeleteId) {
+            return;
+        }
         $service->delete($this->confirmingDeleteId);
         $this->confirmingDeleteId = null;
         $this->dispatch('notify', type: 'success', message: 'Team member moved to trash.');
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Restore                                                             */
+    /*  Restore */
     /* ------------------------------------------------------------------ */
 
     public function confirmRestore(int $id): void
@@ -241,38 +268,55 @@ class Team extends Component
 
     public function restore(TeamService $service): void
     {
-        if (! $this->confirmingRestoreId) return;
+        if (! $this->confirmingRestoreId) {
+            return;
+        }
         $service->restore($this->confirmingRestoreId);
         $this->confirmingRestoreId = null;
         $this->dispatch('notify', type: 'success', message: 'Team member restored.');
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Helpers                                                             */
+    /*  Helpers */
     /* ------------------------------------------------------------------ */
 
     private function resetForm(): void
     {
         $this->resetValidation();
-        $this->editingId      = null;
-        $this->name           = '';
-        $this->slug           = '';
-        $this->designation    = '';
-        $this->bio            = '';
-        $this->email          = '';
-        $this->phone          = '';
-        $this->order          = 0;
-        $this->is_active      = true;
-        $this->removePhoto    = false;
-        $this->existingPhoto  = null;
-        $this->photo          = null;
+        $this->editingId = null;
+        $this->name = '';
+        $this->slug = '';
+        $this->designation = '';
+        $this->bio = '';
+        $this->email = '';
+        $this->phone = '';
+        $this->order = 0;
+        $this->is_active = true;
+        $this->removePhoto = false;
+        $this->existingPhoto = null;
+        $this->photo = null;
         $this->social_facebook = '';
         $this->social_linkedin = '';
-        $this->social_twitter  = '';
+        $this->social_twitter = '';
     }
 
+  
+
+    public function reorderMembers(array $ids, TeamService $service): void
+    {
+        foreach ($ids as $index => $id) {
+            $service->update($id, [
+                'order' => $index + 1,
+            ]);
+        }
+
+        $this->dispatch('notify',
+            type: 'success',
+            message: 'Team order updated.'
+        );
+    }
     /* ------------------------------------------------------------------ */
-    /*  Render                                                              */
+    /*  Render */
     /* ------------------------------------------------------------------ */
 
     public function render(TeamService $service)

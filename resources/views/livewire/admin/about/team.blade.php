@@ -1,532 +1,771 @@
-{{-- resources/views/livewire/admin/team.blade.php --}}
-<div>
+{{-- resources/views/livewire/admin/about/team.blade.php --}}
 
-    {{-- =====================================================================
-         PAGE HEADER
-    ====================================================================== --}}
-    <div class="d-flex align-items-center justify-content-between mb-4">
+<div class="cv-wrap" x-data>
+
+    {{-- ───────────────── HEADER ───────────────── --}}
+    <div class="cv-header">
         <div>
-            <h4 class="page-title mb-1">Team Members</h4>
-            <ol class="breadcrumb mb-0 small">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active">Team</li>
-            </ol>
+            <h1>Team Members</h1>
+            <p>Manage all team members displayed on the public About page</p>
         </div>
-        <button wire:click="openCreate" class="btn btn-primary">
-            <i class="ti ti-plus me-1"></i> Add Member
-        </button>
-    </div>
 
-    {{-- =====================================================================
-         FILTERS
-    ====================================================================== --}}
-    <div class="card mb-3">
-        <div class="card-body py-3">
-            <div class="row g-2 align-items-center">
-                <div class="col-md-5">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="ti ti-search"></i></span>
-                        <input type="text"
-                               wire:model.live.debounce.300ms="search"
-                               class="form-control"
-                               placeholder="Search name, designation, email…">
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <select wire:model.live="status" class="form-select">
-                        <option value="">All Members</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                        <option value="trashed">Trashed</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <select wire:model.live="perPage" class="form-select">
-                        <option value="10">10 / page</option>
-                        <option value="25">25 / page</option>
-                        <option value="50">50 / page</option>
-                    </select>
-                </div>
-                <div class="col-md-2 text-end">
-                    <span class="text-muted small">{{ $teams->total() }} result(s)</span>
-                </div>
-            </div>
+        <div style="display:flex;gap:10px;">
+            <a href="{{ route('about') }}#team"
+               target="_blank"
+               class="btn-preview">
+                👁 Preview
+            </a>
+
+            <button wire:click="openCreate"
+                    class="btn-add-sm">
+                + Add Member
+            </button>
         </div>
     </div>
 
-    {{-- =====================================================================
-         TABLE
-    ====================================================================== --}}
-    <div class="card">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th style="width:56px"></th>
-                            <th>Member</th>
-                            <th>Designation</th>
-                            <th style="width:80px" class="text-center">Order</th>
-                            <th style="width:110px" class="text-center">Status</th>
-                            <th style="width:120px" class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($teams as $team)
-                            <tr @class(['opacity-50' => $team->trashed()])>
 
-                                <td>
-                                    <img src="{{ $team->photo_url }}"
-                                         alt="{{ $team->name }}"
-                                         class="rounded-circle object-fit-cover"
-                                         width="42" height="42"
-                                         style="border:2px solid #e2e8f0">
-                                </td>
+    {{-- ───────────────── FILTERS ───────────────── --}}
+    <div class="cv-card" style="margin-bottom:24px;">
 
-                                <td>
-                                    <div class="fw-semibold">{{ $team->name }}</div>
-                                    @if($team->email)
-                                        <div class="small text-muted">{{ $team->email }}</div>
-                                    @endif
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-primary-subtle text-primary fw-semibold"
-                                          style="font-size:10px;letter-spacing:.5px;text-transform:uppercase">
-                                        {{ $team->designation }}
-                                    </span>
-                                </td>
-
-                                <td class="text-center">
-                                    <span class="badge bg-secondary-subtle text-secondary">
-                                        {{ $team->order }}
-                                    </span>
-                                </td>
-
-                                <td class="text-center">
-                                    @if(! $team->trashed())
-                                        <button wire:click="toggleActive({{ $team->id }})"
-                                                class="btn btn-sm {{ $team->is_active ? 'btn-success' : 'btn-secondary' }}">
-                                            {{ $team->is_active ? 'Active' : 'Inactive' }}
-                                        </button>
-                                    @else
-                                        <span class="badge bg-danger">Trashed</span>
-                                    @endif
-                                </td>
-
-                                <td class="text-center">
-                                    @if(! $team->trashed())
-                                        <button wire:click="openEdit({{ $team->id }})"
-                                                class="btn btn-sm btn-outline-primary me-1"
-                                                title="Edit">
-                                            <i class="ti ti-edit"></i>
-                                        </button>
-                                        <button wire:click="confirmDelete({{ $team->id }})"
-                                                class="btn btn-sm btn-outline-danger"
-                                                title="Delete">
-                                            <i class="ti ti-trash"></i>
-                                        </button>
-                                    @else
-                                        <button wire:click="confirmRestore({{ $team->id }})"
-                                                class="btn btn-sm btn-outline-success"
-                                                title="Restore">
-                                            <i class="ti ti-refresh"></i>
-                                        </button>
-                                    @endif
-                                </td>
-
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center py-5 text-muted">
-                                    <i class="ti ti-users-group d-block mb-2" style="font-size:2rem"></i>
-                                    No team members found.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+        <div class="cv-card-header">
+            <div>
+                <h2>Search & Filters</h2>
+                <p>Filter and manage team members</p>
             </div>
+
+            <span class="tab-badge">
+                {{ $teams->total() }} Members
+            </span>
         </div>
 
-        @if($teams->hasPages())
-            <div class="card-footer d-flex align-items-center justify-content-between py-2">
-                <div class="small text-muted">
-                    Showing {{ $teams->firstItem() }}–{{ $teams->lastItem() }} of {{ $teams->total() }}
-                </div>
-                {{ $teams->links() }}
+        <div class="cv-grid-2" style="padding:24px;">
+
+            <div class="form-group">
+                <label>Search</label>
+
+                <input type="text"
+                       wire:model.live.debounce.300ms="search"
+                       placeholder="Search name, designation, email...">
             </div>
-        @endif
+
+            <div class="form-group">
+                <label>Status</label>
+
+                <select wire:model.live="status">
+                    <option value="">All Members</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="trashed">Trashed</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Per Page</label>
+
+                <select wire:model.live="perPage">
+                    <option value="10">10 / page</option>
+                    <option value="25">25 / page</option>
+                    <option value="50">50 / page</option>
+                </select>
+            </div>
+
+        </div>
+
     </div>
 
 
-    {{-- =====================================================================
-         CREATE / EDIT MODAL
-    ====================================================================== --}}
+    {{-- ───────────────── PREVIEW CARDS ───────────────── --}}
+    <div class="cv-cards-preview">
+
+        @forelse($teams as $team)
+
+        <div class="cvp-card">
+
+            <div class="cvp-photo">
+                <img src="{{ $team->photo_url }}"
+                     alt="{{ $team->name }}">
+            </div>
+
+            <div class="cvp-body">
+                <strong>{{ $team->name }}</strong>
+
+                <div class="cvp-role">
+                    {{ $team->designation }}
+                </div>
+
+                <p>
+                    {{ Str::limit($team->bio ?: 'No biography available.', 90) }}
+                </p>
+            </div>
+
+        </div>
+
+        @empty
+
+        <p class="cvp-empty">
+            No team members found.
+        </p>
+
+        @endforelse
+
+    </div>
+
+
+    {{-- ───────────────── LIST ───────────────── --}}
+    <div class="cv-card">
+
+        <div class="cv-card-header">
+            <div>
+                <h2>Team Members</h2>
+                <p>Manage all team members and visibility</p>
+            </div>
+
+            <button wire:click="openCreate"
+                    class="btn-add-sm">
+                + Add Member
+            </button>
+        </div>
+
+
+        <div class="cv-list">
+
+            @forelse($teams as $team)
+
+            <div class="cv-list-item">
+
+                <div class="cv-photo">
+                    <img src="{{ $team->photo_url }}"
+                         alt="{{ $team->name }}">
+                </div>
+
+                <div class="cv-list-content">
+
+                    <strong>
+                        {{ $team->name }}
+                    </strong>
+
+                    <span class="tm-role">
+                        {{ $team->designation }}
+                    </span>
+
+                    @if($team->email)
+                    <small>
+                        {{ $team->email }}
+                    </small>
+                    @endif
+
+                </div>
+
+
+                <div class="cv-list-actions">
+
+                    @if(!$team->trashed())
+
+                    <button wire:click="toggleActive({{ $team->id }})"
+                            class="cv-toggle {{ $team->is_active ? 'on' : 'off' }}">
+
+                        {{ $team->is_active ? '✅ Active' : '⭕ Hidden' }}
+
+                    </button>
+
+                    <button wire:click="openEdit({{ $team->id }})"
+                            class="cv-btn-edit">
+                        ✏️ Edit
+                    </button>
+
+                    <button wire:click="confirmDelete({{ $team->id }})"
+                            class="cv-btn-del">
+                        🗑 Delete
+                    </button>
+
+                    @else
+
+                    <button wire:click="confirmRestore({{ $team->id }})"
+                            class="cv-btn-edit"
+                            style="background:#dcfce7;color:#166534;">
+                        ♻ Restore
+                    </button>
+
+                    @endif
+
+                </div>
+
+            </div>
+
+            @empty
+
+            <div class="cv-empty">
+                <span>👥</span>
+                <p>No team members found.</p>
+            </div>
+
+            @endforelse
+
+        </div>
+
+    </div>
+
+
+    {{-- ───────────────── PAGINATION ───────────────── --}}
+    @if($teams->hasPages())
+
+    <div style="margin-top:20px;">
+        {{ $teams->links() }}
+    </div>
+
+    @endif
+
+
+
+    {{-- ════════════════════════════════════════════
+         MODAL
+    ════════════════════════════════════════════ --}}
     @if($showModal)
-    <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,.5)">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
-            <div class="modal-content">
 
-                {{-- Header --}}
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="ti ti-{{ $isEdit ? 'edit' : 'user-plus' }} me-2 text-primary"></i>
-                        {{ $isEdit ? 'Edit Team Member' : 'Add Team Member' }}
-                    </h5>
-                    <button type="button" wire:click="closeModal" class="btn-close"></button>
+    <div class="modal-backdrop">
+
+        <div class="modal-box modal-lg">
+
+            <div class="modal-head">
+
+                <h2>
+                    {{ $isEdit ? 'Edit Team Member' : 'Add Team Member' }}
+                </h2>
+
+                <button class="modal-close"
+                        wire:click="closeModal">
+                    ✕
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                {{-- Preview --}}
+                <div class="value-modal-preview">
+
+                    <div class="vmp-left">
+
+                        <div class="tm-modal-photo">
+
+                            @if($photo)
+
+                            <img src="{{ $photo->temporaryUrl() }}">
+
+                            @elseif($existingPhoto && ! $removePhoto)
+
+                            <img src="{{ asset('storage/'.$existingPhoto) }}">
+
+                            @else
+
+                            👤
+
+                            @endif
+
+                        </div>
+
+                    </div>
+
+                    <div class="vmp-right">
+
+                        <strong>
+                            {{ $name ?: 'Team Member Name' }}
+                        </strong>
+
+                        <div class="cvp-role">
+                            {{ $designation ?: 'Designation' }}
+                        </div>
+
+                        <p>
+                            {{ $bio ?: 'Biography preview will appear here.' }}
+                        </p>
+
+                    </div>
+
                 </div>
 
-                {{-- Body --}}
-                <div class="modal-body">
-                    <div class="row g-4">
 
-                        {{-- ===== LEFT: MAIN DETAILS ===== --}}
-                        <div class="col-lg-8">
+                {{-- Form --}}
+                <div class="cv-grid-2">
 
-                            {{-- Basic Info --}}
-                            <div class="card mb-4 border">
-                                <div class="card-header bg-light py-2">
-                                    <h6 class="mb-0 small fw-bold text-uppercase text-muted">
-                                        <i class="ti ti-user me-1"></i> Basic Information
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row g-3">
+                    <div class="form-group">
+                        <label>Full Name</label>
 
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-semibold">
-                                                Full Name <span class="text-danger">*</span>
-                                            </label>
-                                            <input type="text"
-                                                   wire:model.live="name"
-                                                   class="form-control @error('name') is-invalid @enderror"
-                                                   placeholder="e.g. Ram Prasad Sharma">
-                                            @error('name')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+                        <input type="text"
+                               wire:model.live="name">
 
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-semibold">
-                                                Designation <span class="text-danger">*</span>
-                                            </label>
-                                            <input type="text"
-                                                   wire:model="designation"
-                                                   class="form-control @error('designation') is-invalid @enderror"
-                                                   placeholder="e.g. Founder & CEO">
-                                            @error('designation')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+                        @error('name')
+                        <span class="fe">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-semibold">URL Slug</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text text-muted small">/team/</span>
-                                                <input type="text"
-                                                       wire:model="slug"
-                                                       class="form-control @error('slug') is-invalid @enderror"
-                                                       placeholder="auto-generated">
-                                            </div>
-                                            @error('slug')
-                                                <div class="text-danger small mt-1">{{ $message }}</div>
-                                            @enderror
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <label class="form-label fw-semibold">Display Order</label>
-                                            <input type="number"
-                                                   wire:model="order"
-                                                   class="form-control @error('order') is-invalid @enderror"
-                                                   min="0">
-                                            @error('order')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                            <div class="form-text">Lower = appears first.</div>
-                                        </div>
+                    <div class="form-group">
+                        <label>Designation</label>
 
-                                        <div class="col-md-3 d-flex align-items-end pb-1">
-                                            <div class="form-check form-switch">
-                                                <input type="checkbox"
-                                                       wire:model="is_active"
-                                                       class="form-check-input"
-                                                       id="modal_is_active"
-                                                       role="switch">
-                                                <label class="form-check-label fw-semibold" for="modal_is_active">
-                                                    Active
-                                                </label>
-                                            </div>
-                                        </div>
+                        <input type="text"
+                               wire:model.live="designation">
 
-                                        <div class="col-12">
-                                            <label class="form-label fw-semibold">Short Bio</label>
-                                            <textarea wire:model="bio"
-                                                      class="form-control @error('bio') is-invalid @enderror"
-                                                      rows="3"
-                                                      maxlength="500"
-                                                      placeholder="A brief description about this team member…"></textarea>
-                                            <div class="d-flex justify-content-between mt-1">
-                                                @error('bio')
-                                                    <span class="text-danger small">{{ $message }}</span>
-                                                @else
-                                                    <span></span>
-                                                @enderror
-                                                <span class="text-muted small">{{ strlen($bio) }} / 500</span>
-                                            </div>
-                                        </div>
+                        @error('designation')
+                        <span class="fe">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-                                    </div>
-                                </div>
-                            </div>
 
-                            {{-- Contact --}}
-                            <div class="card mb-4 border">
-                                <div class="card-header bg-light py-2">
-                                    <h6 class="mb-0 small fw-bold text-uppercase text-muted">
-                                        <i class="ti ti-address-book me-1"></i> Contact Details
-                                        <span class="fw-normal text-muted">(optional)</span>
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-semibold">Email</label>
-                                            <input type="email"
-                                                   wire:model="email"
-                                                   class="form-control @error('email') is-invalid @enderror"
-                                                   placeholder="name@hasuedu.com">
-                                            @error('email')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-semibold">Phone</label>
-                                            <input type="text"
-                                                   wire:model="phone"
-                                                   class="form-control @error('phone') is-invalid @enderror"
-                                                   placeholder="+977-98XXXXXXXX">
-                                            @error('phone')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label>Email</label>
 
-                            {{-- Social Links --}}
-                            <div class="card border">
-                                <div class="card-header bg-light py-2">
-                                    <h6 class="mb-0 small fw-bold text-uppercase text-muted">
-                                        <i class="ti ti-share me-1"></i> Social Links
-                                        <span class="fw-normal text-muted">(optional)</span>
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row g-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label fw-semibold">
-                                                <i class="ti ti-brand-facebook text-primary me-1"></i>Facebook
-                                            </label>
-                                            <input type="url"
-                                                   wire:model="social_facebook"
-                                                   class="form-control @error('social_facebook') is-invalid @enderror"
-                                                   placeholder="https://facebook.com/…">
-                                            @error('social_facebook')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label fw-semibold">
-                                                <i class="ti ti-brand-linkedin text-primary me-1"></i>LinkedIn
-                                            </label>
-                                            <input type="url"
-                                                   wire:model="social_linkedin"
-                                                   class="form-control @error('social_linkedin') is-invalid @enderror"
-                                                   placeholder="https://linkedin.com/in/…">
-                                            @error('social_linkedin')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label fw-semibold">
-                                                <i class="ti ti-brand-x text-primary me-1"></i>X / Twitter
-                                            </label>
-                                            <input type="url"
-                                                   wire:model="social_twitter"
-                                                   class="form-control @error('social_twitter') is-invalid @enderror"
-                                                   placeholder="https://x.com/…">
-                                            @error('social_twitter')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <input type="email"
+                               wire:model.live="email">
+                    </div>
 
+
+                    <div class="form-group">
+                        <label>Phone</label>
+
+                        <input type="text"
+                               wire:model.live="phone">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Facebook URL</label>
+
+                        <input type="url"
+                               wire:model.live="social_facebook">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>LinkedIn URL</label>
+
+                        <input type="url"
+                               wire:model.live="social_linkedin">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Twitter URL</label>
+
+                        <input type="url"
+                               wire:model.live="social_twitter">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Display Order</label>
+
+                        <input type="number"
+                               wire:model.live="order">
+                    </div>
+
+
+                    <div class="form-group cv-full">
+                        <label>Biography</label>
+
+                        <textarea wire:model.live="bio"
+                                  rows="4"></textarea>
+
+                        <div class="char-count">
+                            {{ strlen($bio) }} / 500
                         </div>
+                    </div>
 
-                        {{-- ===== RIGHT: PHOTO ===== --}}
-                        <div class="col-lg-4">
-                            <div class="card border">
-                                <div class="card-header bg-light py-2">
-                                    <h6 class="mb-0 small fw-bold text-uppercase text-muted">
-                                        <i class="ti ti-photo me-1"></i> Profile Photo
-                                    </h6>
-                                </div>
-                                <div class="card-body text-center">
 
-                                    {{-- Preview --}}
-                                    <div class="mb-3">
-                                        @if($photo)
-                                            <img src="{{ $photo->temporaryUrl() }}"
-                                                 class="rounded-circle object-fit-cover"
-                                                 style="width:110px;height:110px;border:3px solid #e2e8f0"
-                                                 alt="Preview">
-                                            <div class="text-success small mt-1">
-                                                <i class="ti ti-check"></i> New photo selected
-                                            </div>
-                                        @elseif($existingPhoto && ! $removePhoto)
-                                            <img src="{{ asset('storage/' . $existingPhoto) }}"
-                                                 class="rounded-circle object-fit-cover"
-                                                 style="width:110px;height:110px;border:3px solid #e2e8f0"
-                                                 alt="Current photo">
-                                            <div class="text-muted small mt-1">Current photo</div>
-                                        @else
-                                            <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center"
-                                                 style="width:110px;height:110px;border:3px solid #e2e8f0">
-                                                <i class="ti ti-user text-muted" style="font-size:2.5rem"></i>
-                                            </div>
-                                            <div class="text-muted small mt-1">No photo</div>
-                                        @endif
-                                    </div>
+                    <div class="form-group cv-full">
+                        <label>Profile Photo</label>
 
-                                    <label class="btn btn-outline-primary btn-sm w-100 mb-2">
-                                        <i class="ti ti-upload me-1"></i>
-                                        {{ $photo ? 'Change' : ($existingPhoto ? 'Replace' : 'Upload Photo') }}
-                                        <input type="file"
-                                               wire:model="photo"
-                                               accept="image/jpg,image/jpeg,image/png,image/webp"
-                                               class="d-none">
-                                    </label>
+                        <input type="file"
+                               wire:model="photo">
 
-                                    @if($existingPhoto && ! $photo)
-                                        <div class="form-check text-start mt-2">
-                                            <input type="checkbox"
-                                                   wire:model.live="removePhoto"
-                                                   class="form-check-input"
-                                                   id="modal_removePhoto">
-                                            <label class="form-check-label small text-danger" for="modal_removePhoto">
-                                                Remove current photo
-                                            </label>
-                                        </div>
-                                    @endif
+                        @error('photo')
+                        <span class="fe">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-                                    @error('photo')
-                                        <div class="text-danger small mt-2">{{ $message }}</div>
-                                    @enderror
 
-                                    <div wire:loading wire:target="photo" class="mt-2">
-                                        <div class="progress" style="height:4px">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
-                                        </div>
-                                        <div class="small text-muted mt-1">Uploading…</div>
-                                    </div>
+                    <div class="form-group cv-full">
 
-                                    <p class="text-muted small mt-3 mb-0">
-                                        JPG, PNG, WebP — max 2 MB<br>Recommended: 400×400 px
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
 
-                    </div>{{-- /row --}}
-                </div>{{-- /modal-body --}}
+                            <input type="checkbox"
+                                   wire:model.live="is_active">
 
-                {{-- Footer --}}
-                <div class="modal-footer">
-                    <button type="button" wire:click="closeModal" class="btn btn-secondary">
-                        <i class="ti ti-x me-1"></i> Cancel
-                    </button>
-                    <button type="button"
-                            wire:click="save"
-                            wire:loading.attr="disabled"
-                            class="btn btn-primary">
-                        <span wire:loading wire:target="save"
-                              class="spinner-border spinner-border-sm me-1"></span>
-                        <span wire:loading.remove wire:target="save">
-                            <i class="ti ti-device-floppy me-1"></i>
-                        </span>
-                        {{ $isEdit ? 'Update Member' : 'Create Member' }}
-                    </button>
+                            Active Member
+
+                        </label>
+
+                    </div>
+
                 </div>
 
             </div>
+
+
+            <div class="modal-foot">
+
+                <button wire:click="closeModal"
+                        class="btn-cancel">
+                    Cancel
+                </button>
+
+                <button wire:click="save"
+                        class="btn-save">
+
+                    {{ $isEdit ? '💾 Update Member' : '✨ Create Member' }}
+
+                </button>
+
+            </div>
+
         </div>
+
     </div>
-    @endif
 
-
-    {{-- =====================================================================
-         DELETE CONFIRM MODAL
-    ====================================================================== --}}
-    @if($confirmingDeleteId)
-        <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,.5)">
-            <div class="modal-dialog modal-dialog-centered modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header border-0 pb-0">
-                        <h5 class="modal-title text-danger">
-                            <i class="ti ti-trash me-1"></i> Move to Trash?
-                        </h5>
-                    </div>
-                    <div class="modal-body small text-muted">
-                        This member will be soft-deleted. You can restore them later from the
-                        <strong>Trashed</strong> filter.
-                    </div>
-                    <div class="modal-footer border-0 pt-0">
-                        <button wire:click="cancelDelete" class="btn btn-sm btn-secondary">
-                            Cancel
-                        </button>
-                        <button wire:click="delete" class="btn btn-sm btn-danger">
-                            <span wire:loading wire:target="delete"
-                                  class="spinner-border spinner-border-sm me-1"></span>
-                            Yes, Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-
-
-    {{-- =====================================================================
-         RESTORE CONFIRM MODAL
-    ====================================================================== --}}
-    @if($confirmingRestoreId)
-        <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,.5)">
-            <div class="modal-dialog modal-dialog-centered modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header border-0 pb-0">
-                        <h5 class="modal-title text-success">
-                            <i class="ti ti-refresh me-1"></i> Restore Member?
-                        </h5>
-                    </div>
-                    <div class="modal-body small text-muted">
-                        This team member will be restored and become visible again.
-                    </div>
-                    <div class="modal-footer border-0 pt-0">
-                        <button wire:click="cancelRestore" class="btn btn-sm btn-secondary">
-                            Cancel
-                        </button>
-                        <button wire:click="restore" class="btn btn-sm btn-success">
-                            <span wire:loading wire:target="restore"
-                                  class="spinner-border spinner-border-sm me-1"></span>
-                            Yes, Restore
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
     @endif
 
 </div>
+
+
+
+<style>
+
+:root{
+    --navy:#0d1560;
+    --blue:#2952e3;
+    --blue-light:#e8edfd;
+    --red:#cc2222;
+    --red-dark:#a81a1a;
+    --border:#e2e8f0;
+    --text:#555;
+    --light:#f5f7fb;
+    --radius:10px;
+    --shadow:0 2px 12px rgba(0,0,0,.07);
+}
+
+.cv-wrap{
+    padding:32px 28px;
+    max-width:1200px;
+}
+
+.cv-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+    gap:14px;
+}
+
+.cv-header h1{
+    font-size:28px;
+    color:var(--navy);
+    margin-bottom:5px;
+}
+
+.cv-header p{
+    font-size:14px;
+    color:var(--text);
+}
+
+.btn-preview{
+    padding:10px 18px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    text-decoration:none;
+    color:var(--navy);
+    background:#fff;
+    font-size:13px;
+    font-weight:600;
+}
+
+.btn-add-sm{
+    padding:10px 18px;
+    border:none;
+    border-radius:var(--radius);
+    background:var(--navy);
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.cv-card{
+    background:#fff;
+    border-radius:14px;
+    border:1px solid var(--border);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+}
+
+.cv-card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 24px;
+    border-bottom:1px solid var(--border);
+    background:var(--light);
+}
+
+.cv-card-header h2{
+    font-size:16px;
+    color:var(--navy);
+    margin-bottom:4px;
+}
+
+.cv-card-header p{
+    font-size:13px;
+    color:var(--text);
+}
+
+.cv-grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.form-group label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--navy);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:11px 14px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    font-size:14px;
+}
+
+.cv-cards-preview{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-bottom:24px;
+}
+
+.cvp-card{
+    background:#fff;
+    border-radius:14px;
+    border:1px solid var(--border);
+    padding:18px;
+    display:flex;
+    gap:16px;
+    box-shadow:var(--shadow);
+}
+
+.cvp-photo{
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.cvp-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.cvp-role{
+    font-size:12px;
+    color:var(--red);
+    font-weight:700;
+    margin:5px 0;
+}
+
+.cvp-body p{
+    font-size:13px;
+    color:var(--text);
+    line-height:1.6;
+}
+
+.cv-list{
+    padding:16px;
+}
+
+.cv-list-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:16px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    margin-bottom:12px;
+}
+
+.cv-photo{
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.cv-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.cv-list-content{
+    flex:1;
+}
+
+.tm-role{
+    display:block;
+    color:var(--red);
+    font-size:12px;
+    font-weight:700;
+    margin-top:5px;
+}
+
+.cv-list-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.cv-toggle,
+.cv-btn-edit,
+.cv-btn-del{
+    border:none;
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.cv-toggle.on{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.cv-toggle.off{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.cv-btn-edit{
+    background:var(--blue-light);
+    color:var(--blue);
+}
+
+.cv-btn-del{
+    background:#fee2e2;
+    color:var(--red);
+}
+
+.modal-backdrop{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+    padding:20px;
+}
+
+.modal-box{
+    width:100%;
+    max-width:900px;
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+.modal-head{
+    padding:20px 24px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.modal-body{
+    padding:24px;
+}
+
+.modal-foot{
+    padding:18px 24px;
+    border-top:1px solid var(--border);
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+}
+
+.btn-save{
+    padding:10px 20px;
+    background:var(--red);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-weight:600;
+}
+
+.btn-cancel{
+    padding:10px 20px;
+    background:var(--light);
+    border:none;
+    border-radius:10px;
+}
+
+.value-modal-preview{
+    display:flex;
+    gap:18px;
+    background:var(--light);
+    padding:18px;
+    border-radius:14px;
+    margin-bottom:24px;
+}
+
+.tm-modal-photo{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    overflow:hidden;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:40px;
+}
+
+.tm-modal-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+@media(max-width:768px){
+
+    .cv-grid-2{
+        grid-template-columns:1fr;
+    }
+
+    .cv-cards-preview{
+        grid-template-columns:1fr;
+    }
+
+    .cv-list-item{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+}
+
+</style>
