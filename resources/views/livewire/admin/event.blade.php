@@ -2,27 +2,23 @@
 
 <div class="ev-wrap" x-data>
 
-    {{-- ── Header ───────────────────────────────────────────────────── --}}
+    {{-- ── Header ─────────────────────────────────────────────────── --}}
     <div class="ev-header">
         <div>
             <h1>Events</h1>
             <p>Manage the "Upcoming &amp; Recent Events" section — featured event, date, location and more</p>
         </div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <a href="#" target="_blank" class="btn-preview">
-                👁 Preview Section →
-            </a>
-            <button wire:click="openCreate" class="btn-add-sm">
-                + Add Event
-            </button>
+            <a href="#" target="_blank" class="btn-preview">👁 Preview Section →</a>
+            <button wire:click="openCreate" class="btn-add-sm">+ Add Event</button>
         </div>
     </div>
 
     {{-- ── Flash ───────────────────────────────────────────────────── --}}
     @if (session('success'))
         <div class="alert alert-success"
-             x-data="{ show: true }" x-show="show"
-             x-init="setTimeout(() => show = false, 3000)"
+             x-data="{ show:true }" x-show="show"
+             x-init="setTimeout(()=>show=false,3000)"
              x-transition:leave="transition ease-in duration-300"
              x-transition:leave-end="opacity-0">
             ✅ {{ session('success') }}
@@ -31,16 +27,12 @@
 
     {{-- ── Tabs ────────────────────────────────────────────────────── --}}
     <div class="ev-tabs">
-        <button wire:click="setTab('section')"
-                class="ev-tab {{ $activeTab === 'section' ? 'active' : '' }}">
+        <button wire:click="setTab('section')" class="ev-tab {{ $activeTab==='section'?'active':'' }}">
             <span>⚙️</span> Section Settings
         </button>
-        <button wire:click="setTab('events')"
-                class="ev-tab {{ $activeTab === 'events' ? 'active' : '' }}">
+        <button wire:click="setTab('events')" class="ev-tab {{ $activeTab==='events'?'active':'' }}">
             <span>📅</span> Events
-            <span class="tab-count">
-                {{ $events->where('is_active', true)->count() }}/{{ $events->count() }}
-            </span>
+            <span class="tab-count">{{ $events->where('is_active',true)->count() }}/{{ $events->count() }}</span>
         </button>
     </div>
 
@@ -50,7 +42,6 @@
     ════════════════════════════════════════════════════ --}}
     @if ($activeTab === 'section')
 
-    {{-- Live Preview --}}
     <div class="section-preview">
         <div class="sp-label-row">
             <span class="sp-line"></span>
@@ -59,9 +50,8 @@
         </div>
         <div class="sp-title">{{ $title ?: 'Upcoming & Recent Events' }}</div>
         <div class="sp-layout">
-            {{-- Featured left --}}
-            @php $featured = $events->where('is_active', true)->where('is_featured', true)->first()
-                          ?? $events->where('is_active', true)->first(); @endphp
+            @php $featured = $events->where('is_active',true)->where('is_featured',true)->first()
+                          ?? $events->where('is_active',true)->first(); @endphp
             <div class="sp-featured">
                 <div class="sp-feat-img">
                     @if($featured && $featured->image)
@@ -75,7 +65,7 @@
                         <span class="sp-badge-upcoming">{{ strtoupper($featured->status) }}</span>
                         <div class="sp-feat-title">{{ $featured->title }}</div>
                         <div class="sp-feat-meta">
-                            @if($featured->event_date)<div>📅 {{ \Carbon\Carbon::parse($featured->event_date)->format('d M Y') }}</div>@endif
+                            @if($featured->event_date)<div>📅 {{ $featured->event_date->format('d M Y') }}</div>@endif
                             @if($featured->location)<div>📍 {{ $featured->location }}</div>@endif
                             @if($featured->organizer)<div>ℹ️ {{ $featured->organizer }}</div>@endif
                         </div>
@@ -84,21 +74,20 @@
                     @endif
                 </div>
             </div>
-            {{-- List right --}}
             <div class="sp-list">
-                @foreach($events->where('is_active', true)->take(4) as $ev)
+                @foreach($events->where('is_active',true)->take(4) as $ev)
                 <div class="sp-ev-row">
                     <div class="sp-date-box">
-                        <span class="sp-day">{{ \Carbon\Carbon::parse($ev->event_date)->format('d') }}</span>
-                        <span class="sp-mon">{{ \Carbon\Carbon::parse($ev->event_date)->format('M') }}</span>
+                        <span class="sp-day">{{ $ev->event_date->format('d') }}</span>
+                        <span class="sp-mon">{{ $ev->event_date->format('M') }}</span>
                     </div>
                     <div class="sp-ev-info">
                         <strong>{{ $ev->title }}</strong>
-                        <p>{{ Str::limit($ev->description, 70) }}</p>
+                        <p>{{ Str::limit($ev->description,70) }}</p>
                     </div>
                 </div>
                 @endforeach
-                @if($events->where('is_active', true)->isEmpty())
+                @if($events->where('is_active',true)->isEmpty())
                     <div class="sp-list-empty">No active events yet</div>
                 @endif
             </div>
@@ -107,20 +96,16 @@
 
     <form wire:submit="saveSection">
         <div class="ev-card">
-            <div class="ev-card-header">
-                <h2>Section Text</h2>
-            </div>
+            <div class="ev-card-header"><h2>Section Text</h2></div>
             <div class="ev-grid-2" style="padding:24px">
                 <div class="form-group">
                     <label>Section Label</label>
-                    <input type="text" wire:model.live="section_label"
-                           placeholder="LATEST EVENTS">
+                    <input type="text" wire:model.live="section_label" placeholder="LATEST EVENTS">
                     @error('section_label') <span class="fe">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group">
                     <label>Title <span class="req">*</span></label>
-                    <input type="text" wire:model.live="title"
-                           placeholder="Upcoming &amp; Recent Events">
+                    <input type="text" wire:model.live="title" placeholder="Upcoming &amp; Recent Events">
                     @error('title') <span class="fe">{{ $message }}</span> @enderror
                 </div>
             </div>
@@ -140,12 +125,10 @@
     ════════════════════════════════════════════════════ --}}
     @if ($activeTab === 'events')
 
-    {{-- ── Filters ── --}}
     <div class="ev-filters">
         <div class="ev-search">
             <span class="search-icon">🔍</span>
-            <input type="text"
-                   wire:model.live.debounce.300ms="search"
+            <input type="text" wire:model.live.debounce.300ms="search"
                    placeholder="Search title, location, organizer…">
         </div>
         <div class="filter-group">
@@ -169,7 +152,7 @@
         </div>
     </div>
 
-    {{-- ── Live Preview (matches frontend) ── --}}
+    {{-- Live frontend preview --}}
     <div class="frontend-preview">
         <div class="fp-label-row">
             <span class="fp-line"></span>
@@ -177,11 +160,9 @@
             <span class="fp-line"></span>
         </div>
         <div class="fp-title">{{ $title ?: 'Upcoming & Recent Events' }}</div>
-
         <div class="fp-layout">
-            {{-- Featured --}}
-            @php $featured = $events->where('is_active', true)->where('is_featured', true)->first()
-                          ?? $events->where('is_active', true)->first(); @endphp
+            @php $featured = $events->where('is_active',true)->where('is_featured',true)->first()
+                          ?? $events->where('is_active',true)->first(); @endphp
             <div class="fp-featured">
                 <div class="fp-feat-img">
                     @if($featured && $featured->image)
@@ -196,22 +177,13 @@
                         <div class="fp-feat-title">{{ $featured->title }}</div>
                         <div class="fp-feat-meta">
                             @if($featured->event_date)
-                            <div class="fp-meta-row">
-                                <span>📅</span>
-                                <span>{{ \Carbon\Carbon::parse($featured->event_date)->format('d M Y') }}</span>
-                            </div>
+                            <div class="fp-meta-row"><span>📅</span><span>{{ $featured->event_date->format('d M Y') }}</span></div>
                             @endif
                             @if($featured->location)
-                            <div class="fp-meta-row">
-                                <span>📍</span>
-                                <span>{{ $featured->location }}</span>
-                            </div>
+                            <div class="fp-meta-row"><span>📍</span><span>{{ $featured->location }}</span></div>
                             @endif
                             @if($featured->organizer)
-                            <div class="fp-meta-row">
-                                <span>ℹ️</span>
-                                <span>{{ $featured->organizer }}</span>
-                            </div>
+                            <div class="fp-meta-row"><span>ℹ️</span><span>{{ $featured->organizer }}</span></div>
                             @endif
                         </div>
                         <a href="#" class="fp-learn-more">Learn More</a>
@@ -220,29 +192,27 @@
                     @endif
                 </div>
             </div>
-
-            {{-- List --}}
             <div class="fp-list">
-                @foreach($events->where('is_active', true)->take(4) as $ev)
+                @foreach($events->where('is_active',true)->take(4) as $ev)
                 <div class="fp-ev-row">
                     <div class="fp-date-box">
-                        <span class="fp-day">{{ \Carbon\Carbon::parse($ev->event_date)->format('d') }}</span>
-                        <span class="fp-mon">{{ \Carbon\Carbon::parse($ev->event_date)->format('M') }}</span>
+                        <span class="fp-day">{{ $ev->event_date->format('d') }}</span>
+                        <span class="fp-mon">{{ $ev->event_date->format('M') }}</span>
                     </div>
                     <div class="fp-ev-info">
                         <strong>{{ $ev->title }}</strong>
-                        <p>{{ Str::limit($ev->description, 90) }}</p>
+                        <p>{{ Str::limit($ev->description,90) }}</p>
                     </div>
                 </div>
                 @endforeach
-                @if($events->where('is_active', true)->isEmpty())
+                @if($events->where('is_active',true)->isEmpty())
                     <div class="fp-list-empty">No active events · Add events below ↓</div>
                 @endif
             </div>
         </div>
     </div>
 
-    {{-- ── Events Table List ── --}}
+    {{-- List --}}
     <div class="ev-card">
         <div class="ev-card-header">
             <div>
@@ -250,12 +220,9 @@
                 <p>Click ✏️ to edit · toggle visibility · mark as featured</p>
             </div>
         </div>
-
         <div class="ev-list">
             @forelse ($events as $event)
-            <div class="ev-list-item {{ $event->trashed() ? 'is-trashed' : '' }}">
-
-                {{-- Thumbnail --}}
+            <div class="ev-list-item {{ $event->trashed()?'is-trashed':'' }}">
                 <div class="ev-thumb">
                     @if($event->image)
                         <img src="{{ asset('storage/'.$event->image) }}" alt="{{ $event->title }}">
@@ -263,57 +230,40 @@
                         <div class="ev-thumb-empty">📅</div>
                     @endif
                 </div>
-
-                {{-- Date box --}}
                 <div class="ev-date-mini">
-                    <span class="edm-day">{{ \Carbon\Carbon::parse($event->event_date)->format('d') }}</span>
-                    <span class="edm-mon">{{ \Carbon\Carbon::parse($event->event_date)->format('M') }}</span>
-                    <span class="edm-year">{{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}</span>
+                    <span class="edm-day">{{ $event->event_date->format('d') }}</span>
+                    <span class="edm-mon">{{ $event->event_date->format('M') }}</span>
+                    <span class="edm-year">{{ $event->event_date->format('Y') }}</span>
                 </div>
-
-                {{-- Info --}}
                 <div class="ev-list-content">
                     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px">
                         <strong>{{ $event->title }}</strong>
-                        @if($event->is_featured)
-                            <span class="ev-badge-featured">⭐ Featured</span>
-                        @endif
+                        @if($event->is_featured) <span class="ev-badge-featured">⭐ Featured</span> @endif
                         <span class="ev-status-badge {{ $event->status }}">{{ ucfirst($event->status) }}</span>
+                        @if($event->long_description) <span class="ev-has-detail">📄 Detail page</span> @endif
                     </div>
-                    @if($event->location)
-                        <span class="ev-meta">📍 {{ $event->location }}</span>
-                    @endif
-                    @if($event->organizer)
-                        <span class="ev-meta">ℹ️ {{ $event->organizer }}</span>
-                    @endif
+                    @if($event->location)  <span class="ev-meta">📍 {{ $event->location }}</span>  @endif
+                    @if($event->organizer) <span class="ev-meta">ℹ️ {{ $event->organizer }}</span> @endif
                 </div>
-
-                {{-- Actions --}}
                 <div class="ev-list-actions">
                     @if(! $event->trashed())
+                       
                         <button wire:click="toggleFeatured({{ $event->id }})"
-                                class="ev-btn-feat {{ $event->is_featured ? 'active' : '' }}"
-                                title="{{ $event->is_featured ? 'Remove featured' : 'Set as featured' }}">
-                            {{ $event->is_featured ? '⭐' : '☆' }}
+                                class="ev-btn-feat {{ $event->is_featured?'active':'' }}"
+                                title="{{ $event->is_featured?'Remove featured':'Set as featured' }}">
+                            {{ $event->is_featured?'⭐':'☆' }}
                         </button>
                         <button wire:click="toggleActive({{ $event->id }})"
-                                class="ev-toggle {{ $event->is_active ? 'on' : 'off' }}">
-                            {{ $event->is_active ? '✅ Visible' : '⭕ Hidden' }}
+                                class="ev-toggle {{ $event->is_active?'on':'off' }}">
+                            {{ $event->is_active?'✅ Visible':'⭕ Hidden' }}
                         </button>
-                        <button wire:click="openEdit({{ $event->id }})" class="ev-btn-edit">
-                            ✏️ Edit
-                        </button>
-                        <button wire:click="confirmDelete({{ $event->id }})" class="ev-btn-del">
-                            🗑 Delete
-                        </button>
+                        <button wire:click="openEdit({{ $event->id }})" class="ev-btn-edit">✏️ Edit</button>
+                        <button wire:click="confirmDelete({{ $event->id }})" class="ev-btn-del">🗑 Delete</button>
                     @else
                         <span class="ev-trashed-badge">🗑 Trashed</span>
-                        <button wire:click="confirmRestore({{ $event->id }})" class="ev-btn-restore">
-                            ↩ Restore
-                        </button>
+                        <button wire:click="confirmRestore({{ $event->id }})" class="ev-btn-restore">↩ Restore</button>
                     @endif
                 </div>
-
             </div>
             @empty
             <div class="ev-empty">
@@ -322,7 +272,6 @@
             </div>
             @endforelse
         </div>
-
         @if($events instanceof \Illuminate\Pagination\LengthAwarePaginator && $events->hasPages())
             <div class="ev-pagination">
                 <span class="ev-page-info">
@@ -339,9 +288,7 @@
          CREATE / EDIT MODAL
     ════════════════════════════════════════════════════ --}}
     @if ($showModal)
-    <div class="modal-backdrop"
-         x-data
-         x-on:keydown.escape.window="$wire.closeModal()">
+    <div class="modal-backdrop" x-data x-on:keydown.escape.window="$wire.closeModal()">
         <div class="modal-box modal-xl" @click.outside="$wire.closeModal()">
 
             <div class="modal-head">
@@ -351,9 +298,8 @@
 
             <div class="modal-body">
 
-                {{-- ── Live mini-preview (matches frontend event row) ── --}}
+                {{-- Live mini-preview --}}
                 <div class="event-modal-preview">
-                    {{-- Left: featured card preview --}}
                     <div class="emp-featured">
                         <div class="emp-img">
                             @if($photo)
@@ -374,7 +320,6 @@
                             </div>
                         </div>
                     </div>
-                    {{-- Right: list row preview --}}
                     <div class="emp-row-preview">
                         <div class="emp-date-box">
                             <span class="emp-day">{{ $event_date ? \Carbon\Carbon::parse($event_date)->format('d') : '01' }}</span>
@@ -382,157 +327,197 @@
                         </div>
                         <div class="emp-row-info">
                             <strong>{{ $ev_title ?: 'Event Title' }}</strong>
-                            <p>{{ $description ? Str::limit($description, 90) : 'Description will appear here.' }}</p>
+                            <p>{{ $description ? Str::limit($description,90) : 'Short description will appear here.' }}</p>
                         </div>
                     </div>
                 </div>
 
+                {{-- ── MODAL INNER TABS ── --}}
+                <div class="modal-inner-tabs">
+                    <button type="button" onclick="switchModalTab(this,'mtab-basic')"   class="mit active">📋 Basic Info</button>
+                    <button type="button" onclick="switchModalTab(this,'mtab-detail')"  class="mit">📄 Detail Page</button>
+                    <button type="button" onclick="switchModalTab(this,'mtab-photo')"   class="mit">🖼️ Image</button>
+                </div>
+
                 <form wire:submit="save" id="eventForm">
-                    <div class="ev-grid-2">
 
-                        {{-- Title --}}
-                        <div class="form-group ev-full">
-                            <label>Event Title <span class="req">*</span></label>
-                            <input type="text" wire:model.live="ev_title"
-                                   placeholder="e.g. Free IELTS Seminar – Bhairahawa">
-                            @error('ev_title') <span class="fe">{{ $message }}</span> @enderror
-                        </div>
+                    {{-- ── TAB: Basic Info ── --}}
+                    <div id="mtab-basic" class="mtab-panel active">
+                        <div class="ev-grid-2">
 
-                        {{-- Date --}}
-                        <div class="form-group">
-                            <label>Event Date <span class="req">*</span></label>
-                            <input type="date" wire:model.live="event_date">
-                            @error('event_date') <span class="fe">{{ $message }}</span> @enderror
-                        </div>
-
-                        {{-- End Date --}}
-                        <div class="form-group">
-                            <label>End Date <span class="form-optional">(optional, for multi-day)</span></label>
-                            <input type="date" wire:model="event_end_date">
-                            @error('event_end_date') <span class="fe">{{ $message }}</span> @enderror
-                        </div>
-
-                        {{-- Time --}}
-                        <div class="form-group">
-                            <label>Start Time <span class="form-optional">(optional)</span></label>
-                            <input type="time" wire:model="event_time">
-                            @error('event_time') <span class="fe">{{ $message }}</span> @enderror
-                        </div>
-
-                        {{-- Status --}}
-                        <div class="form-group">
-                            <label>Status <span class="req">*</span></label>
-                            <select wire:model.live="status">
-                                <option value="upcoming">Upcoming</option>
-                                <option value="ongoing">Ongoing</option>
-                                <option value="past">Past</option>
-                            </select>
-                            @error('status') <span class="fe">{{ $message }}</span> @enderror
-                        </div>
-
-                        {{-- Location --}}
-                        <div class="form-group">
-                            <label>Location <span class="form-optional">(optional)</span></label>
-                            <input type="text" wire:model.live="location"
-                                   placeholder="e.g. Bharatpur, Chitwan">
-                            @error('location') <span class="fe">{{ $message }}</span> @enderror
-                        </div>
-
-                        {{-- Organizer --}}
-                        <div class="form-group">
-                            <label>Organizer <span class="form-optional">(optional)</span></label>
-                            <input type="text" wire:model.live="organizer"
-                                   placeholder="e.g. To be Announced, Jovem Pvt.">
-                            @error('organizer') <span class="fe">{{ $message }}</span> @enderror
-                        </div>
-
-                        {{-- Learn More URL --}}
-                        <div class="form-group">
-                            <label>Learn More URL <span class="form-optional">(optional)</span></label>
-                            <input type="url" wire:model="learn_more_url"
-                                   placeholder="https://…">
-                            @error('learn_more_url') <span class="fe">{{ $message }}</span> @enderror
-                        </div>
-
-                        {{-- Description --}}
-                        <div class="form-group ev-full">
-                            <label>Short Description</label>
-                            <textarea wire:model.live="description" rows="3" maxlength="400"
-                                      placeholder="Walk-in seminar on IELTS preparation strategies and band score targets."></textarea>
-                            <div style="display:flex;justify-content:space-between;margin-top:4px">
-                                @error('description')
-                                    <span class="fe">{{ $message }}</span>
-                                @else
-                                    <span></span>
-                                @enderror
-                                <span class="char-count">{{ strlen($description) }} / 400</span>
+                            <div class="form-group ev-full">
+                                <label>Event Title <span class="req">*</span></label>
+                                <input type="text" wire:model.live="ev_title"
+                                       placeholder="e.g. Free IELTS Seminar – Bhairahawa">
+                                @error('ev_title') <span class="fe">{{ $message }}</span> @enderror
                             </div>
-                        </div>
 
-                        {{-- Toggles row --}}
-                        <div class="form-group ev-full">
-                            <div class="ev-toggles-row">
-                                <label class="toggle-label">
-                                    <div class="toggle-switch">
-                                        <input type="checkbox" wire:model="is_active" id="modal_is_active">
-                                        <span class="toggle-slider"></span>
-                                    </div>
-                                    <span>Visible on website</span>
+                            <div class="form-group ev-full">
+                                <label>Short Description
+                                    <span class="form-hint-inline">— shown in event list rows (max 400 chars)</span>
                                 </label>
-                                <label class="toggle-label">
-                                    <div class="toggle-switch">
-                                        <input type="checkbox" wire:model="is_featured" id="modal_is_featured">
-                                        <span class="toggle-slider toggle-gold"></span>
-                                    </div>
-                                    <span>⭐ Featured event <span class="form-optional">(shown as the big card)</span></span>
-                                </label>
+                                <textarea wire:model.live="description" rows="2" maxlength="400"
+                                          placeholder="Walk-in seminar on IELTS preparation strategies and band score targets."></textarea>
+                                <div style="display:flex;justify-content:space-between;margin-top:4px">
+                                    @error('description') <span class="fe">{{ $message }}</span> @else <span></span> @enderror
+                                    <span class="char-count">{{ strlen($description) }} / 400</span>
+                                </div>
                             </div>
-                        </div>
 
+                            <div class="form-group">
+                                <label>Event Date <span class="req">*</span></label>
+                                <input type="date" wire:model.live="event_date">
+                                @error('event_date') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label>End Date <span class="form-optional">(optional, for multi-day)</span></label>
+                                <input type="date" wire:model="event_end_date">
+                                @error('event_end_date') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label>Start Time <span class="form-optional">(optional)</span></label>
+                                <input type="time" wire:model="event_time">
+                                @error('event_time') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label>Status <span class="req">*</span></label>
+                                <select wire:model.live="status">
+                                    <option value="upcoming">Upcoming</option>
+                                    <option value="ongoing">Ongoing</option>
+                                    <option value="past">Past</option>
+                                </select>
+                                @error('status') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label>Location <span class="form-optional">(optional)</span></label>
+                                <input type="text" wire:model.live="location"
+                                       placeholder="e.g. Bharatpur, Chitwan">
+                                @error('location') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label>Organizer <span class="form-optional">(optional)</span></label>
+                                <input type="text" wire:model.live="organizer"
+                                       placeholder="e.g. HASU Educational Consultancy">
+                                @error('organizer') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="form-group ev-full">
+                                <label>Learn More / Register URL <span class="form-optional">(optional)</span></label>
+                                <input type="url" wire:model="learn_more_url"
+                                       placeholder="https://…">
+                                @error('learn_more_url') <span class="fe">{{ $message }}</span> @enderror
+                                <small class="form-hint">If blank, the "Learn More" button links to the Contact page.</small>
+                            </div>
+
+                            <div class="form-group ev-full">
+                                <div class="ev-toggles-row">
+                                    <label class="toggle-label">
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" wire:model="is_active" id="modal_is_active">
+                                            <span class="toggle-slider"></span>
+                                        </div>
+                                        <span>Visible on website</span>
+                                    </label>
+                                    <label class="toggle-label">
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" wire:model="is_featured" id="modal_is_featured">
+                                            <span class="toggle-slider toggle-gold"></span>
+                                        </div>
+                                        <span>⭐ Featured event <span class="form-optional">(big card on left)</span></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
 
-                    {{-- Photo --}}
-                    <div class="ev-section-divider">
-                        <span>Event Image</span>
-                    </div>
-                    <div class="ev-grid-2">
-                        <div class="form-group">
-                            <label>Upload Image</label>
-                            <div class="upload-box" x-data="{ drag:false }"
-                                 @dragover.prevent="drag=true"
-                                 @dragleave.prevent="drag=false"
-                                 @drop.prevent="drag=false"
-                                 :class="{ 'dragging': drag }">
-                                @if($photo)
-                                    <img src="{{ $photo->temporaryUrl() }}" class="upload-prev">
-                                @elseif($existingPhoto && !$removePhoto)
-                                    <img src="{{ asset('storage/'.$existingPhoto) }}" class="upload-prev">
-                                @else
-                                    <div class="upload-ph">
-                                        <span>🖼️</span>
-                                        <small>Click or drag · JPG PNG WebP · Max 3MB<br>Recommended: 800×500 px</small>
-                                    </div>
-                                @endif
-                                <input type="file" wire:model="photo" accept="image/*" class="upload-input">
-                            </div>
-                            @error('photo') <span class="fe">{{ $message }}</span> @enderror
-                            <div wire:loading wire:target="photo" class="uploading">Uploading…</div>
-                            @if($existingPhoto && !$photo)
-                                <label class="remove-photo-check">
-                                    <input type="checkbox" wire:model.live="removePhoto">
-                                    <span>Remove current image</span>
-                                </label>
-                            @endif
+                    {{-- ── TAB: Detail Page ── --}}
+                    <div id="mtab-detail" class="mtab-panel">
+
+                        <div class="detail-info-banner">
+                            📄 This content appears on the <strong>event detail page</strong>
+                            when visitors click "Learn More". Leave blank to skip the detail page.
                         </div>
-                        <div class="photo-tips">
-                            <strong>Image Tips</strong>
+
+                        <div class="form-group" style="margin-bottom:20px">
+                            <label>Long Description
+                                <span class="form-hint-inline">— supports basic HTML tags</span>
+                            </label>
+                            <textarea wire:model="long_description" rows="10"
+                                      placeholder="&lt;p&gt;Write a full description of the event here…&lt;/p&gt;&#10;&lt;p&gt;You can use &lt;strong&gt;bold&lt;/strong&gt;, &lt;em&gt;italic&lt;/em&gt;, and &lt;ul&gt;&lt;li&gt;lists&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;"></textarea>
+                            @error('long_description') <span class="fe">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label>Highlights / What to Expect
+                                <span class="form-hint-inline">— one bullet point per line</span>
+                            </label>
+                            <textarea wire:model="highlights_raw" rows="6"
+                                      placeholder="Free entry for all students&#10;Bring your academic transcripts&#10;JLPT N4+ level recommended&#10;Seats are limited — arrive early"></textarea>
+                            @error('highlights_raw') <span class="fe">{{ $message }}</span> @enderror
+                            <small class="form-hint">
+                                Each line becomes one ✓ bullet on the detail page under "What to Expect".
+                            </small>
+                        </div>
+
+                        {{-- Preview of highlights --}}
+                        @if(trim($highlights_raw))
+                        <div class="highlights-preview">
+                            <strong>Preview — What to Expect</strong>
                             <ul>
-                                <li>Used as the featured event card image</li>
-                                <li>Landscape / wide format works best</li>
-                                <li>Recommended: 800×500 px or wider</li>
-                                <li>JPG, PNG, or WebP format</li>
-                                <li>Max file size: 3 MB</li>
+                                @foreach(array_filter(array_map('trim', explode("\n", $highlights_raw))) as $hl)
+                                <li>{{ $hl }}</li>
+                                @endforeach
                             </ul>
+                        </div>
+                        @endif
+
+                    </div>
+
+                    {{-- ── TAB: Image ── --}}
+                    <div id="mtab-photo" class="mtab-panel">
+                        <div class="ev-grid-2">
+                            <div class="form-group">
+                                <label>Event Image</label>
+                                <div class="upload-box" x-data="{ drag:false }"
+                                     @dragover.prevent="drag=true" @dragleave.prevent="drag=false"
+                                     @drop.prevent="drag=false" :class="{ 'dragging': drag }">
+                                    @if($photo)
+                                        <img src="{{ $photo->temporaryUrl() }}" class="upload-prev">
+                                    @elseif($existingPhoto && !$removePhoto)
+                                        <img src="{{ asset('storage/'.$existingPhoto) }}" class="upload-prev">
+                                    @else
+                                        <div class="upload-ph">
+                                            <span>🖼️</span>
+                                            <small>Click or drag · JPG PNG WebP · Max 3MB<br>Recommended: 800×500 px</small>
+                                        </div>
+                                    @endif
+                                    <input type="file" wire:model="photo" accept="image/*" class="upload-input">
+                                </div>
+                                @error('photo') <span class="fe">{{ $message }}</span> @enderror
+                                <div wire:loading wire:target="photo" class="uploading">Uploading…</div>
+                                @if($existingPhoto && !$photo)
+                                    <label class="remove-photo-check">
+                                        <input type="checkbox" wire:model.live="removePhoto">
+                                        <span>Remove current image</span>
+                                    </label>
+                                @endif
+                            </div>
+                            <div class="photo-tips">
+                                <strong>Image Tips</strong>
+                                <ul>
+                                    <li>Used as the featured event card image</li>
+                                    <li>Also shown as the hero image on the detail page</li>
+                                    <li>Landscape / wide format works best</li>
+                                    <li>Recommended: 800×500 px or wider</li>
+                                    <li>JPG, PNG, or WebP · Max 3 MB</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
@@ -555,9 +540,7 @@
     @endif
 
 
-    {{-- ════════════════════════════════════════════════════
-         DELETE CONFIRM MODAL
-    ════════════════════════════════════════════════════ --}}
+    {{-- DELETE CONFIRM --}}
     @if ($confirmingDeleteId)
     <div class="modal-backdrop">
         <div class="modal-box modal-xs">
@@ -582,10 +565,7 @@
     </div>
     @endif
 
-
-    {{-- ════════════════════════════════════════════════════
-         RESTORE CONFIRM MODAL
-    ════════════════════════════════════════════════════ --}}
+    {{-- RESTORE CONFIRM --}}
     @if ($confirmingRestoreId)
     <div class="modal-backdrop">
         <div class="modal-box modal-xs">
@@ -612,6 +592,15 @@
 
 </div>
 
+<script>
+function switchModalTab(btn, id) {
+    document.querySelectorAll('.mit').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.mtab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(id).classList.add('active');
+}
+</script>
+
 <style>
 :root {
     --navy:#0d1560;--blue:#2952e3;--blue-light:#e8edfd;
@@ -637,33 +626,36 @@
 .ev-tab.active { color:var(--navy);border-bottom-color:var(--red);background:#fff;font-weight:600; }
 .tab-count { font-size:11px;font-weight:700;background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:20px; }
 
-/* ── Section Preview (Tab 1) ── */
-.section-preview {
-    background:#fff;border:1px solid var(--border);border-radius:14px;
-    padding:28px 24px;margin-bottom:24px;
-}
-.sp-label-row { display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px; }
-.sp-line      { display:block;width:32px;height:2px;background:var(--red); }
-.sp-label     { font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red); }
-.sp-title     { font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);text-align:center;margin-bottom:20px; }
-.sp-layout    { display:grid;grid-template-columns:1fr 1fr;gap:20px; }
-.sp-featured  { border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;box-shadow:var(--shadow); }
-.sp-feat-img  { background:#1a1a2e;min-height:120px;display:flex;align-items:center;justify-content:center;overflow:hidden; }
-.sp-feat-img img { width:100%;height:120px;object-fit:cover; }
-.sp-feat-img-empty { font-size:32px;color:rgba(255,255,255,.3); }
-.sp-feat-body { padding:14px 16px; }
-.sp-badge-upcoming { display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:var(--red);color:#fff;margin-bottom:8px; }
-.sp-feat-title { font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px; }
-.sp-feat-meta  { display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--text); }
-.sp-feat-empty { font-size:12px;color:#94a3b8;text-align:center;padding:12px; }
-.sp-list       { display:flex;flex-direction:column;gap:10px; }
-.sp-ev-row     { display:flex;align-items:center;gap:12px;background:var(--light);border-radius:8px;padding:10px 14px;border-left:3px solid var(--navy); }
-.sp-date-box   { background:var(--navy);color:#fff;border-radius:6px;padding:6px 10px;text-align:center;flex-shrink:0;min-width:40px; }
-.sp-day        { display:block;font-size:16px;font-weight:700;line-height:1; }
-.sp-mon        { display:block;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:.8; }
-.sp-ev-info strong { display:block;font-size:12px;font-weight:700;color:var(--navy);margin-bottom:2px; }
-.sp-ev-info p  { font-size:11px;color:var(--text);margin:0;line-height:1.3; }
-.sp-list-empty { font-size:12px;color:#94a3b8;text-align:center;padding:12px; }
+/* ── Section Preview ── */
+.section-preview,.frontend-preview { background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 24px;margin-bottom:24px; }
+.sp-label-row,.fp-label-row { display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px; }
+.sp-line,.fp-line { display:block;width:32px;height:2px;background:var(--red); }
+.sp-label,.fp-label { font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red); }
+.sp-title,.fp-title { font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);text-align:center;margin-bottom:20px; }
+.sp-layout,.fp-layout { display:grid;grid-template-columns:1fr 1.2fr;gap:20px; }
+.sp-featured,.fp-featured { border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;box-shadow:var(--shadow); }
+.sp-feat-img,.fp-feat-img { background:#1a1a2e;min-height:120px;display:flex;align-items:center;justify-content:center;overflow:hidden; }
+.sp-feat-img img,.fp-feat-img img { width:100%;height:130px;object-fit:cover; }
+.sp-feat-img-empty,.fp-feat-img-empty { font-size:32px;color:rgba(255,255,255,.3); }
+.fp-feat-img-empty small { display:block;font-size:11px;color:rgba(255,255,255,.25);margin-top:4px;text-align:center; }
+.sp-feat-body,.fp-feat-body { padding:14px 16px; }
+.sp-badge-upcoming,.fp-badge { display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:8px; }
+.sp-badge-upcoming,.fp-badge.upcoming { background:var(--red);color:#fff; }
+.fp-badge.ongoing { background:var(--blue);color:#fff; }
+.fp-badge.past    { background:#64748b;color:#fff; }
+.sp-feat-title,.fp-feat-title { font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.3; }
+.sp-feat-meta,.fp-feat-meta  { display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--text);margin-bottom:10px; }
+.fp-meta-row { display:flex;align-items:center;gap:6px; }
+.fp-learn-more { display:inline-block;background:var(--blue);color:#fff;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none; }
+.sp-feat-empty,.fp-feat-empty { font-size:12px;color:#94a3b8;text-align:center;padding:12px; }
+.sp-list,.fp-list { display:flex;flex-direction:column;gap:10px; }
+.sp-ev-row,.fp-ev-row { display:flex;align-items:center;gap:12px;background:var(--light);border-radius:8px;padding:12px 14px;border-left:4px solid var(--navy); }
+.sp-date-box,.fp-date-box { background:var(--navy);color:#fff;border-radius:6px;padding:7px 10px;text-align:center;flex-shrink:0;min-width:44px; }
+.sp-day,.fp-day { display:block;font-size:18px;font-weight:700;line-height:1; }
+.sp-mon,.fp-mon { display:block;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;opacity:.8;margin-top:2px; }
+.sp-ev-info strong,.fp-ev-info strong { display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px; }
+.sp-ev-info p,.fp-ev-info p { font-size:11px;color:var(--text);margin:0;line-height:1.3; }
+.sp-list-empty,.fp-list-empty { padding:16px;color:#94a3b8;font-size:12px;text-align:center; }
 
 /* ── Filters ── */
 .ev-filters { display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px; }
@@ -674,44 +666,6 @@
 .filter-group { display:flex;gap:8px;flex-wrap:wrap; }
 .filter-group select { padding:9px 28px 9px 13px;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:13px;color:#333;outline:none;cursor:pointer;background:#fff;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%23555'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center; }
 .filter-group select:focus { border-color:var(--blue); }
-
-/* ── Frontend Preview (Tab 2) ── */
-.frontend-preview {
-    background:#fff;border:1px solid var(--border);border-radius:14px;
-    padding:28px 24px;margin-bottom:24px;
-}
-.fp-label-row { display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px; }
-.fp-line  { display:block;width:32px;height:2px;background:var(--red); }
-.fp-label { font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red); }
-.fp-title { font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);text-align:center;margin-bottom:22px; }
-.fp-layout { display:grid;grid-template-columns:1fr 1.2fr;gap:24px; }
-
-/* Featured card — matches the big left card exactly */
-.fp-featured { border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow); }
-.fp-feat-img  { background:#1a1a2e;min-height:160px;display:flex;align-items:center;justify-content:center;overflow:hidden; }
-.fp-feat-img img { width:100%;height:160px;object-fit:cover; }
-.fp-feat-img-empty { font-size:36px;color:rgba(255,255,255,.25);text-align:center; }
-.fp-feat-img-empty small { display:block;font-size:11px;color:rgba(255,255,255,.25);margin-top:6px; }
-.fp-feat-body { padding:18px 20px; }
-.fp-badge { display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:10px; }
-.fp-badge.upcoming { background:var(--red);color:#fff; }
-.fp-badge.ongoing  { background:#2952e3;color:#fff; }
-.fp-badge.past     { background:#64748b;color:#fff; }
-.fp-feat-title { font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:12px;line-height:1.3; }
-.fp-feat-meta  { display:flex;flex-direction:column;gap:6px;margin-bottom:14px; }
-.fp-meta-row   { display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text); }
-.fp-learn-more { display:inline-block;background:var(--blue);color:#fff;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none; }
-.fp-feat-empty { font-size:13px;color:#94a3b8;text-align:center;padding:20px; }
-
-/* Event list rows — matches exactly the right side */
-.fp-list       { display:flex;flex-direction:column;gap:10px; }
-.fp-ev-row     { display:flex;align-items:center;gap:14px;background:var(--light);border-radius:8px;padding:14px 16px;border-left:4px solid var(--navy); }
-.fp-date-box   { background:var(--navy);color:#fff;border-radius:6px;padding:8px 12px;text-align:center;flex-shrink:0;min-width:50px; }
-.fp-day        { display:block;font-size:20px;font-weight:700;line-height:1; }
-.fp-mon        { display:block;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;opacity:.8;margin-top:2px; }
-.fp-ev-info strong { display:block;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:3px; }
-.fp-ev-info p  { font-size:12px;color:var(--text);margin:0;line-height:1.4; }
-.fp-list-empty { padding:20px;color:#94a3b8;font-size:13px;text-align:center; }
 
 /* ── Cards ── */
 .ev-card { background:#fff;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden; }
@@ -725,31 +679,26 @@
 .ev-list-item { display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-top:10px;transition:box-shadow .2s; }
 .ev-list-item:hover { box-shadow:0 3px 14px rgba(0,0,0,.08); }
 .ev-list-item.is-trashed { opacity:.6;background:#fff5f5; }
-
-/* Thumb */
 .ev-thumb { width:72px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0;border:1px solid var(--border);background:var(--light);display:flex;align-items:center;justify-content:center; }
 .ev-thumb img { width:100%;height:100%;object-fit:cover; }
 .ev-thumb-empty { font-size:20px; }
-
-/* Date mini box */
 .ev-date-mini { background:var(--navy);color:#fff;border-radius:6px;padding:6px 10px;text-align:center;flex-shrink:0;min-width:44px; }
 .edm-day  { display:block;font-size:18px;font-weight:700;line-height:1; }
 .edm-mon  { display:block;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:.8; }
 .edm-year { display:block;font-size:9px;opacity:.6;margin-top:1px; }
-
 .ev-list-content { flex:1;min-width:0; }
 .ev-list-content strong { font-size:14px;font-weight:700;color:var(--navy); }
 .ev-meta { display:inline-block;font-size:11px;color:#94a3b8;margin-right:12px;margin-top:3px; }
-
-/* Status badges */
 .ev-status-badge { font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 9px;border-radius:20px; }
 .ev-status-badge.upcoming { background:#e0f2fe;color:#0369a1; }
 .ev-status-badge.ongoing  { background:#dcfce7;color:#166534; }
 .ev-status-badge.past     { background:#f1f5f9;color:#64748b; }
 .ev-badge-featured { font-size:10px;font-weight:700;background:#fef9c3;color:#854d0e;padding:2px 8px;border-radius:20px;border:1px solid #fde68a; }
-.ev-trashed-badge  { font-size:12px;color:#991b1b;background:#fee2e2;padding:4px 10px;border-radius:20px;font-weight:600; }
-
+.ev-has-detail { font-size:10px;font-weight:600;background:#ede9fe;color:#6d28d9;padding:2px 8px;border-radius:20px; }
+.ev-trashed-badge { font-size:12px;color:#991b1b;background:#fee2e2;padding:4px 10px;border-radius:20px;font-weight:600; }
 .ev-list-actions { display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap; }
+.ev-btn-view { font-size:14px;width:32px;height:32px;border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;background:#fff;transition:all .2s;display:flex;align-items:center;justify-content:center;text-decoration:none; }
+.ev-btn-view:hover { background:var(--blue-light);border-color:var(--blue); }
 .ev-btn-feat { font-size:16px;width:32px;height:32px;border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;background:#fff;transition:all .2s;display:flex;align-items:center;justify-content:center; }
 .ev-btn-feat:hover,.ev-btn-feat.active { background:#fef9c3;border-color:#fde68a; }
 .ev-toggle { font-size:12px;padding:5px 12px;border:none;border-radius:20px;cursor:pointer;font-weight:600;white-space:nowrap;transition:all .2s; }
@@ -778,15 +727,10 @@
 .ev-full   { grid-column:1/-1; }
 .form-group { display:flex;flex-direction:column;gap:6px; }
 .form-group label { font-size:13px;font-weight:600;color:var(--navy); }
-.form-optional { font-size:12px;font-weight:400;color:#94a3b8; }
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="url"],
-.form-group input[type="date"],
-.form-group input[type="time"],
-.form-group input[type="number"],
-.form-group textarea,
-.form-group select {
+.form-optional,.form-hint-inline { font-size:12px;font-weight:400;color:#94a3b8; }
+.form-group input,
+.form-group select,
+.form-group textarea {
     width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:var(--radius);
     font-family:'DM Sans',sans-serif;font-size:14px;color:#333;
     outline:none;transition:border-color .2s,box-shadow .2s;resize:vertical;background:#fff;
@@ -796,8 +740,6 @@
 .form-hint { font-size:11px;color:#94a3b8; }
 .fe        { font-size:12px;color:var(--red); }
 .char-count{ font-size:11px;color:#94a3b8; }
-.ev-section-divider { display:flex;align-items:center;gap:12px;margin:20px 0 14px;font-size:12px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1px; }
-.ev-section-divider::before,.ev-section-divider::after { content:'';flex:1;height:1px;background:var(--border); }
 
 /* Toggles row */
 .ev-toggles-row { display:flex;gap:28px;flex-wrap:wrap; }
@@ -807,8 +749,9 @@
 .toggle-slider { position:absolute;inset:0;background:#cbd5e1;border-radius:24px;transition:.3s;cursor:pointer; }
 .toggle-slider::before { content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.3s; }
 .toggle-switch input:checked + .toggle-slider { background:var(--blue); }
-.toggle-switch input:checked + .toggle-gold { background:var(--gold); }
-.toggle-switch input:checked + .toggle-slider::before { transform:translateX(20px); }
+.toggle-switch input:checked + .toggle-gold  { background:var(--gold); }
+.toggle-switch input:checked + .toggle-slider::before,
+.toggle-switch input:checked + .toggle-gold::before { transform:translateX(20px); }
 
 /* Upload */
 .upload-box { border:2px dashed var(--border);border-radius:var(--radius);min-height:120px;position:relative;cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:border-color .2s,background .2s; }
@@ -816,7 +759,7 @@
 .upload-ph  { display:flex;flex-direction:column;align-items:center;gap:6px;color:#94a3b8;text-align:center;padding:12px; }
 .upload-ph span { font-size:28px; }
 .upload-ph small{ font-size:12px;line-height:1.5; }
-.upload-prev { max-width:100%;max-height:140px;object-fit:contain;padding:8px; }
+.upload-prev { max-width:100%;max-height:150px;object-fit:contain;padding:8px; }
 .upload-input { position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%; }
 .uploading    { font-size:12px;color:var(--blue);margin-top:4px; }
 .remove-photo-check { display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:var(--red);cursor:pointer; }
@@ -825,21 +768,35 @@
 .photo-tips ul { margin:0;padding-left:16px;display:flex;flex-direction:column;gap:6px; }
 .photo-tips li { font-size:12px;color:var(--text);line-height:1.4; }
 
-/* ── Event Modal Preview ── */
+/* Modal inner tabs */
+.modal-inner-tabs { display:flex;gap:3px;border-bottom:2px solid var(--border);margin-bottom:22px; }
+.mit { padding:8px 18px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;border-radius:6px 6px 0 0;transition:all .2s; }
+.mit:hover { color:var(--navy);background:var(--light); }
+.mit.active { color:var(--navy);border-bottom-color:var(--blue);font-weight:600;background:#fff; }
+.mtab-panel { display:none; }
+.mtab-panel.active { display:block; }
+
+/* Detail page tab */
+.detail-info-banner { background:var(--blue-light);border:1px solid #c7d7fa;border-radius:var(--radius);padding:12px 16px;font-size:13px;color:var(--navy);margin-bottom:18px;line-height:1.5; }
+.highlights-preview { background:var(--light);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-top:14px; }
+.highlights-preview strong { display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px; }
+.highlights-preview ul { padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px; }
+.highlights-preview ul li { display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text); }
+.highlights-preview ul li::before { content:'✓';display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px; }
+
+/* Event modal preview */
 .event-modal-preview { display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px; }
-/* Left: featured card */
 .emp-featured { border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--shadow); }
-.emp-img     { background:#1a1a2e;min-height:110px;display:flex;align-items:center;justify-content:center;overflow:hidden; }
+.emp-img { background:#1a1a2e;min-height:110px;display:flex;align-items:center;justify-content:center;overflow:hidden; }
 .emp-img img { width:100%;height:110px;object-fit:cover; }
 .emp-img-empty { font-size:28px;color:rgba(255,255,255,.2); }
-.emp-body    { padding:14px 16px; }
-.emp-badge   { display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:8px; }
+.emp-body { padding:14px 16px; }
+.emp-badge { display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:8px; }
 .emp-badge.upcoming { background:var(--red);color:#fff; }
 .emp-badge.ongoing  { background:var(--blue);color:#fff; }
 .emp-badge.past     { background:#64748b;color:#fff; }
-.emp-title   { font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.3; }
-.emp-meta    { display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--text); }
-/* Right: list row preview */
+.emp-title { font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.3; }
+.emp-meta  { display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--text); }
 .emp-row-preview { display:flex;align-items:center;gap:12px;background:var(--light);border-radius:8px;padding:14px;border-left:4px solid var(--navy);align-self:center; }
 .emp-date-box { background:var(--navy);color:#fff;border-radius:6px;padding:8px 12px;text-align:center;flex-shrink:0;min-width:48px; }
 .emp-day  { display:block;font-size:20px;font-weight:700;line-height:1; }
@@ -851,7 +808,7 @@
 .modal-backdrop { position:fixed;inset:0;z-index:1000;background:rgba(13,21,96,.45);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:20px; }
 .modal-box { background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.25);width:100%;display:flex;flex-direction:column;max-height:90vh;overflow:hidden; }
 .modal-xs  { max-width:360px; }
-.modal-xl  { max-width:820px; }
+.modal-xl  { max-width:860px; }
 .modal-head { display:flex;justify-content:space-between;align-items:center;padding:18px 24px 14px;border-bottom:1px solid var(--border);flex-shrink:0; }
 .modal-head h2 { font-family:'Playfair Display',serif;font-size:18px;color:var(--navy); }
 .modal-close { background:none;border:none;font-size:18px;cursor:pointer;color:#94a3b8;padding:2px 6px;border-radius:4px;transition:all .2s; }
@@ -877,9 +834,11 @@
     .event-modal-preview { grid-template-columns:1fr; }
     .ev-list-item { flex-wrap:wrap; }
     .ev-list-actions { width:100%; }
+    .modal-inner-tabs { overflow-x:auto; }
 }
 @media(max-width:480px){
     .filter-group { flex-wrap:wrap; }
     .ev-toggles-row { flex-direction:column;gap:14px; }
+    .mit { white-space:nowrap;font-size:12px;padding:8px 12px; }
 }
 </style>

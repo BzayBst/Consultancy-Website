@@ -15,49 +15,46 @@ class Event extends Component
     /* ------------------------------------------------------------------ */
     /*  Tab                                                                 */
     /* ------------------------------------------------------------------ */
-
-    public string $activeTab = 'events';   // 'section' | 'events'
+    public string $activeTab = 'events';
 
     /* ------------------------------------------------------------------ */
     /*  Section settings                                                    */
     /* ------------------------------------------------------------------ */
-
     public string $section_label = '';
     public string $title         = '';
 
     /* ------------------------------------------------------------------ */
     /*  List / filter state                                                 */
     /* ------------------------------------------------------------------ */
-
     public string $search       = '';
-    public string $filterStatus = '';   // '' | 'upcoming' | 'ongoing' | 'past'
-    public string $filterActive = '';   // '' | 'active' | 'inactive' | 'trashed'
+    public string $filterStatus = '';
+    public string $filterActive = '';
     public int    $perPage      = 10;
 
     /* ------------------------------------------------------------------ */
     /*  Modal state                                                         */
     /* ------------------------------------------------------------------ */
-
-    public bool  $showModal  = false;
-    public bool  $isEdit     = false;
-    public ?int  $editingId  = null;
+    public bool  $showModal = false;
+    public bool  $isEdit    = false;
+    public ?int  $editingId = null;
 
     /* ------------------------------------------------------------------ */
-    /*  Form fields                                                         */
+    /*  Form fields — basic                                                 */
     /* ------------------------------------------------------------------ */
-
-    public string  $ev_title       = '';
-    public string  $description    = '';
-    public string  $event_date     = '';
-    public string  $event_end_date = '';
-    public string  $event_time     = '';
-    public string  $status         = 'upcoming';
-    public string  $location       = '';
-    public string  $organizer      = '';
-    public string  $learn_more_url = '';
-    public bool    $is_active      = true;
-    public bool    $is_featured    = false;
-    public bool    $removePhoto    = false;
+    public string $ev_title        = '';
+    public string $description     = '';
+    public string $long_description= '';
+    public string $highlights_raw  = ''; // newline-separated list → stored as JSON array
+    public string $event_date      = '';
+    public string $event_end_date  = '';
+    public string $event_time      = '';
+    public string $status          = 'upcoming';
+    public string $location        = '';
+    public string $organizer       = '';
+    public string $learn_more_url  = '';
+    public bool   $is_active       = true;
+    public bool   $is_featured     = false;
+    public bool   $removePhoto     = false;
 
     public        $photo;
     public ?string $existingPhoto  = null;
@@ -65,14 +62,12 @@ class Event extends Component
     /* ------------------------------------------------------------------ */
     /*  Confirm modals                                                      */
     /* ------------------------------------------------------------------ */
-
     public ?int $confirmingDeleteId  = null;
     public ?int $confirmingRestoreId = null;
 
     /* ------------------------------------------------------------------ */
     /*  Query string                                                        */
     /* ------------------------------------------------------------------ */
-
     protected $queryString = [
         'search'       => ['except' => ''],
         'filterStatus' => ['except' => ''],
@@ -83,25 +78,23 @@ class Event extends Component
     /* ------------------------------------------------------------------ */
     /*  Validation                                                          */
     /* ------------------------------------------------------------------ */
-
     protected function rules(): array
     {
         return [
-            'ev_title'       => ['required', 'string', 'max:200'],
-            'description'    => ['nullable', 'string', 'max:400'],
-            'event_date'     => ['required', 'date'],
-            'event_end_date' => ['nullable', 'date', 'after_or_equal:event_date'],
-            'event_time'     => ['nullable', 'string'],
-            'status'         => ['required', 'in:upcoming,ongoing,past'],
-            'location'       => ['nullable', 'string', 'max:200'],
-            'organizer'      => ['nullable', 'string', 'max:200'],
-            'learn_more_url' => ['nullable', 'url', 'max:500'],
-            'is_active'      => ['boolean'],
-            'is_featured'    => ['boolean'],
-            'photo'          => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
-            // Section settings
-            'section_label'  => ['nullable', 'string', 'max:60'],
-            'title'          => ['required_if:activeTab,section', 'string', 'max:150'],
+            'ev_title'         => ['required', 'string', 'max:200'],
+            'description'      => ['nullable', 'string', 'max:400'],
+            'long_description' => ['nullable', 'string'],
+            'highlights_raw'   => ['nullable', 'string'],
+            'event_date'       => ['required', 'date'],
+            'event_end_date'   => ['nullable', 'date', 'after_or_equal:event_date'],
+            'event_time'       => ['nullable', 'string'],
+            'status'           => ['required', 'in:upcoming,ongoing,past'],
+            'location'         => ['nullable', 'string', 'max:200'],
+            'organizer'        => ['nullable', 'string', 'max:200'],
+            'learn_more_url'   => ['nullable', 'url', 'max:500'],
+            'is_active'        => ['boolean'],
+            'is_featured'      => ['boolean'],
+            'photo'            => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
         ];
     }
 
@@ -114,31 +107,25 @@ class Event extends Component
     /* ------------------------------------------------------------------ */
     /*  Lifecycle                                                           */
     /* ------------------------------------------------------------------ */
-
     public function mount(EventService $service): void
     {
-        $settings = $service->getSectionSettings();
+        $settings            = $service->getSectionSettings();
         $this->section_label = $settings['section_label'] ?? '';
         $this->title         = $settings['title']         ?? '';
     }
 
-    public function updatingSearch(): void   { $this->resetPage(); }
+    public function updatingSearch(): void       { $this->resetPage(); }
     public function updatingFilterStatus(): void { $this->resetPage(); }
     public function updatingFilterActive(): void { $this->resetPage(); }
 
     /* ------------------------------------------------------------------ */
     /*  Tabs                                                                */
     /* ------------------------------------------------------------------ */
-
-    public function setTab(string $tab): void
-    {
-        $this->activeTab = $tab;
-    }
+    public function setTab(string $tab): void { $this->activeTab = $tab; }
 
     /* ------------------------------------------------------------------ */
-    /*  Section settings save                                               */
+    /*  Section settings                                                    */
     /* ------------------------------------------------------------------ */
-
     public function saveSection(EventService $service): void
     {
         $this->validate([
@@ -157,7 +144,6 @@ class Event extends Component
     /* ------------------------------------------------------------------ */
     /*  Modal open / close                                                  */
     /* ------------------------------------------------------------------ */
-
     public function openCreate(): void
     {
         $this->resetForm();
@@ -174,19 +160,23 @@ class Event extends Component
 
         $event = $service->find($id);
 
-        $this->ev_title       = $event->title;
-        $this->description    = $event->description    ?? '';
-        $this->event_date     = $event->event_date     ? $event->event_date->format('Y-m-d') : '';
-        $this->event_end_date = $event->event_end_date ? $event->event_end_date->format('Y-m-d') : '';
-        $this->event_time     = $event->event_time     ?? '';
-        $this->status         = $event->status         ?? 'upcoming';
-        $this->location       = $event->location       ?? '';
-        $this->organizer      = $event->organizer      ?? '';
-        $this->learn_more_url = $event->learn_more_url ?? '';
-        $this->is_active      = $event->is_active;
-        $this->is_featured    = $event->is_featured;
-        $this->existingPhoto  = $event->image;
-        $this->showModal      = true;
+        $this->ev_title         = $event->title;
+        $this->description      = $event->description      ?? '';
+        $this->long_description = $event->long_description ?? '';
+        $this->highlights_raw   = $event->highlights
+                                    ? implode("\n", $event->highlights)
+                                    : '';
+        $this->event_date       = $event->event_date       ? $event->event_date->format('Y-m-d')     : '';
+        $this->event_end_date   = $event->event_end_date   ? $event->event_end_date->format('Y-m-d') : '';
+        $this->event_time       = $event->event_time       ?? '';
+        $this->status           = $event->status           ?? 'upcoming';
+        $this->location         = $event->location         ?? '';
+        $this->organizer        = $event->organizer        ?? '';
+        $this->learn_more_url   = $event->learn_more_url   ?? '';
+        $this->is_active        = $event->is_active;
+        $this->is_featured      = $event->is_featured;
+        $this->existingPhoto    = $event->image;
+        $this->showModal        = true;
     }
 
     public function closeModal(): void
@@ -196,38 +186,33 @@ class Event extends Component
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Save                                                                */
+    /*  Save (create + update)                                              */
     /* ------------------------------------------------------------------ */
-
     public function save(EventService $service): void
     {
-        $this->validate([
-            'ev_title'       => ['required', 'string', 'max:200'],
-            'description'    => ['nullable', 'string', 'max:400'],
-            'event_date'     => ['required', 'date'],
-            'event_end_date' => ['nullable', 'date', 'after_or_equal:event_date'],
-            'event_time'     => ['nullable', 'string'],
-            'status'         => ['required', 'in:upcoming,ongoing,past'],
-            'location'       => ['nullable', 'string', 'max:200'],
-            'organizer'      => ['nullable', 'string', 'max:200'],
-            'learn_more_url' => ['nullable', 'url', 'max:500'],
-            'is_active'      => ['boolean'],
-            'is_featured'    => ['boolean'],
-            'photo'          => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
-        ]);
+        $this->validate();
+
+        // Convert newline-separated highlights into array
+        $highlights = collect(explode("\n", $this->highlights_raw))
+            ->map(fn ($l) => trim($l))
+            ->filter()
+            ->values()
+            ->toArray();
 
         $data = [
-            'title'          => $this->ev_title,
-            'description'    => $this->description    ?: null,
-            'event_date'     => $this->event_date,
-            'event_end_date' => $this->event_end_date ?: null,
-            'event_time'     => $this->event_time     ?: null,
-            'status'         => $this->status,
-            'location'       => $this->location       ?: null,
-            'organizer'      => $this->organizer       ?: null,
-            'learn_more_url' => $this->learn_more_url ?: null,
-            'is_active'      => $this->is_active,
-            'is_featured'    => $this->is_featured,
+            'title'            => $this->ev_title,
+            'description'      => $this->description      ?: null,
+            'long_description' => $this->long_description ?: null,
+            'highlights'       => $highlights ?: null,
+            'event_date'       => $this->event_date,
+            'event_end_date'   => $this->event_end_date   ?: null,
+            'event_time'       => $this->event_time       ?: null,
+            'status'           => $this->status,
+            'location'         => $this->location         ?: null,
+            'organizer'        => $this->organizer        ?: null,
+            'learn_more_url'   => $this->learn_more_url   ?: null,
+            'is_active'        => $this->is_active,
+            'is_featured'      => $this->is_featured,
         ];
 
         if ($this->isEdit) {
@@ -243,9 +228,8 @@ class Event extends Component
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Toggle                                                              */
+    /*  Toggles                                                             */
     /* ------------------------------------------------------------------ */
-
     public function toggleActive(int $id, EventService $service): void
     {
         $event = $service->find($id);
@@ -255,7 +239,6 @@ class Event extends Component
     public function toggleFeatured(int $id, EventService $service): void
     {
         $event = $service->find($id);
-        // Only one featured at a time — unset others first
         if (! $event->is_featured) {
             EventModel::where('is_featured', true)->update(['is_featured' => false]);
         }
@@ -265,7 +248,6 @@ class Event extends Component
     /* ------------------------------------------------------------------ */
     /*  Delete                                                              */
     /* ------------------------------------------------------------------ */
-
     public function confirmDelete(int $id): void  { $this->confirmingDeleteId = $id; }
     public function cancelDelete(): void          { $this->confirmingDeleteId = null; }
 
@@ -280,7 +262,6 @@ class Event extends Component
     /* ------------------------------------------------------------------ */
     /*  Restore                                                             */
     /* ------------------------------------------------------------------ */
-
     public function confirmRestore(int $id): void { $this->confirmingRestoreId = $id; }
     public function cancelRestore(): void         { $this->confirmingRestoreId = null; }
 
@@ -295,31 +276,31 @@ class Event extends Component
     /* ------------------------------------------------------------------ */
     /*  Helpers                                                             */
     /* ------------------------------------------------------------------ */
-
     private function resetForm(): void
     {
         $this->resetValidation();
-        $this->editingId      = null;
-        $this->ev_title       = '';
-        $this->description    = '';
-        $this->event_date     = '';
-        $this->event_end_date = '';
-        $this->event_time     = '';
-        $this->status         = 'upcoming';
-        $this->location       = '';
-        $this->organizer      = '';
-        $this->learn_more_url = '';
-        $this->is_active      = true;
-        $this->is_featured    = false;
-        $this->removePhoto    = false;
-        $this->existingPhoto  = null;
-        $this->photo          = null;
+        $this->editingId        = null;
+        $this->ev_title         = '';
+        $this->description      = '';
+        $this->long_description = '';
+        $this->highlights_raw   = '';
+        $this->event_date       = '';
+        $this->event_end_date   = '';
+        $this->event_time       = '';
+        $this->status           = 'upcoming';
+        $this->location         = '';
+        $this->organizer        = '';
+        $this->learn_more_url   = '';
+        $this->is_active        = true;
+        $this->is_featured      = false;
+        $this->removePhoto      = false;
+        $this->existingPhoto    = null;
+        $this->photo            = null;
     }
 
     /* ------------------------------------------------------------------ */
     /*  Render                                                              */
     /* ------------------------------------------------------------------ */
-
     public function render(EventService $service)
     {
         return view('livewire.admin.event', [
