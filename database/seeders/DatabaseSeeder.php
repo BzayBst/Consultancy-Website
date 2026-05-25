@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Livewire\Admin\About\CoreValues;
 use App\Livewire\Admin\Settings\SiteSettings;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -21,7 +22,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             HeroSlideSeeder::class,
-            SettingSeeder::class
+            SettingSeeder::class,
+            CoreValuesSeeder::class,
+            WhyUsSeeder::class
         ]);
     }
 }
