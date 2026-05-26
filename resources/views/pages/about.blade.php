@@ -1,94 +1,108 @@
 {{-- resources/views/pages/about.blade.php --}}
 @extends('layouts.app', ['active' => 'about'])
 
-@section('title', 'About Us – ' . setting('general_site_name', 'HASU Educational Consultancy'))
-@section('meta_description', 'Learn about HASU Educational Consultancy — our story, mission, vision, team, and why thousands of Nepali students trust us.')
+@section('title', 'About Us - ' . setting('general_site_name', 'HASU Educational Consultancy'))
+@section('meta_description', 'Learn about HASU Educational Consultancy, our story, mission, vision, team, and why thousands of Nepali students trust us.')
 
 @section('content')
 
+@php
+    $aboutMilestones = collect($aboutMilestones ?? []);
+    $aboutStats = collect($aboutStats ?? []);
+    $aboutMvCards = collect($aboutMvCards ?? []);
+    $teams = collect($teams ?? []);
+
+    $storyImage = $aboutStory?->image_path
+        ? (str_starts_with($aboutStory->image_path, 'http')
+            ? $aboutStory->image_path
+            : Storage::url($aboutStory->image_path))
+        : 'https://images.unsplash.com/photo-1434030216411-0b793f4b6175?w=700&q=80';
+@endphp
+
 {{-- ===== PAGE HERO ===== --}}
 <x-frontend.page-hero
-    badge="Est. {{ setting('general_established', '2013') }} · Chitwan, Nepal"
-    title="Your Trusted Partner in"
-    highlight="Global Education"
-    subtitle="For over a decade, HASU Educational Consultancy has been guiding Nepali students toward world-class academic opportunities and brighter futures."
+    badge="{{ $aboutHero?->badge ?: 'Est. ' . setting('general_established', '2013') . ' - Chitwan, Nepal' }}"
+    title="{{ $aboutHero?->title ?: 'Your Trusted Partner in' }}"
+    highlight="{{ $aboutHero?->highlight ?: 'Global Education' }}"
+    subtitle="{{ $aboutHero?->subtitle ?: 'For over a decade, HASU Educational Consultancy has been guiding Nepali students toward world-class academic opportunities and brighter futures.' }}"
     :breadcrumbs="[['label'=>'Home','url'=> route('home')], ['label'=>'About Us']]"
 />
-
-
 
 {{-- ===== OUR STORY ===== --}}
 <section id="story" class="section">
   <div class="container">
     <div class="story-inner">
       <div class="story-img-wrap fade-up">
-        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b6175?w=700&q=80" alt="HASU Office">
+        <img src="{{ $storyImage }}" alt="{{ $aboutStory?->section_title ?: 'HASU Office' }}">
+
         <div class="story-img-float">
-          <div class="icon">🏆</div>
+          <div class="icon">{{ $aboutStory?->float_badge_icon ?: '*' }}</div>
           <div>
-            <strong>Best Consultancy</strong>
-            <small>Bhairahawa Region, 2023</small>
+            <strong>{{ $aboutStory?->float_badge_title ?: 'Best Consultancy' }}</strong>
+            <small>{{ $aboutStory?->float_badge_subtitle ?: 'Bhairahawa Region, 2023' }}</small>
           </div>
         </div>
+
         <div class="story-exp-badge">
-          <strong>{{ date('Y') - (int)setting('general_established','2013') }}</strong>
+          <strong>{{ date('Y') - (int) setting('general_established', '2013') }}</strong>
           <span>Years of Excellence</span>
         </div>
       </div>
+
       <div class="story-content fade-up" style="transition-delay:.15s">
-        <div class="section-label">Our Story</div>
-        <h2 class="section-title">How HASU Began Its Journey</h2>
-        <p>Founded in {{ setting('general_established','2013') }} and officially registered in 2015, HASU International Educational Pvt. Ltd. started with a single mission: make world-class education accessible to every Nepali student. From a small office in Bhairahawa, we have grown into one of the most trusted educational consultancies in the region.</p>
-        <p>We specialize in guiding students to top universities in Japan, Australia, Canada, the USA, UK, and New Zealand — providing comprehensive support from counseling and application to visa processing and pre-departure orientation.</p>
+        <div class="section-label">{{ $aboutStory?->section_label ?: 'Our Story' }}</div>
+        <h2 class="section-title">{{ $aboutStory?->section_title ?: 'How HASU Began Its Journey' }}</h2>
+
+        @if($aboutStory?->paragraph_1)
+          <p>{{ $aboutStory->paragraph_1 }}</p>
+        @endif
+
+        @if($aboutStory?->paragraph_2)
+          <p>{{ $aboutStory->paragraph_2 }}</p>
+        @endif
+
+        @if(! $aboutStory?->paragraph_1 && ! $aboutStory?->paragraph_2)
+          <p>Founded in {{ setting('general_established', '2013') }}, HASU International Educational Pvt. Ltd. started with a mission to make world-class education accessible to every Nepali student.</p>
+        @endif
+
+        @if($aboutMilestones->isNotEmpty())
         <div class="story-milestones">
-          @php
-          $milestones = [
-            ['year'=>'2013','title'=>'Founded by Educational Visionaries','desc'=>'HASU was established with a vision to bridge the gap between Nepali students and global universities.'],
-            ['year'=>'2015','title'=>'Officially Registered & Expanded','desc'=>'Received official government registration and expanded services to include Japanese language training.'],
-            ['year'=>'2018','title'=>'Launched HASU Language Institute','desc'=>'Opened a dedicated language training center for NAT, JLPT, J-TEST, IELTS, and PTE preparation.'],
-            ['year'=>'2024','title'=>'5,000+ Students Successfully Placed','desc'=>'Crossed the milestone of placing over five thousand students in universities across 10+ countries.'],
-          ];
-          @endphp
-          @foreach($milestones as $m)
+          @foreach($aboutMilestones as $m)
           <div class="milestone">
-            <div class="milestone-year">{{ $m['year'] }}</div>
+            <div class="milestone-year">{{ $m->year }}</div>
             <div class="milestone-info">
-              <h5>{{ $m['title'] }}</h5>
-              <p>{{ $m['desc'] }}</p>
+              <h5>{{ $m->title }}</h5>
+              @if($m->description)
+                <p>{{ $m->description }}</p>
+              @endif
             </div>
           </div>
           @endforeach
         </div>
+        @endif
       </div>
     </div>
   </div>
 </section>
 
 {{-- ===== STATS ROW ===== --}}
+@if($aboutStats->isNotEmpty())
 <section id="stats">
   <div class="container" style="padding:0 24px">
     <div class="stats-inner">
-      <div class="stat-item fade-up">
-        <span class="stat-num">{{ date('Y') - (int)setting('general_established','2013') }}<span class="accent">+</span></span>
-        <span class="stat-label">Years of Experience</span>
+      @foreach($aboutStats as $i => $stat)
+      <div class="stat-item fade-up" @if($i > 0) style="transition-delay:{{ round($i * 0.1, 2) }}s" @endif>
+        <span class="stat-num">{{ $stat->number }}<span class="accent">{{ $stat->accent }}</span></span>
+        <span class="stat-label">{{ $stat->label }}</span>
       </div>
-      <div class="stat-item fade-up" style="transition-delay:.1s">
-        <span class="stat-num">5000<span class="accent">+</span></span>
-        <span class="stat-label">Students Placed Abroad</span>
-      </div>
-      <div class="stat-item fade-up" style="transition-delay:.2s">
-        <span class="stat-num">98<span class="accent">%</span></span>
-        <span class="stat-label">Visa Success Rate</span>
-      </div>
-      <div class="stat-item fade-up" style="transition-delay:.3s">
-        <span class="stat-num">10<span class="accent">+</span></span>
-        <span class="stat-label">Destination Countries</span>
-      </div>
+      @endforeach
     </div>
   </div>
 </section>
+@endif
 
 {{-- ===== MISSION VISION ===== --}}
+@if($aboutMvCards->isNotEmpty())
 <section id="mission" class="section">
   <div class="container">
     <div class="section-head fade-up">
@@ -96,25 +110,19 @@
       <h2 class="section-title">Mission, Vision & Purpose</h2>
       <p class="section-sub">Everything we do is guided by a commitment to student success, integrity, and global opportunity.</p>
     </div>
+
     <div class="mv-grid">
-      <div class="mv-card fade-up">
-        <div class="mv-icon">🎯</div>
-        <h3>Our Mission</h3>
-        <p>To empower Nepali students with genuine, expert guidance that opens doors to world-class universities — making study abroad accessible, affordable, and achievable for every aspiring learner.</p>
+      @foreach($aboutMvCards as $i => $card)
+      <div class="mv-card fade-up" @if($i > 0) style="transition-delay:{{ round($i * 0.1, 2) }}s" @endif>
+        <div class="mv-icon">{{ $card->icon }}</div>
+        <h3>{{ $card->title }}</h3>
+        <p>{{ $card->body }}</p>
       </div>
-      <div class="mv-card fade-up" style="transition-delay:.1s">
-        <div class="mv-icon">🔭</div>
-        <h3>Our Vision</h3>
-        <p>To be Nepal's most trusted educational consultancy — known for transforming student dreams into global realities through transparent processes, expert counseling, and unwavering dedication.</p>
-      </div>
-      <div class="mv-card fade-up" style="transition-delay:.2s">
-        <div class="mv-icon">🌐</div>
-        <h3>Our Purpose</h3>
-        <p>We believe every student deserves access to the best education the world has to offer. We exist to break down barriers — geographic, financial, and informational — standing between students and their potential.</p>
-      </div>
+      @endforeach
     </div>
   </div>
 </section>
+@endif
 
 {{-- ===== WHY CHOOSE US ===== --}}
 <x-frontend.why-us />
@@ -123,6 +131,7 @@
 <x-frontend.core-values />
 
 {{-- ===== TEAM ===== --}}
+@if($teams->isNotEmpty())
 <section id="team" class="section" style="background:var(--light)">
   <div class="container">
     <div class="section-head fade-up">
@@ -130,39 +139,52 @@
       <h2 class="section-title">Meet the HASU Team</h2>
       <p class="section-sub">Our dedicated counselors and specialists bring years of experience, genuine care, and insider knowledge.</p>
     </div>
+
     <div class="team-grid">
-      @php $team = [
-        ['emoji'=>'👨‍💼','name'=>'Ram Prasad Sharma','role'=>'Founder & CEO','bio'=>'With 11+ years guiding students abroad, Ram founded HASU to make global education a reality for every Nepali student.'],
-        ['emoji'=>'👩‍💼','name'=>'Sunita Adhikari','role'=>'Senior Counselor – Japan','bio'=>'Sunita specializes in Japanese university admissions and language training, having placed 1,200+ students in Japan.'],
-        ['emoji'=>'👨‍🏫','name'=>'Bikash Poudel','role'=>'Head of Visa Processing','bio'=>'Bikash leads our visa team with a meticulous, detail-first approach that maintains our 98% approval rate.'],
-        ['emoji'=>'👩‍🎓','name'=>'Priya Khanal','role'=>'IELTS & PTE Trainer','bio'=>'Priya is a certified IELTS instructor passionate about helping students achieve the scores they need.'],
-      ]; @endphp
-      @foreach($team as $i => $member)
-      <div class="team-card fade-up" @if($i > 0) style="transition-delay:{{ $i * 0.1 }}s" @endif>
+      @foreach($teams as $i => $member)
+      <div class="team-card fade-up" @if($i > 0) style="transition-delay:{{ round($i * 0.1, 2) }}s" @endif>
         <div class="team-photo">
-          <div class="team-photo-placeholder">{{ $member['emoji'] }}</div>
+          @if($member->photo)
+            <img src="{{ $member->photo_url }}" alt="{{ $member->name }}">
+          @else
+            <div class="team-photo-placeholder">{{ strtoupper(substr($member->name, 0, 1)) }}</div>
+          @endif
+
+          @if(! empty($member->social_links))
           <div class="team-overlay">
             <div class="team-socials">
-              <a href="#">in</a>
-              <a href="#">f</a>
+              @if(! empty($member->social_links['linkedin']))
+                <a href="{{ $member->social_links['linkedin'] }}" target="_blank" rel="noopener">in</a>
+              @endif
+              @if(! empty($member->social_links['facebook']))
+                <a href="{{ $member->social_links['facebook'] }}" target="_blank" rel="noopener">f</a>
+              @endif
+              @if(! empty($member->social_links['twitter']))
+                <a href="{{ $member->social_links['twitter'] }}" target="_blank" rel="noopener">x</a>
+              @endif
             </div>
           </div>
+          @endif
         </div>
+
         <div class="team-body">
-          <div class="team-name">{{ $member['name'] }}</div>
-          <div class="team-role">{{ $member['role'] }}</div>
-          <div class="team-bio">{{ $member['bio'] }}</div>
+          <div class="team-name">{{ $member->name }}</div>
+          <div class="team-role">{{ $member->designation }}</div>
+          @if($member->bio)
+            <div class="team-bio">{{ $member->bio }}</div>
+          @endif
         </div>
       </div>
       @endforeach
     </div>
   </div>
 </section>
+@endif
 
 {{-- ===== CTA BANNER ===== --}}
 <x-frontend.cta-banner
     title="Ready to Begin Your Global Journey?"
-    subtitle="Book a free counseling session today — let HASU guide you to the education you deserve."
+    subtitle="Book a free counseling session today - let HASU guide you to the education you deserve."
     btn-label="Book Free Counseling"
     btn-link="#"
     btn2-label="Our Services"
