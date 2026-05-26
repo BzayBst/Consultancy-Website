@@ -12,7 +12,7 @@
 
         {{-- Logo / Branding --}}
         <div class="auth-logo">
-            <img src="{{ asset('logo.png') }}" alt="HASU Educational Consultancy">
+            <img src="{{ Storage::url(setting('general_logo')) }}" alt="HASU Educational Consultancy">
             <div class="auth-logo-sub">Admin Portal</div>
         </div>
 
