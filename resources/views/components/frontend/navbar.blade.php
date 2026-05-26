@@ -4,6 +4,7 @@
 @php
     $logo = setting('general_logo');
     $siteName = setting('general_site_name', 'HASU Educational Consultancy');
+    $navCourses = \App\Models\Course::active()->ordered()->get(['title', 'slug']);
 @endphp
 
 <nav id="navbar">
@@ -22,18 +23,19 @@
         <a href="{{ route('about') }}" class="{{ $active === 'about' ? 'active' : '' }}">About Us</a>
         <a href="{{ route('ventures') }}" class="{{ $active === 'ventures' ? 'active' : '' }}">Our Ventures</a>
 
-        {{-- Courses dropdown --}}
         <div class="nav-dropdown">
             <button type="button"
                 class="nav-dropdown-toggle {{ in_array($active, ['courses', 'course-detail']) ? 'active' : '' }}"
                 aria-expanded="false" aria-haspopup="true">
-                Courses ▾
+                Courses
             </button>
             <div class="nav-dropdown-menu">
                 <a href="{{ route('courses') }}" class="{{ $active === 'courses' ? 'active' : '' }}">All Courses</a>
-                <a href="{{ route('course.detail') }}" class="{{ $active === 'course-japanese' ? 'active' : '' }}">Japanese Language</a>
-                <a href="{{ route('course.detail') }}" class="{{ $active === 'course-ielts' ? 'active' : '' }}">IELTS</a>
-                <a href="{{ route('course.detail') }}" class="{{ $active === 'course-pte' ? 'active' : '' }}">PTE</a>
+                @foreach($navCourses as $navCourse)
+                    <a href="{{ route('course.show', $navCourse->slug) }}" class="{{ request()->routeIs('course.show') && request()->route('course')?->slug === $navCourse->slug ? 'active' : '' }}">
+                        {{ $navCourse->title }}
+                    </a>
+                @endforeach
             </div>
         </div>
 

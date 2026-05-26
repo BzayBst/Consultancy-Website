@@ -84,11 +84,38 @@
                 Blog Posts
             </a>
 
-            <a href="#" class="">
+            <a href="{{ route('admin.gallery.index') }}"
+                class="{{ request()->routeIs('admin.gallery.index') ? 'active' : '' }}">
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 Gallery
+            </a>
+
+            <a href="{{ route('admin.courses.index') }}"
+                class="{{ request()->routeIs('admin.courses.index') ? 'active' : '' }}">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z" />
+                </svg>
+                Courses
+            </a>
+
+            <a href="{{ route('admin.contact-cms.index') }}"
+                class="{{ request()->routeIs('admin.contact-cms.index') ? 'active' : '' }}">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 15a4 4 0 01-4 4H7l-4 4V7a4 4 0 014-4h10a4 4 0 014 4v8z" />
+                </svg>
+                Contact CMS
+            </a>
+
+            <a href="{{ route('admin.study-abroad.index') }}"
+                class="{{ request()->routeIs('admin.study-abroad.index') ? 'active' : '' }}">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3a9 9 0 100 18 9 9 0 000-18z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.6 9h16.8M3.6 15h16.8M12 3c2.2 2.4 3.3 5.4 3.3 9S14.2 18.6 12 21c-2.2-2.4-3.3-5.4-3.3-9S9.8 5.4 12 3z" />
+                </svg>
+                Study Abroad
             </a>
 
             <a href="{{ route('admin.events.index') }}" class="">

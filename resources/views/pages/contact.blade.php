@@ -1,6 +1,10 @@
 {{-- resources/views/pages/contact.blade.php --}}
 @extends('layouts.app', ['active' => 'contact'])
 
+@php
+  $contactPage = $contactPage ?? null;
+@endphp
+
 @section('title', 'Contact Us – ' . setting('general_site_name', 'HASU Educational Consultancy'))
 @section('meta_description', 'Contact HASU Educational Consultancy — reach us by phone, email, or visit our office in Bhairahawa.')
 
@@ -271,7 +275,7 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
           <a href="index.html">Home</a><span>›</span>
           <span style="color:rgba(255,255,255,.9)">Contact Us</span>
         </div>
-        <h1 class="page-hero-title">Get In <span>Touch</span><br>With HASU</h1>
+        <h1 class="page-hero-title">{!! str_replace($contactPage?->hero_highlight ?: 'Touch', '<span>' . e($contactPage?->hero_highlight ?: 'Touch') . '</span>', e($contactPage?->hero_title ?: 'Get In Touch With HASU')) !!}</h1>
         <p class="page-hero-sub">Have questions about studying abroad, visa processing, or our courses? Our counselors are ready to guide you — reach out anytime.</p>
         <div class="hero-quick-contacts">
           <a href="tel:+97756493528" class="hero-qc">
@@ -335,33 +339,41 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
 
       <!-- CONTACT FORM -->
       <div class="form-card fade-left">
-        <h3>Send Us a Message</h3>
-        <p>Fill out the form below and our team will get back to you within 24 hours.</p>
+        <h3>{{ $contactPage?->form_title ?: 'Send Us a Message' }}</h3>
+        <p>{{ $contactPage?->form_subtitle ?: 'Fill out the form below and our team will get back to you within 24 hours.' }}</p>
 
-        <div id="contactForm">
+        @if(session('contact_success'))
+          <div class="success-msg" style="display:block;margin-bottom:16px">{{ session('contact_success') }}</div>
+        @endif
+        @if($errors->any())
+          <div class="success-msg" style="display:block;background:#fee2e2;color:#991b1b;border-color:#fecaca;margin-bottom:16px">Please check the form and try again.</div>
+        @endif
+
+        <form id="contactForm" method="POST" action="{{ route('contact.submit') }}">
+          @csrf
           <div class="form-row">
             <div class="form-group">
               <label>First Name *</label>
-              <input type="text" id="fname" placeholder="Your first name" required>
+              <input type="text" id="fname" name="first_name" value="{{ old('first_name') }}" placeholder="Your first name" required>
             </div>
             <div class="form-group">
               <label>Last Name *</label>
-              <input type="text" id="lname" placeholder="Your last name" required>
+              <input type="text" id="lname" name="last_name" value="{{ old('last_name') }}" placeholder="Your last name" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>Email Address *</label>
-              <input type="email" id="email" placeholder="your@email.com" required>
+              <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="your@email.com" required>
             </div>
             <div class="form-group">
               <label>Phone Number</label>
-              <input type="tel" id="phone" placeholder="+977-98XXXXXXXX">
+              <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" placeholder="+977-98XXXXXXXX">
             </div>
           </div>
           <div class="form-group">
             <label>Study Destination</label>
-            <select id="destination">
+            <select id="destination" name="destination">
               <option value="">-- Select a country --</option>
               <option>🇯🇵 Japan</option>
               <option>🇦🇺 Australia</option>
@@ -374,7 +386,7 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
           </div>
           <div class="form-group">
             <label>Service Interested In</label>
-            <select id="service">
+            <select id="service" name="service">
               <option value="">-- Select a service --</option>
               <option>Admission Guidance</option>
               <option>Study Visa Counseling</option>
@@ -387,23 +399,22 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
           </div>
           <div class="form-group">
             <label>Your Message *</label>
-            <textarea id="message" placeholder="Tell us about your goals and any questions you have…" required></textarea>
+            <textarea id="message" name="message" placeholder="Tell us about your goals and any questions you have..." required>{{ old('message') }}</textarea>
           </div>
           <div class="form-check">
-            <input type="checkbox" id="consent">
+            <input type="checkbox" id="consent" name="consent" value="1" required>
             <label for="consent">I agree to be contacted by HASU Educational Consultancy for counseling purposes. My information will not be shared with third parties.</label>
           </div>
-          <button class="form-submit" onclick="handleSubmit(event)">
-            Send Message <span class="arrow">→</span>
+          <button class="form-submit" type="submit">
+            Send Message <span class="arrow">-&gt;</span>
           </button>
-          <div class="success-msg" id="successMsg">✅ Your message has been sent! We'll get back to you within 24 hours.</div>
-        </div>
+        </form>
       </div>
 
       <!-- BRANCHES + MAP -->
       <div class="branch-panel fade-right">
-        <h3 class="branch-panel-title">Our Office Locations</h3>
-        <p class="branch-panel-sub">We have multiple branches across Nepal. Click on a branch to see its exact location on the map.</p>
+        <h3 class="branch-panel-title">{{ $contactPage?->branch_title ?: 'Our Office Locations' }}</h3>
+        <p class="branch-panel-sub">{{ $contactPage?->branch_subtitle ?: 'We have multiple branches across Nepal. Click on a branch to see its exact location on the map.' }}</p>
 
         <!-- Branch Tabs -->
         <div class="branch-tabs" id="branchTabs">
@@ -445,9 +456,9 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
 <section id="faq-strip" class="section">
   <div class="container">
     <div style="text-align:center;margin-bottom:0" class="fade-up">
-      <div class="section-label">Quick Answers</div>
-      <h2 class="section-title">Frequently Asked Questions</h2>
-      <p class="section-sub" style="margin-bottom:0">Common questions from students and parents before reaching out to us.</p>
+      <div class="section-label">{{ $contactPage?->faq_label ?: 'Quick Answers' }}</div>
+      <h2 class="section-title">{{ $contactPage?->faq_title ?: 'Frequently Asked Questions' }}</h2>
+      <p class="section-sub" style="margin-bottom:0">{{ $contactPage?->faq_subtitle ?: 'Common questions from students and parents before reaching out to us.' }}</p>
     </div>
     <div class="faq-grid">
       <div class="faq-item fade-up" onclick="toggleFaq(this)">
@@ -484,8 +495,8 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
     <div class="social-strip-inner">
       <div class="fade-left">
         <div class="section-label" style="justify-content:flex-start"><span style="width:32px;height:2px;background:var(--red);display:block"></span> Follow Us</div>
-        <h2>Connect With Us on Social Media</h2>
-        <p>Stay updated with the latest news, events, scholarship alerts, student success stories, and study abroad tips by following our social channels.</p>
+        <h2>{{ $contactPage?->social_title ?: 'Connect With Us on Social Media' }}</h2>
+        <p>{{ $contactPage?->social_subtitle ?: 'Stay updated with the latest news, events, scholarship alerts, student success stories, and study abroad tips by following our social channels.' }}</p>
       </div>
       <div class="social-links-grid fade-right">
         <a href="#" class="social-card fb">
@@ -660,7 +671,7 @@ function handleSubmit(e) {
     document.getElementById('destination').selectedIndex = 0;
     document.getElementById('service').selectedIndex = 0;
     setTimeout(() => {
-      btn.innerHTML = 'Send Message <span class="arrow">→</span>';
+      btn.innerHTML = 'Send Message <span class="arrow">-&gt;</span>';
       btn.disabled = false;
     }, 3000);
   }, 1200);
@@ -694,3 +705,4 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-up,.fade-left,.fade-right').forEach(el => revealObserver.observe(el));
 </script>
 @endsection
+

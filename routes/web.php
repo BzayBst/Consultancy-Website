@@ -1,16 +1,21 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContactController;
 use App\Livewire\Admin\About\AboutPage;
 use App\Livewire\Admin\About\CoreValues;
 use App\Livewire\Admin\About\Team;
 use App\Livewire\Admin\About\WhyUs;
 use App\Livewire\Admin\Auth\Login;
+use App\Livewire\Admin\CourseManager;
+use App\Livewire\Admin\ContactCms;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Event;
+use App\Livewire\Admin\Gallery;
 use App\Livewire\Admin\Hero\HeroSlides;
 use App\Livewire\Admin\Home\HomeAbout;
 use App\Livewire\Admin\Settings\SiteSettings;
+use App\Livewire\Admin\StudyAbroad;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -19,9 +24,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/contact', function () {
-    return view('pages.contact');
-})->name('contact');
+Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submitContact'])->name('contact.submit');
 
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
@@ -33,33 +37,31 @@ Route::get('/venture-detail', function () {
     return view('pages.venture-detail');
 })->name('venture.detail');
 
-Route::get('/courses', function () {
-    return view('pages.courses');
-})->name('courses');
+Route::get('/courses', [HomeController::class, 'courses'])->name('courses');
 
-Route::get('/course-detail', function () {
-    return view('pages.course-detail');
-})->name('course.detail');
+Route::get('/course-detail', [HomeController::class, 'firstCourseDetail'])->name('course.detail');
+Route::get('/courses/{course:slug}', [HomeController::class, 'courseDetail'])->name('course.show');
 
-Route::get('/study-abroad', function () {
-    return view('pages.study-abroad');
-})->name('study-abroad');
+Route::get('/study-abroad', [HomeController::class, 'studyAbroad'])->name('study-abroad');
 
-Route::get('study-abroad-detail', function () {
-    return view('pages.study-abroad-detail');
-})->name('study-abroad-detail');
+Route::get('/study-abroad-detail', function () {
+    $destination = \App\Models\StudyAbroadDestination::active()->ordered()->first();
+
+    return $destination
+        ? redirect()->route('study-abroad-detail', $destination->slug)
+        : redirect()->route('study-abroad');
+});
+
+Route::get('/study-abroad/{destination:slug}', [HomeController::class, 'studyAbroadDetail'])->name('study-abroad-detail');
 
 Route::get('/blog', function () {
     return view('pages.blog');
 })->name('blog');
 
-Route::get('/gallery', function () {
-    return view('pages.gallery');
-})->name('gallery');
+Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
-Route::get('/book-appointment', function () {
-    return view('pages.book-appointment');
-})->name('book-appointment');
+Route::get('/book-appointment', [ContactController::class, 'appointment'])->name('book-appointment');
+Route::post('/book-appointment', [ContactController::class, 'submitAppointment'])->name('book-appointment.submit');
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +100,14 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
         Route::get('/teams', Team::class)->name('teams.index');
 
         Route::get('/events', Event::class)->name('events.index');
+
+        Route::get('/gallery', Gallery::class)->name('gallery.index');
+
+        Route::get('/courses', CourseManager::class)->name('courses.index');
+
+        Route::get('/contact-cms', ContactCms::class)->name('contact-cms.index');
+
+        Route::get('/study-abroad', StudyAbroad::class)->name('study-abroad.index');
 
          Route::get('/about/core-values', CoreValues::class)->name('about.core-values');
 

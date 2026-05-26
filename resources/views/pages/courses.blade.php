@@ -1,295 +1,181 @@
 {{-- resources/views/pages/courses.blade.php --}}
 @extends('layouts.app', ['active' => 'courses'])
 
-@section('title', 'Courses – ' . setting('general_site_name', 'HASU Educational Consultancy'))
-@section('meta_description',
-    'Explore the courses offered by HASU Educational Consultancy — tailored for Nepali students
-    seeking global education opportunities.')
+@php
+    $courses = collect($courses ?? []);
+    $courseCategories = collect($courseCategories ?? []);
+    $stats = collect($coursePage?->stats ?? []);
+    $whyItems = collect($coursePage?->why_items ?? []);
+@endphp
+
+@section('title', 'Courses - ' . setting('general_site_name', 'HASU Educational Consultancy'))
+@section('meta_description', $coursePage?->hero_subtitle ?: 'Explore the courses offered by HASU Educational Consultancy.')
 
 @section('content')
+    <x-frontend.page-hero
+        badge="{{ $coursePage?->hero_badge ?: 'HASU Language Institute' }}"
+        title="{{ $coursePage?->hero_title ?: 'Language & Test Prep' }}"
+        highlight="{{ $coursePage?->hero_highlight ?: 'Courses' }}"
+        subtitle="{{ $coursePage?->hero_subtitle ?: 'Internationally recognized language training and exam preparation taught by certified experts at our institute.' }}"
+        :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'All Courses']]"
+    />
 
-    {{-- ===== PAGE HERO ===== --}}
-    <x-frontend.page-hero badge="HASU Language Institute" title="Language & Test Prep" highlight="Courses"
-        subtitle="Internationally recognized language training and exam preparation — taught by certified experts at our institute."
-        :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'All Courses']]" />
-
-
-    <!-- ===== INTRO ===== -->
     <section id="courses-intro" class="section">
         <div class="container">
             <div class="courses-page-intro fade-up">
-                <div class="section-label">What We Teach</div>
-                <h2 class="section-title">Prepare for Your Future Abroad</h2>
-                <p class="section-sub">From Japanese language mastery to IELTS and PTE band targets — HASU offers structured
-                    programs with mock tests, small batches, and personalized coaching.</p>
+                <div class="section-label">{{ $coursePage?->intro_label ?: 'What We Teach' }}</div>
+                <h2 class="section-title">{{ $coursePage?->intro_title ?: 'Prepare for Your Future Abroad' }}</h2>
+                <p class="section-sub">{{ $coursePage?->intro_subtitle ?: 'From language mastery to test preparation, HASU offers structured programs with mock tests, small batches, and personalized coaching.' }}</p>
             </div>
         </div>
     </section>
 
-    <!-- ===== STATS ===== -->
+    @if($stats->isNotEmpty())
     <section id="stats">
         <div class="container" style="padding:0 24px">
             <div class="stats-inner">
-                <div class="stat-item fade-up">
-                    <span class="stat-num">6<span class="accent">+</span></span>
-                    <span class="stat-label">Active Programs</span>
+                @foreach($stats as $i => $stat)
+                <div class="stat-item fade-up" style="transition-delay:{{ $i * .1 }}s">
+                    <span class="stat-num">{{ $stat['number'] ?? '' }}<span class="accent">{{ $stat['accent'] ?? '' }}</span></span>
+                    <span class="stat-label">{{ $stat['label'] ?? '' }}</span>
                 </div>
-                <div class="stat-item fade-up" style="transition-delay:.1s">
-                    <span class="stat-num">15<span class="accent">+</span></span>
-                    <span class="stat-label">Expert Trainers</span>
-                </div>
-                <div class="stat-item fade-up" style="transition-delay:.2s">
-                    <span class="stat-num">2000<span class="accent">+</span></span>
-                    <span class="stat-label">Students Trained</span>
-                </div>
-                <div class="stat-item fade-up" style="transition-delay:.3s">
-                    <span class="stat-num">98<span class="accent">%</span></span>
-                    <span class="stat-label">Success Rate</span>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
+    @endif
 
-    <!-- ===== FEATURED COURSE ===== -->
+    @if($featuredCourse)
     <section id="course-featured" style="margin-top: 5px;">
         <div class="container">
             <div class="course-featured-card fade-up">
                 <div class="cf-img">
-                    <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80"
-                        alt="Japanese Language Course">
-                    <span class="course-flag">🇯🇵 Most Popular</span>
+                    @if($featuredCourse->image_url)
+                        <img src="{{ $featuredCourse->image_url }}" alt="{{ $featuredCourse->title }}">
+                    @endif
+                    @if($featuredCourse->badge)
+                        <span class="course-flag">{{ $featuredCourse->badge }}</span>
+                    @endif
                 </div>
                 <div class="cf-body">
-                    <span class="course-list-tag" style="background:var(--blue-light);color:var(--blue)">Language · 6–12
-                        Months</span>
-                    <h2>Japanese Language Course</h2>
-                    <p>Our flagship language program covering NAT, JLPT (N5–N2), and J-TEST — essential for students
-                        planning to study or work in Japan. Expert instructors, conversation labs, and weekly mock exams.
-                    </p>
+                    @if($featuredCourse->tag)
+                        <span class="course-list-tag" style="background:var(--blue-light);color:var(--blue)">{{ $featuredCourse->tag }}</span>
+                    @endif
+                    <h2>{{ $featuredCourse->title }}</h2>
+                    <p>{{ $featuredCourse->excerpt ?: $featuredCourse->overview }}</p>
+                    @if(! empty($featuredCourse->highlights))
                     <ul class="cf-highlights">
-                        <li>NAT, JLPT &amp; J-TEST preparation</li>
-                        <li>Small batches · morning &amp; evening</li>
-                        <li>Free placement test before enrollment</li>
+                        @foreach(array_slice($featuredCourse->highlights, 0, 3) as $highlight)
+                            <li>{{ $highlight['item'] ?? '' }}</li>
+                        @endforeach
                     </ul>
+                    @endif
                     <div class="cf-actions">
-                        <a href="course-detail.html" class="btn btn-primary">View Course Details →</a>
-                        <a href="contact.html" class="btn btn-secondary">Apply Now</a>
+                        <a href="{{ route('course.show', $featuredCourse->slug) }}" class="btn btn-primary">View Course Details</a>
+                        <a href="{{ route('contact') }}" class="btn btn-secondary">Apply Now</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    @endif
 
-    <!-- ===== COURSE LISTING ===== -->
     <section id="courses-listing">
         <div class="container">
             <div class="courses-listing-head fade-up">
                 <div>
-                    <div class="section-label" style="margin-bottom:8px">Browse All</div>
-                    <h2 class="section-title" style="margin-bottom:0;text-align:left">Our Course Catalog</h2>
+                    <div class="section-label" style="margin-bottom:8px">{{ $coursePage?->catalog_label ?: 'Browse All' }}</div>
+                    <h2 class="section-title" style="margin-bottom:0;text-align:left">{{ $coursePage?->catalog_title ?: 'Our Course Catalog' }}</h2>
                 </div>
+                @if($courseCategories->isNotEmpty())
                 <div class="course-filters" id="courseFilters">
                     <button type="button" class="cf-filter-btn active" data-filter="all">All</button>
-                    <button type="button" class="cf-filter-btn" data-filter="language">Language</button>
-                    <button type="button" class="cf-filter-btn" data-filter="test-prep">Test Prep</button>
+                    @foreach($courseCategories as $category)
+                        <button type="button" class="cf-filter-btn" data-filter="{{ $category }}">{{ Str::headline($category) }}</button>
+                    @endforeach
                 </div>
+                @endif
             </div>
 
             <div class="courses-grid courses-page-grid" id="coursesGrid">
-
-                <a href="course-detail.html" class="course-card course-card-link course-list-card fade-up"
-                    data-category="language">
+                @forelse($courses as $i => $course)
+                <a href="{{ route('course.show', $course->slug) }}" class="course-card course-card-link course-list-card fade-up"
+                    data-category="{{ $course->category }}" style="transition-delay:{{ ($i % 6) * .06 }}s">
                     <div class="course-img">
-                        <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80"
-                            alt="Japanese Language">
-                        <div class="course-flag">🇯🇵 Japanese</div>
+                        @if($course->image_url)
+                            <img src="{{ $course->image_url }}" alt="{{ $course->title }}">
+                        @endif
+                        @if($course->badge)
+                            <div class="course-flag">{{ $course->badge }}</div>
+                        @endif
                     </div>
                     <div class="course-body">
-                        <span class="course-list-tag">Language · 6–12 Mo</span>
-                        <h4>Japanese Language Course</h4>
-                        <p>NAT, JLPT, J-TEST preparation for students aiming to study in Japan.</p>
-                        <span class="course-card-cta">View Course →</span>
+                        @if($course->tag)
+                            <span class="course-list-tag">{{ $course->tag }}</span>
+                        @endif
+                        <h4>{{ $course->title }}</h4>
+                        <p>{{ $course->excerpt }}</p>
+                        <span class="course-card-cta">View Course</span>
                     </div>
                 </a>
-
-                <a href="course-detail-ielts.html" class="course-card course-card-link course-list-card fade-up"
-                    data-category="test-prep" style="transition-delay:.06s">
-                    <div class="course-img">
-                        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80" alt="IELTS">
-                        <div class="course-flag">🇬🇧 IELTS</div>
-                    </div>
-                    <div class="course-body">
-                        <span class="course-list-tag">Test Prep · 2–4 Mo</span>
-                        <h4>IELTS Preparation</h4>
-                        <p>IDP-certified trainers, Academic &amp; General, full mock test series.</p>
-                        <span class="course-card-cta">View Course →</span>
-                    </div>
-                </a>
-
-                <a href="course-detail-pte.html" class="course-card course-card-link course-list-card fade-up"
-                    data-category="test-prep" style="transition-delay:.12s">
-                    <div class="course-img">
-                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" alt="PTE">
-                        <div class="course-flag">🇦🇺 PTE</div>
-                    </div>
-                    <div class="course-body">
-                        <span class="course-list-tag">Test Prep · 1–3 Mo</span>
-                        <h4>PTE Academic</h4>
-                        <p>Computer-based PTE prep with AI scoring practice and weekly mocks.</p>
-                        <span class="course-card-cta">View Course →</span>
-                    </div>
-                </a>
-
-                <a href="course-detail.html" class="course-card course-card-link course-list-card fade-up"
-                    data-category="language" style="transition-delay:.18s">
-                    <div class="course-img">
-                        <img src="https://images.unsplash.com/photo-1546410531-bb4ca0500302?w=600&q=80" alt="JLPT">
-                        <div class="course-flag">📝 JLPT</div>
-                    </div>
-                    <div class="course-body">
-                        <span class="course-list-tag">Language · 3–6 Mo</span>
-                        <h4>JLPT Intensive Batch</h4>
-                        <p>Focused N5–N2 preparation with daily kanji drills and past-paper practice.</p>
-                        <span class="course-card-cta">View Course →</span>
-                    </div>
-                </a>
-
-                <a href="course-detail.html" class="course-card course-card-link course-list-card fade-up"
-                    data-category="test-prep" style="transition-delay:.24s">
-                    <div class="course-img">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="NAT">
-                        <div class="course-flag">📋 NAT</div>
-                    </div>
-                    <div class="course-body">
-                        <span class="course-list-tag">Test Prep · 2–4 Mo</span>
-                        <h4>NAT Test Preparation</h4>
-                        <p>Targeted NAT exam coaching for Japan study visa and language school entry.</p>
-                        <span class="course-card-cta">View Course →</span>
-                    </div>
-                </a>
-
-                <a href="contact.html" class="course-card course-card-link course-list-card fade-up"
-                    data-category="language" style="transition-delay:.3s">
-                    <div class="course-img">
-                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80"
-                            alt="Spoken English">
-                        <div class="course-flag">🗣️ English</div>
-                    </div>
-                    <div class="course-body">
-                        <span class="course-list-tag">Language · 2–3 Mo</span>
-                        <h4>Spoken English &amp; Interview</h4>
-                        <p>Build fluency and confidence for university and visa interviews abroad.</p>
-                        <span class="course-card-cta">Inquire Now →</span>
-                    </div>
-                </a>
-
+                @empty
+                <div class="sa-empty">
+                    <strong>No courses added yet.</strong>
+                    <span>Please add courses from the admin CMS.</span>
+                </div>
+                @endforelse
             </div>
         </div>
     </section>
 
-    <!-- ===== WHY HASU ===== -->
+    @if($whyItems->isNotEmpty())
     <section id="courses-why">
         <div class="container">
             <div class="courses-why-inner fade-up">
                 <div class="courses-why-text">
-                    <div class="section-label courses-why-label">Why HASU</div>
-                    <h2 class="courses-why-title">Why Students Choose Our Courses</h2>
-                    <p>HASU Language Institute combines certified trainers, proven curricula, and integration with our
-                        study-abroad consultancy — so your language prep and university application move forward together.
-                    </p>
-                    <a href="contact.html" class="btn btn-primary">Book Free Assessment</a>
+                    <div class="section-label courses-why-label">{{ $coursePage?->why_label ?: 'Why HASU' }}</div>
+                    <h2 class="courses-why-title">{{ $coursePage?->why_title ?: 'Why Students Choose Our Courses' }}</h2>
+                    <p>{{ $coursePage?->why_description }}</p>
+                    <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-primary">Book Free Assessment</a>
                 </div>
                 <div class="courses-why-grid">
+                    @foreach($whyItems as $item)
                     <div class="courses-why-item">
-                        <div class="icon-wrap">👨‍🏫</div>
-                        <h5>Certified Trainers</h5>
-                        <p>IDP-certified IELTS coaches and experienced Japanese language instructors.</p>
+                        <div class="icon-wrap">{{ $item['icon'] ?? '*' }}</div>
+                        <h5>{{ $item['title'] ?? '' }}</h5>
+                        <p>{{ $item['description'] ?? '' }}</p>
                     </div>
-                    <div class="courses-why-item">
-                        <div class="icon-wrap">📊</div>
-                        <h5>Mock Tests Weekly</h5>
-                        <p>Simulated exams with score analysis so you know exactly where to improve.</p>
-                    </div>
-                    <div class="courses-why-item">
-                        <div class="icon-wrap">👥</div>
-                        <h5>Small Batches</h5>
-                        <p>Limited class sizes for personal attention and faster progress.</p>
-                    </div>
-                    <div class="courses-why-item">
-                        <div class="icon-wrap">🎓</div>
-                        <h5>Study Abroad Link</h5>
-                        <p>Seamless handoff to HASU consultancy for admissions and visa support.</p>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </section>
+    @endif
 
-    <!-- ===== CTA ===== -->
     <section id="cta-banner" class="cta-courses">
         <div class="container">
             <div class="cta-inner">
                 <div class="cta-text fade-up">
-                    <h2>Not Sure Which Course Is Right for You?</h2>
-                    <p>Visit our campus or book a free assessment — we'll recommend the best program for your goals.</p>
+                    <h2>{{ $coursePage?->cta_title ?: 'Not Sure Which Course Is Right for You?' }}</h2>
+                    <p>{{ $coursePage?->cta_subtitle ?: 'Visit our campus or book a free assessment. We will recommend the best program for your goals.' }}</p>
                     <div class="cta-actions">
-                        <a href="contact.html" class="btn btn-cta-primary">Apply Now</a>
-                        <a href="tel:+97756493528" class="btn btn-cta-ghost">Call Us Today</a>
+                        <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-cta-primary">{{ $coursePage?->cta_button_label ?: 'Apply Now' }}</a>
+                        <a href="{{ $coursePage?->cta_phone_url ?: 'tel:+97756493528' }}" class="btn btn-cta-ghost">{{ $coursePage?->cta_phone_label ?: 'Call Us Today' }}</a>
                     </div>
                 </div>
                 <div class="cta-contact cta-contact-card fade-up" style="transition-delay:.15s">
                     <span class="cta-contact-label">Get in touch</span>
-                    <a href="mailto:info@hasuedu.com">✉ info@hasuedu.com</a>
-                    <a href="tel:+97756493528">📞 056-493528</a>
-                    <a href="tel:+9779853646493">📞 9853646493</a>
+                    <a href="mailto:{{ setting('contact_email', 'info@hasuedu.com') }}">{{ setting('contact_email', 'info@hasuedu.com') }}</a>
+                    <a href="tel:+97756493528">056-493528</a>
+                    <a href="tel:+9779853646493">9853646493</a>
                 </div>
             </div>
         </div>
     </section>
-
 @endsection
 
 @push('scripts')
     <script>
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
-
-        const hamburger = document.getElementById('hamburger');
-        const mobileNav = document.getElementById('mobileNav');
-        const closeNav = document.getElementById('closeNav');
-        hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
-        closeNav.addEventListener('click', () => mobileNav.classList.remove('open'));
-        mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
-
-        document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
-            const toggle = dropdown.querySelector('.nav-dropdown-toggle');
-            toggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const open = dropdown.classList.toggle('open');
-                toggle.setAttribute('aria-expanded', open);
-            });
-        });
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.nav-dropdown.open').forEach(d => {
-                d.classList.remove('open');
-                d.querySelector('.nav-dropdown-toggle')?.setAttribute('aria-expanded', 'false');
-            });
-        });
-
-        const fadeEls = document.querySelectorAll('.fade-up');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -40px 0px'
-        });
-        fadeEls.forEach(el => observer.observe(el));
-
         const filterBtns = document.querySelectorAll('.cf-filter-btn');
         const courseCards = document.querySelectorAll('#coursesGrid .course-list-card');
         filterBtns.forEach(btn => {
@@ -303,33 +189,5 @@
                 });
             });
         });
-
-        const statNums = document.querySelectorAll('#stats .stat-num');
-        const statObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const el = entry.target;
-                    const accent = el.querySelector('.accent');
-                    const accentText = accent ? accent.textContent : '';
-                    const target = parseInt(el.textContent.replace(accentText, '').replace(/\D/g, ''), 10);
-                    if (isNaN(target) || target <= 1) return;
-                    let start = 0;
-                    const duration = 1400;
-                    const step = (timestamp) => {
-                        if (!start) start = timestamp;
-                        const progress = Math.min((timestamp - start) / duration, 1);
-                        const eased = 1 - Math.pow(1 - progress, 3);
-                        el.innerHTML = Math.floor(eased * target).toLocaleString() + (accent ?
-                            '<span class="accent">' + accentText + '</span>' : '');
-                        if (progress < 1) requestAnimationFrame(step);
-                    };
-                    requestAnimationFrame(step);
-                    statObserver.unobserve(el);
-                }
-            });
-        }, {
-            threshold: 0.5
-        });
-        statNums.forEach(el => statObserver.observe(el));
     </script>
 @endpush

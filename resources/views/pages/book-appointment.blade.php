@@ -1,6 +1,10 @@
 {{-- resources/views/pages/consultation.blade.php --}}
 @extends('layouts.app', ['active' => 'consultation'])
 
+@php
+  $appointmentPage = $appointmentPage ?? null;
+@endphp
+
 @section('title', 'Book a Consultation – ' . setting('general_site_name', 'HASU Educational Consultancy'))
 @section('meta_description', 'Book a free in-person consultation at any HASU Educational Consultancy branch — Bhairahawa, Kathmandu, Pokhara, or Chitwan.')
 
@@ -286,8 +290,8 @@ input,textarea,select,button{font-family:inherit}
           <a href="{{ route('home') }}">Home</a><span>›</span>
           <span style="color:rgba(255,255,255,.9)">Book a Consultation</span>
         </div>
-        <h1 class="page-hero-title">Book Your <span>Free</span><br>Consultation</h1>
-        <p class="page-hero-sub">Schedule a visit at your nearest HASU branch. Our expert counselors will guide you on universities, visas, and the best study abroad pathway for you.</p>
+        <h1 class="page-hero-title">{!! str_replace($appointmentPage?->hero_highlight ?: 'Free', '<span>' . e($appointmentPage?->hero_highlight ?: 'Free') . '</span>', e($appointmentPage?->hero_title ?: 'Book Your Free Consultation')) !!}</h1>
+        <p class="page-hero-sub">{{ $appointmentPage?->hero_subtitle ?: 'Schedule a visit at your nearest HASU branch. Our expert counselors will guide you on universities, visas, and the best study abroad pathway for you.' }}</p>
         <div class="hero-quick-contacts">
           <a href="tel:+97756493528" class="hero-qc">
             <div class="hero-qc-icon">📞</div>
@@ -350,8 +354,8 @@ input,textarea,select,button{font-family:inherit}
 
       {{-- ===== BOOKING FORM CARD ===== --}}
       <div class="booking-card">
-        <h3>Schedule Your Visit</h3>
-        <p>Complete the steps below to book your in-person consultation at any HASU branch.</p>
+        <h3>{{ $appointmentPage?->form_title ?: 'Schedule Your Visit' }}</h3>
+        <p>{{ $appointmentPage?->form_subtitle ?: 'Complete the steps below to book your in-person consultation at any HASU branch.' }}</p>
 
         {{-- Step Indicator --}}
         <div class="steps-indicator" id="stepsIndicator">
@@ -673,9 +677,9 @@ input,textarea,select,button{font-family:inherit}
 <section id="faq-strip" class="section">
   <div class="container">
     <div style="text-align:center;margin-bottom:0" class="fade-up">
-      <div class="section-label">Quick Answers</div>
-      <h2 class="section-title">Frequently Asked Questions</h2>
-      <p class="section-sub" style="margin-bottom:0">Common questions about in-person consultations at HASU.</p>
+      <div class="section-label">{{ $appointmentPage?->faq_label ?: 'Quick Answers' }}</div>
+      <h2 class="section-title">{{ $appointmentPage?->faq_title ?: 'Frequently Asked Questions' }}</h2>
+      <p class="section-sub" style="margin-bottom:0">{{ $appointmentPage?->faq_subtitle ?: 'Common questions about in-person consultations at HASU.' }}</p>
     </div>
     <div class="faq-grid">
       <div class="faq-item fade-up">
@@ -711,8 +715,8 @@ input,textarea,select,button{font-family:inherit}
   <div class="container">
     <div class="cta-inner">
       <div class="cta-text fade-up">
-        <h2>Have Questions Before Booking?</h2>
-        <p>Our team is available on call, email, and WhatsApp to answer any questions before your visit.</p>
+        <h2>{{ $appointmentPage?->cta_title ?: 'Have Questions Before Booking?' }}</h2>
+        <p>{{ $appointmentPage?->cta_subtitle ?: 'Our team is available on call, email, and WhatsApp to answer any questions before your visit.' }}</p>
         <div class="cta-actions">
           <a href="{{ route('contact') }}" class="btn-cta-primary">Contact Us</a>
           <a href="https://wa.me/9779853646493" target="_blank" class="btn-ghost">💬 WhatsApp Us</a>
@@ -994,31 +998,59 @@ function populateReview() {
 /* ================================================================
    SUBMIT
 ================================================================ */
-function handleSubmit() {
+async function handleSubmit() {
   const btn = document.getElementById('btn-submit');
-  btn.textContent = '⏳ Confirming…';
+  btn.textContent = 'Confirming...';
   btn.disabled = true;
 
-  setTimeout(() => {
+  try {
     const b = branches[selectedBranch];
-    const dateStr = selectedDate ? MONTHS[selectedDate.m] + ' ' + selectedDate.d + ', ' + selectedDate.y : '—';
-    const ref = 'HASU-' + Math.floor(1000 + Math.random() * 9000);
+    const dateStr = selectedDate ? MONTHS[selectedDate.m] + ' ' + selectedDate.d + ', ' + selectedDate.y : '-';
+    const dateValue = selectedDate ? `${selectedDate.y}-${String(selectedDate.m + 1).padStart(2, '0')}-${String(selectedDate.d).padStart(2, '0')}` : '';
 
-    document.getElementById('refNumber').textContent = ref;
+    const response = await fetch('{{ route('book-appointment.submit') }}', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({
+        branch: b.name,
+        appointment_date: dateValue,
+        appointment_time: selectedTime,
+        first_name: document.getElementById('fname').value,
+        last_name: document.getElementById('lname').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        education: document.getElementById('education').value,
+        destination: document.getElementById('destination').value,
+        service: document.getElementById('service').value,
+        notes: document.getElementById('notes').value,
+        consent: document.getElementById('consent').checked ? 1 : ''
+      })
+    });
+
+    if (!response.ok) throw new Error('Booking failed');
+    const result = await response.json();
+
+    document.getElementById('refNumber').textContent = result.reference;
     document.getElementById('sd-branch').textContent = b.short;
     document.getElementById('sd-date').textContent   = dateStr;
     document.getElementById('sd-time').textContent   = selectedTime;
     document.getElementById('sd-name').textContent   = (document.getElementById('fname').value + ' ' + document.getElementById('lname').value).trim();
 
-    // hide all steps
     document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('stepsIndicator').style.display = 'none';
     document.querySelector('.booking-card h3').style.display = 'none';
     document.querySelector('.booking-card > p').style.display = 'none';
     document.getElementById('successScreen').style.display = 'block';
-  }, 1200);
+  } catch (error) {
+    alert('Please check your booking details and try again.');
+    btn.textContent = 'Confirm Booking';
+    btn.disabled = false;
+  }
 }
-
 function resetForm() {
   location.reload();
 }
@@ -1122,3 +1154,4 @@ window.pickSlot      = pickSlot;
 })();
 </script>
 @endpush
+
