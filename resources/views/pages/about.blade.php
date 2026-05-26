@@ -117,71 +117,10 @@
 </section>
 
 {{-- ===== WHY CHOOSE US ===== --}}
-<section id="why-us">
-  <div class="container">
-    <div class="why-inner">
-      <div class="why-left fade-up">
-        <div class="section-label">Why Choose HASU</div>
-        <h2 class="section-title" style="color:#fff">Reasons Students Trust Us</h2>
-        <p>With over a decade of experience and thousands of successful placements, HASU stands apart from the rest. We don't just process applications — we build futures.</p>
-        <div class="why-features">
-          @php $whyFeats = [
-            ['icon'=>'✅','title'=>'100% Genuine Assistance','desc'=>'No false promises. Every piece of advice we give is honest, verified, and in your best interest.'],
-            ['icon'=>'⚡','title'=>'Fast & Reliable Execution','desc'=>'We process applications swiftly and accurately, never missing critical deadlines or intake windows.'],
-            ['icon'=>'🏅','title'=>'Expert Team','desc'=>'Our counselors are certified specialists with first-hand knowledge of destination countries.'],
-            ['icon'=>'🤝','title'=>'End-to-End Support','desc'=>'From first consultation to pre-departure briefing, we are by your side every single step.'],
-            ['icon'=>'🛂','title'=>'High Visa Success Rate','desc'=>'Our meticulous document preparation and strategic counseling ensure a 98% visa approval rate.'],
-            ['icon'=>'🌏','title'=>'Global University Network','desc'=>'Official partnerships with leading universities across Japan, Australia, UK, Canada, USA, and more.'],
-          ]; @endphp
-          @foreach($whyFeats as $feat)
-          <div class="why-feat">
-            <div class="why-feat-icon">{{ $feat['icon'] }}</div>
-            <h5>{{ $feat['title'] }}</h5>
-            <p>{{ $feat['desc'] }}</p>
-          </div>
-          @endforeach
-        </div>
-      </div>
-      <div class="why-img-wrap fade-up" style="transition-delay:.15s">
-        <img src="https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?w=700&q=80" alt="HASU students">
-        <div class="why-img-badge">
-          <strong>98%</strong>
-          <span>Visa Success Rate</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<x-frontend.why-us />
 
 {{-- ===== CORE VALUES ===== --}}
-<section id="values" class="section">
-  <div class="container">
-    <div class="section-head fade-up">
-      <div class="section-label">Core Values</div>
-      <h2 class="section-title">The Principles We Live By</h2>
-      <p class="section-sub">Our values aren't just words on a wall — they shape every interaction, every decision, every outcome.</p>
-    </div>
-    <div class="values-grid">
-      @php $values = [
-        ['icon'=>'🔍','title'=>'Transparency','desc'=>'We share honest timelines, realistic expectations, and complete information so students can make truly informed decisions.'],
-        ['icon'=>'💡','title'=>'Excellence','desc'=>'We hold ourselves to the highest standards in counseling, documentation, and every service we provide.'],
-        ['icon'=>'❤️','title'=>'Student-First','desc'=>'Every policy, every process, every decision is made with one question in mind: what is best for our student?'],
-        ['icon'=>'🔒','title'=>'Integrity','desc'=>'We do the right thing — even when it\'s difficult. Our reputation is built on trust earned one student at a time.'],
-        ['icon'=>'🌱','title'=>'Empowerment','desc'=>'We equip students with knowledge, skills, and confidence to thrive academically and professionally overseas.'],
-        ['icon'=>'🤲','title'=>'Community','desc'=>'Our alumni network stays connected — supporting each other and inspiring the next generation of global Nepali students.'],
-      ]; @endphp
-      @foreach($values as $i => $val)
-      <div class="value-card fade-up" @if($i > 0) style="transition-delay:{{ $i * 0.08 }}s" @endif>
-        <div class="value-icon">{{ $val['icon'] }}</div>
-        <div>
-          <h4>{{ $val['title'] }}</h4>
-          <p>{{ $val['desc'] }}</p>
-        </div>
-      </div>
-      @endforeach
-    </div>
-  </div>
-</section>
+<x-frontend.core-values />
 
 {{-- ===== TEAM ===== --}}
 <section id="team" class="section" style="background:var(--light)">

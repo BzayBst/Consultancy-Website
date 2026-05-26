@@ -10,7 +10,7 @@
 <x-frontend.hero />
 
 {{-- ===== ABOUT THE COMPANY ===== --}}
-<section id="about" class="section">
+{{-- <section id="about" class="section">
   <div class="container">
     <div class="about-inner">
 
@@ -53,7 +53,8 @@
 
     </div>
   </div>
-</section>
+</section> --}}
+<x-frontend.home-about />
 
 {{-- ===== OUR VENTURES ===== --}}
 <section id="ventures">

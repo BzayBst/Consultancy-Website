@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Livewire\Admin\About\AboutPage;
 use App\Livewire\Admin\About\CoreValues;
 use App\Livewire\Admin\About\Team;
@@ -8,13 +9,15 @@ use App\Livewire\Admin\Auth\Login;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Event;
 use App\Livewire\Admin\Hero\HeroSlides;
+use App\Livewire\Admin\Home\HomeAbout;
 use App\Livewire\Admin\Settings\SiteSettings;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('pages.home');
-})->name('home');
+// Route::get('/', function () {
+//     return view('pages.home');
+// })->name('home');
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/contact', function () {
     return view('pages.contact');
@@ -27,6 +30,10 @@ Route::get('/about', function () {
 Route::get('/ventures', function () {
     return view('pages.ventures');
 })->name('ventures');
+
+Route::get('/venture-detail', function () {
+    return view('pages.venture-detail');
+})->name('venture.detail');
 
 Route::get('/courses', function () {
     return view('pages.courses');
@@ -95,6 +102,11 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
         Route::get('/events', Event::class)->name('events.index');
 
          Route::get('/about/core-values', CoreValues::class)->name('about.core-values');
+
+           // Home page sections
+        Route::get('/home/about', HomeAbout::class)->name('home.about');
+
+         
 
         // Logout (POST to prevent CSRF-free logouts)
         Route::post('/logout', function () {
