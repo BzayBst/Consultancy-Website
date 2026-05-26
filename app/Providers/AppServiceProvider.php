@@ -13,12 +13,14 @@ use App\Repositories\Contracts\HeroSlideRepositoryInterface;
 use App\Repositories\Contracts\HomeAboutRepositoryInterface;
 use App\Repositories\Contracts\SettingRepositoryInterface;
 use App\Repositories\Contracts\TeamRepositoryInterface;
+use App\Repositories\Contracts\VentureRepositoryInterface;
 use App\Repositories\Contracts\WhyUsRepositoryInterface;
 use App\Repositories\CoreValuesRepository;
 use App\Repositories\HeroSlideRepository;
 use App\Repositories\HomeAboutRepository;
 use App\Repositories\SettingRepository;
 use App\Repositories\TeamRepository;
+use App\Repositories\VentureRepository;
 use App\Repositories\WhyUsRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -58,6 +60,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
          $this->app->bind(TeamRepositoryInterface::class, TeamRepository::class);
+
+         $this->app->bind(VentureRepositoryInterface::class, VentureRepository::class);
 
            $this->app->bind(
             HomeAboutRepositoryInterface::class,

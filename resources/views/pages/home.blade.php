@@ -155,7 +155,7 @@
         <a href="#" class="read-more">Read More →</a>
       </div>
     </div>
-    <div class="services-cta"><a href="#" class="btn btn-secondary">More Services</a></div>
+   
   </div>
 </section>
 

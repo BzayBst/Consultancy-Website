@@ -37,13 +37,33 @@
 
             <div class="nav-group-label">Content</div>
 
-            <a href="{{ route('admin.hero-slides') }}"
-                class="{{ request()->routeIs('admin.hero-slides') ? 'active' : '' }}">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                Sliders
-            </a>
+            <div class="nav-dropdown-wrapper {{ request()->routeIs('admin.home*') || request()->routeIs('admin.hero-slides') ? 'open' : '' }}">
+                <button type="button" class="nav-dropdown-toggle" onclick="toggleDropdown(this)">
+                    <span class="nav-label-group">
+                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v10a2 2 0 01-2 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 2v6h6" />
+                        </svg>
+                        Home Page
+                    </span>
+                    <svg class="chevron-icon" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <div class="nav-dropdown-menu">
+                    <a href="{{ route('admin.hero-slides') }}"
+                        class="{{ request()->routeIs('admin.hero-slides') ? 'active' : '' }}">
+                        Sliders
+                    </a>
+                    
+                    <a href="{{ route('admin.home.about') }}"
+                        class="{{ request()->routeIs('admin.home.about') ? 'active' : '' }}">
+                        About Section
+                    </a>
+                </div>
+            </div>
+
 
             {{-- Fixed Dropdown Component --}}
             <div class="nav-dropdown-wrapper {{ request()->routeIs('admin.about*') ? 'open' : '' }}">
