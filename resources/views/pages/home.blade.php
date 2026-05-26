@@ -62,147 +62,114 @@
     <div class="ventures-intro fade-up">
       <div class="section-label">Our Business</div>
       <h2 class="section-title">Our Ventures</h2>
-      <p class="section-sub">Beyond education consultancy, we run a family of ventures united by one mission — empowering people to grow, learn, and succeed.</p>
+      <p class="section-sub">Beyond education consultancy, we run a family of ventures united by one mission - empowering people to grow, learn, and succeed.</p>
     </div>
     <div class="ventures-grid">
-
-      <div class="venture-card fade-up">
-        <span class="venture-status status-flagship">Flagship</span>
-        <div class="venture-banner" style="background:linear-gradient(135deg,#0d1560,#2952e3)">
-          <span style="font-size:72px;opacity:.12;user-select:none">🎓</span>
+      @forelse($ventures as $i => $venture)
+      <div class="venture-card fade-up" @if($i > 0) style="transition-delay:{{ round($i * .1, 2) }}s" @endif>
+        <span class="venture-status status-{{ str_replace('_','-',$venture->status) }}">{{ $venture->status_label }}</span>
+        <div class="venture-banner" style="{{ $venture->banner_style }}">
+          @if($venture->banner_image)
+            <img src="{{ $venture->banner_image_url }}" class="venture-banner-img" alt="{{ $venture->name }}">
+          @else
+            <span style="font-size:72px;opacity:.12;user-select:none">{{ $venture->emoji }}</span>
+          @endif
         </div>
-        <div class="venture-logo-wrap">🎓</div>
+        <div class="venture-logo-wrap">{{ $venture->emoji }}</div>
         <div class="venture-body">
-          <span class="venture-tag" style="background:var(--blue-light);color:var(--blue)">Education</span>
-          <h3>HASU Educational Consultancy</h3>
-          <p>Our flagship company guiding Nepali students to top universities in Japan, Australia, UK, Canada, and beyond since {{ setting('general_established', '2013') }}.</p>
+          @if($venture->tag_label)
+            <span class="venture-tag" style="background:{{ $venture->tag_bg ?? 'var(--blue-light)' }};color:{{ $venture->tag_color ?? 'var(--blue)' }}">{{ $venture->tag_label }}</span>
+          @endif
+          <h3>{{ $venture->name }}</h3>
+          @if($venture->description)
+            <p>{{ \Illuminate\Support\Str::limit($venture->description, 120) }}</p>
+          @endif
         </div>
         <div class="venture-links">
-          <a href="#" class="venture-link primary">Learn More →</a>
-          <a href="{{ route('contact') }}" class="venture-link outline">Contact</a>
+          <a href="{{ $venture->primary_btn_url ?: route('ventures.show', $venture->slug) }}" class="venture-link primary">{{ $venture->primary_btn_label ?: 'Learn More' }}</a>
+          {{-- <a href="{{ $venture->secondary_btn_url ?: route('contact') }}" class="venture-link outline">{{ $venture->secondary_btn_label ?: 'Contact' }}</a> --}}
         </div>
       </div>
-
-      <div class="venture-card fade-up" style="transition-delay:.1s">
-        <span class="venture-status status-active">Active</span>
-        <div class="venture-banner" style="background:linear-gradient(135deg,#7b1fa2,#e91e63)">
-          <span style="font-size:72px;opacity:.12;user-select:none">🗣️</span>
-        </div>
-        <div class="venture-logo-wrap">🗣️</div>
-        <div class="venture-body">
-          <span class="venture-tag" style="background:#fdf4ff;color:#7b1fa2">Language</span>
-          <h3>HASU Language Institute</h3>
-          <p>Specialized language training center offering Japanese (NAT/JLPT/J-TEST), IELTS, and PTE classes with expert instructors.</p>
-        </div>
-        <div class="venture-links">
-          <a href="#" class="venture-link primary">View Courses →</a>
-          <a href="#cta-banner" class="venture-link outline">Enroll</a>
-        </div>
+      @empty
+      <div class="sa-empty">
+        <strong>No ventures added yet.</strong>
+        <span>Ventures added from the CMS will appear here automatically.</span>
       </div>
-
-      <div class="venture-card fade-up" style="transition-delay:.2s">
-        <span class="venture-status status-new">New</span>
-        <div class="venture-banner" style="background:linear-gradient(135deg,#cc2222,#ff6f00)">
-          <span style="font-size:72px;opacity:.12;user-select:none">🏢</span>
-        </div>
-        <div class="venture-logo-wrap">🏢</div>
-        <div class="venture-body">
-          <span class="venture-tag" style="background:#fff7ed;color:#c2410c">Business</span>
-          <h3>Your Third Venture</h3>
-          <p>Describe your third company here — what it does, who it serves, and what makes it unique.</p>
-        </div>
-        <div class="venture-links">
-          <a href="#" class="venture-link primary">Learn More →</a>
-          <a href="{{ route('contact') }}" class="venture-link outline">Contact</a>
-        </div>
-      </div>
-
+      @endforelse
     </div>
   </div>
 </section>
 
 {{-- ===== WHAT WE OFFER ===== --}}
+@if($homeServices?->is_active && ! empty($homeServices->services))
 <section id="services" class="section">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">What We Offer</div>
-      <h2 class="section-title">Our Core Services</h2>
-      <p class="section-sub">From admission guidance to visa processing, we handle every step of your international education journey.</p>
+      <div class="section-label">{{ $homeServices->section_label ?: 'What We Offer' }}</div>
+      <h2 class="section-title">{{ $homeServices->section_title ?: 'Our Core Services' }}</h2>
+      @if($homeServices->section_subtitle)
+        <p class="section-sub">{{ $homeServices->section_subtitle }}</p>
+      @endif
     </div>
     <div class="services-grid">
-      <div class="service-card fade-up">
-        <div class="service-icon">🎓</div>
-        <h4>Admission Guidance</h4>
-        <p>At HASU Educational, we simplify your journey to studying abroad, making it personalized, seamless, and stress-free.</p>
-        <a href="#" class="read-more">Read More →</a>
-      </div>
-      <div class="service-card fade-up" style="transition-delay:.1s">
-        <div class="service-icon">📚</div>
-        <h4>Study Visa Counseling</h4>
-        <p>Guiding you at every critical step in your journey to study abroad, ensuring clarity at every milestone.</p>
-        <a href="#" class="read-more">Read More →</a>
-      </div>
-      <div class="service-card fade-up" style="transition-delay:.2s">
-        <div class="service-icon">💰</div>
-        <h4>Financial Assistance</h4>
-        <p>At HASU International Educational Pvt. Ltd., we simplify financial guidance, scholarship, and student loan processing.</p>
-        <a href="#" class="read-more">Read More →</a>
-      </div>
-      <div class="service-card fade-up" style="transition-delay:.3s">
-        <div class="service-icon">🛂</div>
-        <h4>Visa Assistance</h4>
-        <p>HASU International Educational Pvt. Ltd. simplifies your visa application process for a smooth international transition.</p>
-        <a href="#" class="read-more">Read More →</a>
-      </div>
+      @foreach($homeServices->services as $i => $service)
+        @if(! empty($service['title']) || ! empty($service['description']))
+        <div class="service-card fade-up" @if($i > 0) style="transition-delay:{{ round(($i % 6) * .1, 2) }}s" @endif>
+          @if(! empty($service['icon']))
+            <div class="service-icon">{{ $service['icon'] }}</div>
+          @endif
+          @if(! empty($service['title']))
+            <h4>{{ $service['title'] }}</h4>
+          @endif
+          @if(! empty($service['description']))
+            <p>{{ $service['description'] }}</p>
+          @endif
+          {{-- @if(! empty($service['link_label']) && ! empty($service['link_url']))
+            <a href="{{ $service['link_url'] }}" class="read-more">{{ $service['link_label'] }}</a>
+          @endif --}}
+        </div>
+        @endif
+      @endforeach
     </div>
-   
   </div>
 </section>
+@endif
 
 {{-- ===== COURSES ===== --}}
 <section id="courses" class="section" style="background:#fff">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">Check Our Course</div>
-      <h2 class="section-title">Popular Language & Test Prep Courses</h2>
-      <p class="section-sub">Prepare for your future with internationally recognized language and aptitude certifications.</p>
+      <div class="section-label">{{ $coursePage?->catalog_label ?: 'Check Our Course' }}</div>
+      <h2 class="section-title">{{ $coursePage?->catalog_title ?: 'Popular Language & Test Prep Courses' }}</h2>
+      <p class="section-sub">{{ $coursePage?->intro_subtitle ?: 'Prepare for your future with internationally recognized language and aptitude certifications.' }}</p>
     </div>
     <div class="courses-grid">
-      <a href="#" class="course-card course-card-link fade-up">
+      @forelse($courses as $i => $course)
+      <a href="{{ route('course.show', $course->slug) }}" class="course-card course-card-link fade-up" @if($i > 0) style="transition-delay:{{ round($i * .1, 2) }}s" @endif>
         <div class="course-img">
-          <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Japanese Language">
-          <div class="course-flag">🇯🇵 Japanese</div>
+          @if($course->image_url)
+            <img src="{{ $course->image_url }}" alt="{{ $course->title }}">
+          @endif
+          @if($course->badge)
+            <div class="course-flag">{{ $course->badge }}</div>
+          @endif
         </div>
         <div class="course-body">
-          <h4>Japanese Language Course</h4>
-          <p>NAT, JLPT, J-TEST preparation for students aiming to study or work in Japan.</p>
-          <span class="course-card-cta">View Course →</span>
+          <h4>{{ $course->title }}</h4>
+          @if($course->excerpt)
+            <p>{{ $course->excerpt }}</p>
+          @endif
+          <span class="course-card-cta">View Course</span>
         </div>
       </a>
-      <a href="#" class="course-card course-card-link fade-up" style="transition-delay:.1s">
-        <div class="course-img">
-          <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80" alt="IELTS">
-          <div class="course-flag">🇬🇧 IELTS</div>
-        </div>
-        <div class="course-body">
-          <h4>IELTS Preparation</h4>
-          <p>Expert coaching for IELTS with IDP-certified trainers and mock test sessions.</p>
-          <span class="course-card-cta">View Course →</span>
-        </div>
-      </a>
-      <a href="#" class="course-card course-card-link fade-up" style="transition-delay:.2s">
-        <div class="course-img">
-          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" alt="PTE">
-          <div class="course-flag">🇦🇺 PTE</div>
-        </div>
-        <div class="course-body">
-          <h4>PTE Academic</h4>
-          <p>Pearson Test of English preparation with proven strategies and practice materials.</p>
-          <span class="course-card-cta">View Course →</span>
-        </div>
-      </a>
+      @empty
+      <div class="sa-empty">
+        <strong>No courses added yet.</strong>
+        <span>Courses added from the CMS will appear here automatically.</span>
+      </div>
+      @endforelse
     </div>
-    <div class="courses-cta"><a href="#" class="btn btn-primary">More Courses</a></div>
+    <div class="courses-cta"><a href="{{ route('courses') }}" class="btn btn-primary">More Courses</a></div>
   </div>
 </section>
 
@@ -210,79 +177,63 @@
 <section id="study-abroad" class="section">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">Study Abroad</div>
-      <h2 class="section-title">Choose Your Dream Destination</h2>
-      <p class="section-sub">We assist students in pursuing world-class education across the globe with expert guidance at every step.</p>
+      <div class="section-label">{{ $studyAbroadPage?->section_label ?: 'Study Abroad' }}</div>
+      <h2 class="section-title">{{ $studyAbroadPage?->section_title ?: 'Choose Your Dream Destination' }}</h2>
+      <p class="section-sub">{{ $studyAbroadPage?->hero_subtitle ?: 'We assist students in pursuing world-class education across the globe with expert guidance at every step.' }}</p>
     </div>
     <div class="countries-grid">
-      <div class="country-card fade-up">
-        <img src="https://images.unsplash.com/photo-1526484892869-6f44c5ad80c3?w=500&q=80" alt="Japan">
+      @forelse($destinations as $i => $destination)
+      <a href="{{ route('study-abroad-detail', $destination->slug) }}" class="country-card fade-up" @if($i > 0) style="transition-delay:{{ round($i * .1, 2) }}s" @endif>
+        @if($destination->card_image_url)
+          <img src="{{ $destination->card_image_url }}" alt="{{ $destination->card_title ?: 'Study in ' . $destination->country }}">
+        @endif
         <div class="country-overlay">
-          <div class="country-flag">🇯🇵</div>
-          <h4>Study in Japan</h4>
-          <span>Top Universities · Scholarships</span>
+          @if($destination->flag)
+            <div class="country-flag">{{ $destination->flag }}</div>
+          @endif
+          <h4>{{ $destination->card_title ?: 'Study in ' . $destination->country }}</h4>
+          @if($destination->card_description)
+            <span>{{ \Illuminate\Support\Str::limit($destination->card_description, 70) }}</span>
+          @endif
         </div>
+      </a>
+      @empty
+      <div class="sa-empty">
+        <strong>No destinations added yet.</strong>
+        <span>Study abroad destinations added from the CMS will appear here automatically.</span>
       </div>
-      <div class="country-card fade-up" style="transition-delay:.1s">
-        <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=500&q=80" alt="Australia">
-        <div class="country-overlay">
-          <div class="country-flag">🇦🇺</div>
-          <h4>Study in Australia</h4>
-          <span>World-Ranked Universities</span>
-        </div>
-      </div>
-      <div class="country-card fade-up" style="transition-delay:.2s">
-        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=500&q=80" alt="UK">
-        <div class="country-overlay">
-          <div class="country-flag">🇬🇧</div>
-          <h4>Study in UK</h4>
-          <span>Prestigious Institutions</span>
-        </div>
-      </div>
-      <div class="country-card fade-up" style="transition-delay:.3s">
-        <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?w=500&q=80" alt="Canada">
-        <div class="country-overlay">
-          <div class="country-flag">🇨🇦</div>
-          <h4>Study in Canada</h4>
-          <span>Post-Study Work Visa</span>
-        </div>
-      </div>
+      @endforelse
     </div>
-    <div class="study-cta"><a href="#" class="btn btn-secondary">More Countries</a></div>
+    <div class="study-cta"><a href="{{ route('study-abroad') }}" class="btn btn-secondary">More Countries</a></div>
   </div>
 </section>
 
 {{-- ===== TESTIMONIALS SLIDER ===== --}}
+@if($homeTestimonials?->is_active && ! empty($homeTestimonials->testimonials))
 <section id="testimonials" class="section testimonials-slider-section">
   <div class="container">
     <div class="section-head test-head fade-up">
-      <div class="section-label">Testimonials And Success Stories</div>
-      <h2 class="section-title">What Our Students Say</h2>
-      <p class="section-sub">Real words from students, parents, and partners whose lives were changed by HASU.</p>
+      <div class="section-label">{{ $homeTestimonials->section_label ?: 'Testimonials And Success Stories' }}</div>
+      <h2 class="section-title">{{ $homeTestimonials->section_title ?: 'What Our Students Say' }}</h2>
+      @if($homeTestimonials->section_subtitle)
+        <p class="section-sub">{{ $homeTestimonials->section_subtitle }}</p>
+      @endif
     </div>
     <div class="test-slider fade-up">
       <div class="test-slider-viewport">
         <div class="test-slider-track" id="testSliderTrack">
-          @php
-          $testimonials = [
-            ['quote'=>'As a parent, I was looking for a reliable consultancy for my son\'s study in Japan. HASU guided us with transparency and professionalism. They took care of everything and kept us updated at every stage.','name'=>'Mr. Pramod Adhikari','role'=>'Parent · Study in Japan','avatar'=>'👤'],
-            ['quote'=>'We have partnered with HASU for several years and are consistently impressed by the quality of students they recommend. Their team prepares students academically and culturally for life in Japan.','name'=>'Mr. Takunari Nakamura','role'=>'Principal, Kyoto International Academy of Language','avatar'=>'🏫'],
-            ['quote'=>'HASU made my dream of studying in Japan a reality. From JLPT coaching to visa processing, every step was handled with professionalism. I am now enrolled at Osaka University!','name'=>'Anil Thapa','role'=>'Osaka University, Japan','avatar'=>'👦'],
-            ['quote'=>'I was confused about studying in Australia, but HASU\'s counselors cleared every doubt. They got me into my first-choice university and helped with the entire visa process. Highly recommend!','name'=>'Sita Gurung','role'=>'University of Melbourne, Australia','avatar'=>'👧'],
-            ['quote'=>'The team at HASU is incredibly dedicated. They went above and beyond to ensure my documents were perfect. My student visa was approved on the first attempt — something I didn\'t expect!','name'=>'Rajan Bhattarai','role'=>'University of Toronto, Canada','avatar'=>'👨'],
-            ['quote'=>'HASU\'s IELTS coaching was a game changer. I scored an 8.0 band and secured a scholarship to the University of Leeds. The trainers are exceptionally skilled and supportive.','name'=>'Kabita Shrestha','role'=>'University of Leeds, United Kingdom','avatar'=>'👩'],
-          ];
-          @endphp
-          @foreach($testimonials as $t)
+          @foreach($homeTestimonials->testimonials as $t)
           <div class="test-slide {{ $loop->first ? 'active' : '' }}">
             <div class="test-card">
-              <div class="stars">★★★★★</div>
-              <p class="test-quote">"{{ $t['quote'] }}"</p>
+              <div class="stars">{{ str_repeat('*', (int)($t['rating'] ?? 5)) }}</div>
+              @if(! empty($t['quote']))
+                <p class="test-quote">"{{ $t['quote'] }}"</p>
+              @endif
               <div class="test-author">
-                <div class="test-avatar-placeholder">{{ $t['avatar'] }}</div>
+                <div class="test-avatar-placeholder">{{ $t['avatar'] ?: substr($t['name'] ?? 'H', 0, 1) }}</div>
                 <div>
-                  <strong>{{ $t['name'] }}</strong>
-                  <span>{{ $t['role'] }}</span>
+                  @if(! empty($t['name']))<strong>{{ $t['name'] }}</strong>@endif
+                  @if(! empty($t['role']))<span>{{ $t['role'] }}</span>@endif
                 </div>
               </div>
             </div>
@@ -293,7 +244,7 @@
       <div class="test-slider-controls">
         <button type="button" class="test-arrow test-prev" id="testPrev" aria-label="Previous testimonial">←</button>
         <div class="test-dots" id="testDots">
-          @foreach($testimonials as $t)
+          @foreach($homeTestimonials->testimonials as $t)
             <button type="button" class="test-dot {{ $loop->first ? 'active' : '' }}"
                     data-slide="{{ $loop->index }}" aria-label="Testimonial {{ $loop->iteration }}"></button>
           @endforeach
@@ -303,49 +254,69 @@
     </div>
   </div>
 </section>
+@endif
 
 {{-- ===== EVENTS ===== --}}
 <section id="events" class="section">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">Latest Events</div>
-      <h2 class="section-title">Upcoming & Recent Events</h2>
+      <div class="section-label">{{ $eventSection['section_label'] ?? 'Latest Events' }}</div>
+      <h2 class="section-title">{{ $eventSection['title'] ?? 'Upcoming & Recent Events' }}</h2>
     </div>
+    @if($featuredEvent || $events->isNotEmpty())
     <div class="events-grid">
+      @if($featuredEvent)
       <div class="event-featured fade-up">
-        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80" alt="Event">
+        <img src="{{ $featuredEvent->image_url }}" alt="{{ $featuredEvent->title }}">
         <div class="event-featured-body">
-          <div class="event-tag">Upcoming</div>
-          <h3>HASU Chitwan GoldCup 3.0</h3>
+          <div class="event-tag">{{ ucfirst($featuredEvent->status) }}</div>
+          <h3>{{ $featuredEvent->title }}</h3>
           <ul class="event-meta">
-            <li><span>📅</span> 19 Aug 2025</li>
-            <li><span>📍</span> Bharatpur, Chitwan</li>
-            <li><span>ℹ️</span> To be Announced, Jovem Pvt.</li>
+            @if($featuredEvent->event_date)
+              <li><span>Date</span> {{ $featuredEvent->event_date->format('d M Y') }}</li>
+            @endif
+            @if($featuredEvent->location)
+              <li><span>Place</span> {{ $featuredEvent->location }}</li>
+            @endif
+            @if($featuredEvent->organizer)
+              <li><span>Host</span> {{ $featuredEvent->organizer }}</li>
+            @endif
           </ul>
-          <a href="#" class="btn btn-secondary" style="font-size:13px;padding:9px 20px">Learn More</a>
+          <a href="{{ $featuredEvent->learn_more_url ?: route('events.show', $featuredEvent) }}" @if($featuredEvent->learn_more_url) target="_blank" rel="noopener" @endif class="btn btn-secondary" style="font-size:13px;padding:9px 20px">Learn More</a>
         </div>
       </div>
+      @endif
       <div class="events-list fade-up" style="transition-delay:.15s">
-        @php
-        $events = [
-          ['day'=>'15','mon'=>'Jun','title'=>'Free IELTS Seminar – Bhairahawa','desc'=>'Walk-in seminar on IELTS preparation strategies and band score targets.'],
-          ['day'=>'22','mon'=>'Jun','title'=>'Japan Education Fair 2025','desc'=>'Meet representatives from top Japanese universities and language schools.'],
-          ['day'=>'05','mon'=>'Jul','title'=>'Australia University Info Session','desc'=>'Learn about intakes, scholarships, and post-study work rights in Australia.'],
-          ['day'=>'18','mon'=>'Jul','title'=>'PTE Practice Mock Test','desc'=>'Free mock PTE exam for registered students at HASU main campus.'],
-        ];
-        @endphp
-        @foreach($events as $ev)
+        @forelse($events as $event)
         <div class="event-item">
-          <div class="event-date"><strong>{{ $ev['day'] }}</strong><span>{{ $ev['mon'] }}</span></div>
+          <div class="event-date">
+            <strong>{{ $event->event_date?->format('d') }}</strong>
+            <span>{{ $event->event_date?->format('M') }}</span>
+          </div>
           <div class="event-info">
-            <h4>{{ $ev['title'] }}</h4>
-            <p>{{ $ev['desc'] }}</p>
+            <h4><a href="{{ $event->learn_more_url ?: route('events.show', $event) }}" @if($event->learn_more_url) target="_blank" rel="noopener" @endif style="color:inherit;text-decoration:none">{{ $event->title }}</a></h4>
+            @if($event->description)
+              <p>{{ \Illuminate\Support\Str::limit($event->description, 100) }}</p>
+            @endif
           </div>
         </div>
-        @endforeach
+        @empty
+          @unless($featuredEvent)
+          <div class="sa-empty">
+            <strong>No events added yet.</strong>
+            <span>Events added from the CMS will appear here automatically.</span>
+          </div>
+          @endunless
+        @endforelse
       </div>
     </div>
-    <div class="events-cta"><a href="#" class="btn btn-primary">More Events</a></div>
+    @else
+    <div class="sa-empty fade-up">
+      <strong>No events added yet.</strong>
+      <span>Events added from the CMS will appear here automatically.</span>
+    </div>
+    @endif
+    <div class="events-cta"><a href="{{ route('events') }}" class="btn btn-primary">More Events</a></div>
   </div>
 </section>
 
@@ -358,29 +329,35 @@
       <p class="section-sub">Stay informed with the latest updates on study abroad, visa rules, and exam tips.</p>
     </div>
     <div class="blog-grid">
-      @php
-      $blogs = [
-        ['img'=>'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80','date'=>'May 12, 2025','meta'=>'Japan · Visa','title'=>'How to Apply for a Japanese Student Visa','desc'=>'A step-by-step guide to the Japanese student visa application process from Nepal.'],
-        ['img'=>'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=600&q=80','date'=>'Apr 28, 2025','meta'=>'Australia · Visa','title'=>'How to Apply for an Australian Student Visa','desc'=>'Everything you need to know about the Australian Subclass 500 student visa.'],
-        ['img'=>'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&q=80','date'=>'Apr 05, 2025','meta'=>'Japan · Intake','title'=>'April Intake 2026 – Complete Guide for Nepali Students','desc'=>'Key deadlines, required documents, and preparation tips for Japan April intake.'],
-      ];
-      @endphp
-      @foreach($blogs as $i => $blog)
+      @forelse($latestBlogPosts as $i => $blog)
       <div class="blog-card fade-up" @if($i > 0) style="transition-delay:{{ $i * 0.1 }}s" @endif>
         <div class="blog-img">
-          <img src="{{ $blog['img'] }}" alt="{{ $blog['title'] }}">
-          <div class="blog-date">{{ $blog['date'] }}</div>
+          @if($blog->image_url)
+            <img src="{{ $blog->image_url }}" alt="{{ $blog->image_alt ?: $blog->title }}">
+          @endif
+          @if($blog->published_at)
+            <div class="blog-date">{{ $blog->published_at->format('M d, Y') }}</div>
+          @endif
         </div>
         <div class="blog-body">
-          <div class="blog-meta">{{ $blog['meta'] }}</div>
-          <h4>{{ $blog['title'] }}</h4>
-          <p>{{ $blog['desc'] }}</p>
-          <a href="#" class="blog-link">Learn More →</a>
+          @if($blog->category)
+            <div class="blog-meta">{{ $blog->category }}</div>
+          @endif
+          <h4>{{ $blog->title }}</h4>
+          @if($blog->excerpt)
+            <p>{{ $blog->excerpt }}</p>
+          @endif
+          <a href="{{ route('blog.show', $blog->slug) }}" class="blog-link">Learn More</a>
         </div>
       </div>
-      @endforeach
+      @empty
+      <div class="sa-empty">
+        <strong>No blog posts added yet.</strong>
+        <span>Posts added from the CMS will appear here automatically.</span>
+      </div>
+      @endforelse
     </div>
-    <div class="blog-cta"><a href="#" class="btn btn-secondary">More Blogs</a></div>
+    <div class="blog-cta"><a href="{{ route('blog') }}" class="btn btn-secondary">More Blogs</a></div>
   </div>
 </section>
 

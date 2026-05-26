@@ -8,6 +8,7 @@ use App\Livewire\Admin\About\CoreValues;
 use App\Livewire\Admin\About\Team;
 use App\Livewire\Admin\About\WhyUs;
 use App\Livewire\Admin\Auth\Login;
+use App\Livewire\Admin\BlogPosts;
 use App\Livewire\Admin\CourseManager;
 use App\Livewire\Admin\ContactCms;
 use App\Livewire\Admin\Dashboard;
@@ -15,6 +16,8 @@ use App\Livewire\Admin\Event;
 use App\Livewire\Admin\Gallery;
 use App\Livewire\Admin\Hero\HeroSlides;
 use App\Livewire\Admin\Home\HomeAbout;
+use App\Livewire\Admin\Home\HomeServices;
+use App\Livewire\Admin\Home\HomeTestimonials;
 use App\Livewire\Admin\Settings\SiteSettings;
 use App\Livewire\Admin\StudyAbroad;
 use App\Livewire\Admin\Venture;
@@ -51,11 +54,13 @@ Route::get('/study-abroad-detail', function () {
 
 Route::get('/study-abroad/{destination:slug}', [HomeController::class, 'studyAbroadDetail'])->name('study-abroad-detail');
 
-Route::get('/blog', function () {
-    return view('pages.blog');
-})->name('blog');
+Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
+Route::get('/blog/{post:slug}', [HomeController::class, 'blogDetail'])->name('blog.show');
 
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
+
+Route::get('/events', fn () => redirect(route('home') . '#events'))->name('events');
+Route::get('/events/{event}', [HomeController::class, 'eventDetail'])->name('events.show');
 
 Route::get('/book-appointment', [ContactController::class, 'appointment'])->name('book-appointment');
 Route::post('/book-appointment', [ContactController::class, 'submitAppointment'])->name('book-appointment.submit');
@@ -98,6 +103,8 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
 
         Route::get('/events', Event::class)->name('events.index');
 
+        Route::get('/blog-posts', BlogPosts::class)->name('blog-posts.index');
+
         Route::get('/gallery', Gallery::class)->name('gallery.index');
 
         Route::get('/courses', CourseManager::class)->name('courses.index');
@@ -112,6 +119,8 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
 
            // Home page sections
         Route::get('/home/about', HomeAbout::class)->name('home.about');
+        Route::get('/home/services', HomeServices::class)->name('home.services');
+        Route::get('/home/testimonials', HomeTestimonials::class)->name('home.testimonials');
 
          
 

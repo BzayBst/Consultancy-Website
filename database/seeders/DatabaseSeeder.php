@@ -28,6 +28,9 @@ class DatabaseSeeder extends Seeder
             WhyUsSeeder::class,
             CourseSeeder::class,
             HomeAboutSeeder::class,
+            HomeServiceSeeder::class,
+            HomeTestimonialSeeder::class,
+            BlogPostSeeder::class,
         ]);
     }
 }

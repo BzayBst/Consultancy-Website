@@ -61,6 +61,14 @@
                         class="{{ request()->routeIs('admin.home.about') ? 'active' : '' }}">
                         About Section
                     </a>
+                    <a href="{{ route('admin.home.services') }}"
+                        class="{{ request()->routeIs('admin.home.services') ? 'active' : '' }}">
+                        Core Services
+                    </a>
+                    <a href="{{ route('admin.home.testimonials') }}"
+                        class="{{ request()->routeIs('admin.home.testimonials') ? 'active' : '' }}">
+                        Testimonials
+                    </a>
                 </div>
             </div>
 
@@ -97,7 +105,8 @@
                 </div>
             </div>
 
-            <a href="#" class="">
+            <a href="{{ route('admin.blog-posts.index') }}"
+                class="{{ request()->routeIs('admin.blog-posts.index') ? 'active' : '' }}">
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
                 </svg>
