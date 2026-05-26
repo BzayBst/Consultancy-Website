@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\AppointmentPage;
 use App\Models\AppointmentSubmission;
+use App\Models\BranchOffice;
+use App\Models\ContactFaq;
 use App\Models\ContactPage;
 use App\Models\ContactSubmission;
 use Illuminate\Http\Request;
@@ -15,6 +17,9 @@ class ContactController extends Controller
     {
         return view('pages.contact', [
             'contactPage' => ContactPage::first(),
+            'headOffice' => $this->headOffice(),
+            'branchOffices' => BranchOffice::active()->ordered()->get()->map(fn (BranchOffice $branch) => $this->branchPayload($branch))->values(),
+            'contactFaqs' => ContactFaq::active()->ordered()->get(),
         ]);
     }
 
@@ -41,6 +46,9 @@ class ContactController extends Controller
     {
         return view('pages.book-appointment', [
             'appointmentPage' => AppointmentPage::first(),
+            'headOffice' => $this->headOffice(),
+            'branchOffices' => BranchOffice::active()->ordered()->get()->map(fn (BranchOffice $branch) => $this->branchPayload($branch))->values(),
+            'bookedSlots' => $this->bookedAppointmentSlots(),
         ]);
     }
 
@@ -62,6 +70,23 @@ class ContactController extends Controller
         ]);
 
         unset($data['consent']);
+
+        $alreadyBooked = AppointmentSubmission::query()
+            ->where('branch', $data['branch'])
+            ->whereDate('appointment_date', $data['appointment_date'])
+            ->where('appointment_time', $data['appointment_time'])
+            ->exists();
+
+        if ($alreadyBooked) {
+            $message = 'That time slot has just been booked. Please choose another time.';
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $message], 422);
+            }
+
+            return back()->withErrors(['appointment_time' => $message])->withInput();
+        }
+
         $data['reference'] = 'HASU-' . now()->format('ymd') . '-' . Str::upper(Str::random(4));
 
         $appointment = AppointmentSubmission::create($data);
@@ -74,5 +99,93 @@ class ContactController extends Controller
         }
 
         return back()->with('appointment_success', 'Your appointment has been booked. Reference: ' . $appointment->reference);
+    }
+
+    private function headOffice(): array
+    {
+        $phones = collect([
+            setting('contact_phone_landline'),
+            setting('contact_phone_primary'),
+            setting('contact_phone_secondary'),
+        ])->filter()->values();
+
+        $email = setting('contact_email_primary', 'info@hasuedu.com');
+        $address = setting('contact_address', 'Birendra Campus Gate, Bhairahawa-11, Rupandehi, Nepal');
+        $mapUrl = $this->mapSrc(setting('contact_map_embed'));
+
+        return [
+            'name' => 'Head Office',
+            'type' => 'hq',
+            'location_label' => $this->locationLabel($address),
+            'address' => $address,
+            'phone' => $phones->implode(' | '),
+            'phone_href' => $this->telHref($phones->first()),
+            'email' => $email,
+            'weekday_hours' => 'Sun-Fri 9AM-5PM',
+            'saturday_hours' => 'Sat 10AM-3PM',
+            'map_embed_url' => $mapUrl,
+            'map_link_url' => $mapUrl,
+        ];
+    }
+
+    private function branchPayload(BranchOffice $branch): array
+    {
+        return [
+            'name' => $branch->name,
+            'type' => 'branch',
+            'location_label' => $branch->location_label ?: $this->locationLabel($branch->address),
+            'address' => $branch->address,
+            'phone' => $branch->phone,
+            'phone_href' => $this->telHref($branch->phone),
+            'email' => $branch->email,
+            'weekday_hours' => $branch->weekday_hours,
+            'saturday_hours' => $branch->saturday_hours,
+            'map_embed_url' => $this->mapSrc($branch->map_embed_url),
+            'map_link_url' => $branch->map_link_url ?: $branch->map_embed_url,
+        ];
+    }
+
+    private function bookedAppointmentSlots(): array
+    {
+        return AppointmentSubmission::query()
+            ->whereDate('appointment_date', '>=', now()->toDateString())
+            ->get(['branch', 'appointment_date', 'appointment_time'])
+            ->groupBy(fn (AppointmentSubmission $item) => $item->branch.'|'.$item->appointment_date->format('Y-m-d'))
+            ->map(fn ($items) => $items->pluck('appointment_time')->values())
+            ->toArray();
+    }
+
+    private function mapSrc(?string $value): ?string
+    {
+        if (! $value) {
+            return null;
+        }
+
+        if (preg_match('/src=["\']([^"\']+)["\']/', $value, $matches)) {
+            return $matches[1];
+        }
+
+        return $value;
+    }
+
+    private function telHref(?string $value): ?string
+    {
+        if (! $value) {
+            return null;
+        }
+
+        $first = preg_split('/[|,\/]/', $value)[0] ?? $value;
+        $number = preg_replace('/[^+\d]/', '', $first);
+
+        return $number ?: null;
+    }
+
+    private function locationLabel(?string $address): ?string
+    {
+        if (! $address) {
+            return null;
+        }
+
+        return trim(collect(explode(',', $address))->take(-2)->implode(', '));
     }
 }

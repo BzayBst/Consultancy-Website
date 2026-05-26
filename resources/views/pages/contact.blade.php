@@ -3,6 +3,25 @@
 
 @php
   $contactPage = $contactPage ?? null;
+  $headOffice = $headOffice ?? [];
+  $branchOffices = collect($branchOffices ?? []);
+  $contactFaqs = collect($contactFaqs ?? []);
+  $offices = collect([$headOffice])->merge($branchOffices)->filter(fn ($office) => filled($office['name'] ?? null))->values();
+  $firstOffice = $offices->first() ?? [];
+  $primaryPhone = setting('contact_phone_primary') ?: setting('contact_phone_landline', '056-493528');
+  $secondaryPhone = setting('contact_phone_secondary');
+  $emailPrimary = setting('contact_email_primary', 'info@hasuedu.com');
+  $whatsappNumber = setting('social_whatsapp') ?: $primaryPhone;
+  $telPrimary = preg_replace('/[^+\d]/', '', $primaryPhone);
+  $whatsappHref = preg_replace('/[^+\d]/', '', $whatsappNumber);
+  $socialLinks = collect([
+    ['label' => 'Facebook', 'icon' => 'FB', 'class' => 'fb', 'url' => setting('social_facebook'), 'handle' => '@HASUEducational'],
+    ['label' => 'YouTube', 'icon' => 'YT', 'class' => 'yt', 'url' => setting('social_youtube'), 'handle' => 'HASU Edu Channel'],
+    ['label' => 'Instagram', 'icon' => 'IG', 'class' => 'ig', 'url' => setting('social_instagram'), 'handle' => '@hasu_educational'],
+    ['label' => 'LinkedIn', 'icon' => 'IN', 'class' => 'li', 'url' => setting('social_linkedin'), 'handle' => 'HASU Consultancy'],
+    ['label' => 'TikTok', 'icon' => 'TT', 'class' => 'ig', 'url' => setting('social_tiktok'), 'handle' => '@hasuedu'],
+    ['label' => 'WhatsApp', 'icon' => 'WA', 'class' => 'wa', 'url' => $whatsappHref ? 'https://wa.me/' . ltrim($whatsappHref, '+') : null, 'handle' => $whatsappNumber],
+  ])->filter(fn ($social) => filled($social['url']));
 @endphp
 
 @section('title', 'Contact Us – ' . setting('general_site_name', 'HASU Educational Consultancy'))
@@ -153,6 +172,7 @@ nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.1)}
 .branch-tab:hover{border-color:var(--blue);color:var(--blue)}
 .branch-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .branch-tab .tab-dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0}
+.branch-empty{width:100%;padding:14px 16px;border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px}
 
 /* map container */
 .map-wrap{border-radius:14px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:20px;position:relative;border:2px solid var(--border)}
@@ -272,23 +292,23 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
     <div class="page-hero-inner">
       <div class="fade-up">
         <div class="breadcrumb">
-          <a href="index.html">Home</a><span>›</span>
+          <a href="{{ route('home') }}">Home</a><span>›</span>
           <span style="color:rgba(255,255,255,.9)">Contact Us</span>
         </div>
         <h1 class="page-hero-title">{!! str_replace($contactPage?->hero_highlight ?: 'Touch', '<span>' . e($contactPage?->hero_highlight ?: 'Touch') . '</span>', e($contactPage?->hero_title ?: 'Get In Touch With HASU')) !!}</h1>
-        <p class="page-hero-sub">Have questions about studying abroad, visa processing, or our courses? Our counselors are ready to guide you — reach out anytime.</p>
+        <p class="page-hero-sub">{{ $contactPage?->hero_subtitle ?: 'Have questions about studying abroad, visa processing, or our courses? Our counselors are ready to guide you anytime.' }}</p>
         <div class="hero-quick-contacts">
-          <a href="tel:+97756493528" class="hero-qc">
+          <a href="tel:{{ $telPrimary }}" class="hero-qc">
             <div class="hero-qc-icon">📞</div>
-            <div class="hero-qc-text"><strong>Call Us</strong><span>056-493528</span></div>
+            <div class="hero-qc-text"><strong>Call Us</strong><span>{{ $primaryPhone }}</span></div>
           </a>
-          <a href="mailto:info@hasuedu.com" class="hero-qc">
+          <a href="mailto:{{ $emailPrimary }}" class="hero-qc">
             <div class="hero-qc-icon">✉️</div>
-            <div class="hero-qc-text"><strong>Email Us</strong><span>info@hasuedu.com</span></div>
+            <div class="hero-qc-text"><strong>Email Us</strong><span>{{ $emailPrimary }}</span></div>
           </a>
-          <a href="https://wa.me/9779853646493" target="_blank" class="hero-qc">
+          <a href="{{ $whatsappHref ? 'https://wa.me/' . ltrim($whatsappHref, '+') : 'tel:' . $telPrimary }}" target="_blank" class="hero-qc">
             <div class="hero-qc-icon">💬</div>
-            <div class="hero-qc-text"><strong>WhatsApp</strong><span>9853646493</span></div>
+            <div class="hero-qc-text"><strong>WhatsApp</strong><span>{{ $whatsappNumber }}</span></div>
           </a>
         </div>
       </div>
@@ -301,31 +321,34 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
   <div class="container">
     <div class="info-strip-inner">
       <div class="info-strip-item">
-        <div class="info-icon blue">📍</div>
+        {{-- <div class="info-icon blue">HQ</div> --}}
         <div class="info-text">
           <strong>Headquarters</strong>
-          <span>Birendra Campus Gate, Bhairahawa-11</span>
+          <span>{{ $headOffice['address'] ?? setting('contact_address', 'Birendra Campus Gate, Bhairahawa-11') }}</span>
         </div>
       </div>
       <div class="info-strip-item">
-        <div class="info-icon red">📞</div>
+        {{-- <div class="info-icon red">Tel</div> --}}
         <div class="info-text">
           <strong>Phone Numbers</strong>
-          <a href="tel:+97756493528">056-493528</a> &nbsp;|&nbsp; <a href="tel:+9779853646493">9853646493</a>
+          <a href="tel:{{ $telPrimary }}">{{ $primaryPhone }}</a>
+          @if($secondaryPhone)
+            &nbsp;|&nbsp; <a href="tel:{{ preg_replace('/[^+\d]/', '', $secondaryPhone) }}">{{ $secondaryPhone }}</a>
+          @endif
         </div>
       </div>
       <div class="info-strip-item">
-        <div class="info-icon blue">⏰</div>
+        {{-- <div class="info-icon blue">Hrs</div> --}}
         <div class="info-text">
           <strong>Working Hours</strong>
-          <span>Sun–Fri: 9:00 AM – 5:00 PM</span>
+          <span>{{ $headOffice['weekday_hours'] ?? 'Sun-Fri 9:00 AM - 5:00 PM' }}</span>
         </div>
       </div>
       <div class="info-strip-item">
-        <div class="info-icon navy">✉️</div>
+        {{-- <div class="info-icon navy">Email</div> --}}
         <div class="info-text">
           <strong>Email Address</strong>
-          <a href="mailto:info@hasuedu.com">info@hasuedu.com</a>
+          <a href="mailto:{{ $emailPrimary }}">{{ $emailPrimary }}</a>
         </div>
       </div>
     </div>
@@ -418,18 +441,13 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
 
         <!-- Branch Tabs -->
         <div class="branch-tabs" id="branchTabs">
-          <button class="branch-tab active" data-branch="0" onclick="switchBranch(0)">
-            <span class="tab-dot"></span> Bhairahawa HQ
-          </button>
-          <button class="branch-tab" data-branch="1" onclick="switchBranch(1)">
-            <span class="tab-dot"></span> Kathmandu
-          </button>
-          <button class="branch-tab" data-branch="2" onclick="switchBranch(2)">
-            <span class="tab-dot"></span> Pokhara
-          </button>
-          <button class="branch-tab" data-branch="3" onclick="switchBranch(3)">
-            <span class="tab-dot"></span> Chitwan
-          </button>
+          @forelse($offices as $index => $office)
+            <button class="branch-tab {{ $index === 0 ? 'active' : '' }}" data-branch="{{ $index }}" onclick="switchBranch({{ $index }})">
+              <span class="tab-dot"></span> {{ $office['name'] }}
+            </button>
+          @empty
+            <div class="branch-empty">Office details will be available soon.</div>
+          @endforelse
         </div>
 
         <!-- Map Container -->
@@ -437,7 +455,7 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
           <div class="map-loading-bar" id="mapLoadingBar"></div>
           <iframe
             id="branchMap"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.791!2d83.4498!3d27.5029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3996864f1f0f0f0f%3A0x0!2sBhairahawa%2C+Nepal!5e0!3m2!1sen!2snp!4v1700000000000!5m2!1sen!2snp"
+            src="{{ $firstOffice['map_embed_url'] ?? 'https://www.google.com/maps?q=' . urlencode($firstOffice['address'] ?? setting('contact_address', 'Nepal')) . '&output=embed' }}"
             allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade">
           </iframe>
@@ -460,32 +478,16 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
       <h2 class="section-title">{{ $contactPage?->faq_title ?: 'Frequently Asked Questions' }}</h2>
       <p class="section-sub" style="margin-bottom:0">{{ $contactPage?->faq_subtitle ?: 'Common questions from students and parents before reaching out to us.' }}</p>
     </div>
-    <div class="faq-grid">
-      <div class="faq-item fade-up" onclick="toggleFaq(this)">
-        <div class="faq-q"><span>How long does a free counseling session take?</span><div class="faq-toggle">+</div></div>
-        <div class="faq-a">Our free initial counseling session typically takes 30–45 minutes. We discuss your academic background, goals, and the best country/university options for you.</div>
+    @if($contactFaqs->isNotEmpty())
+      <div class="faq-grid">
+        @foreach($contactFaqs as $faq)
+          <div class="faq-item fade-up" style="transition-delay:{{ min($loop->index * .05, .25) }}s" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>{{ $faq->question }}</span><div class="faq-toggle">+</div></div>
+            <div class="faq-a">{{ $faq->answer }}</div>
+          </div>
+        @endforeach
       </div>
-      <div class="faq-item fade-up" style="transition-delay:.05s" onclick="toggleFaq(this)">
-        <div class="faq-q"><span>Do I need an appointment or can I walk in?</span><div class="faq-toggle">+</div></div>
-        <div class="faq-a">You are welcome to walk into any of our branches during working hours. However, booking an appointment in advance ensures you get dedicated time with a senior counselor.</div>
-      </div>
-      <div class="faq-item fade-up" style="transition-delay:.1s" onclick="toggleFaq(this)">
-        <div class="faq-q"><span>What documents do I need for the first consultation?</span><div class="faq-toggle">+</div></div>
-        <div class="faq-a">For your first visit, bring your academic transcripts, passport (if available), and any previous English or Japanese test scores. These help us give you the most accurate guidance.</div>
-      </div>
-      <div class="faq-item fade-up" style="transition-delay:.15s" onclick="toggleFaq(this)">
-        <div class="faq-q"><span>How much does your consultancy service cost?</span><div class="faq-toggle">+</div></div>
-        <div class="faq-a">The initial consultation is completely free. Service fees vary depending on the country and complexity of your application. We provide a full fee breakdown before any commitment.</div>
-      </div>
-      <div class="faq-item fade-up" style="transition-delay:.2s" onclick="toggleFaq(this)">
-        <div class="faq-q"><span>Can I contact you via WhatsApp or Viber?</span><div class="faq-toggle">+</div></div>
-        <div class="faq-a">Yes! You can reach us on WhatsApp and Viber at 9853646493. We typically respond within 1–2 hours during business hours.</div>
-      </div>
-      <div class="faq-item fade-up" style="transition-delay:.25s" onclick="toggleFaq(this)">
-        <div class="faq-q"><span>Do you offer online counseling sessions?</span><div class="faq-toggle">+</div></div>
-        <div class="faq-a">Absolutely. We offer Zoom and Google Meet counseling sessions for students outside Bhairahawa or Nepal. Book through our contact form or WhatsApp to schedule.</div>
-      </div>
-    </div>
+    @endif
   </div>
 </section>
 
@@ -499,26 +501,17 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
         <p>{{ $contactPage?->social_subtitle ?: 'Stay updated with the latest news, events, scholarship alerts, student success stories, and study abroad tips by following our social channels.' }}</p>
       </div>
       <div class="social-links-grid fade-right">
-        <a href="#" class="social-card fb">
-          <div class="sc-icon fb">📘</div>
-          <div class="sc-text"><strong>Facebook</strong><span>@HASUEducational</span></div>
-        </a>
-        <a href="#" class="social-card yt">
-          <div class="sc-icon yt">▶️</div>
-          <div class="sc-text"><strong>YouTube</strong><span>HASU Edu Channel</span></div>
-        </a>
-        <a href="#" class="social-card ig">
-          <div class="sc-icon ig">📸</div>
-          <div class="sc-text"><strong>Instagram</strong><span>@hasu_educational</span></div>
-        </a>
-        <a href="#" class="social-card li">
-          <div class="sc-icon li">💼</div>
-          <div class="sc-text"><strong>LinkedIn</strong><span>HASU Consultancy</span></div>
-        </a>
-        <a href="https://wa.me/9779853646493" class="social-card wa">
-          <div class="sc-icon wa">💬</div>
-          <div class="sc-text"><strong>WhatsApp</strong><span>9853646493</span></div>
-        </a>
+        @forelse($socialLinks as $social)
+          <a href="{{ $social['url'] }}" target="_blank" rel="noopener" class="social-card {{ $social['class'] }}">
+            <div class="sc-icon {{ $social['class'] }}">{{ $social['icon'] }}</div>
+            <div class="sc-text"><strong>{{ $social['label'] }}</strong><span>{{ $social['handle'] }}</span></div>
+          </a>
+        @empty
+          <a href="mailto:{{ $emailPrimary }}" class="social-card li">
+            <div class="sc-icon li">Mail</div>
+            <div class="sc-text"><strong>Email</strong><span>{{ $emailPrimary }}</span></div>
+          </a>
+        @endforelse
       </div>
     </div>
   </div>
@@ -577,34 +570,87 @@ const branches = [
   }
 ];
 
+const cmsBranches = @json($offices->values(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+if (cmsBranches.length) {
+  branches.splice(0, branches.length, ...cmsBranches.map((office) => ({
+    name: office.name || 'Office',
+    type: office.type || 'branch',
+    emoji: office.type === 'hq' ? 'HQ' : 'BR',
+    color: office.type === 'hq'
+      ? 'background:linear-gradient(135deg,var(--blue-light),var(--blue-light))'
+      : 'background:linear-gradient(135deg,#f8fafc,#eef2ff)',
+    badge: office.type === 'hq'
+      ? '<span class="branch-badge badge-hq">Head Office</span>'
+      : '<span class="branch-badge badge-branch">Branch Office</span>',
+    address: office.address || office.location_label || '',
+    phone: office.phone || '',
+    phoneHref: office.phone_href || '',
+    email: office.email || '',
+    locationLabel: office.location_label || '',
+    hours: {
+      weekday: office.weekday_hours || 'Sun-Fri 9AM-5PM',
+      saturday: office.saturday_hours || 'By appointment',
+    },
+    mapSrc: office.map_embed_url || `https://www.google.com/maps?q=${encodeURIComponent(office.address || office.name || 'Nepal')}&output=embed`,
+    mapLink: office.map_link_url || office.map_embed_url || '',
+  })));
+}
+
 let currentBranch = 0;
 
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }[char]));
+}
+
 function renderBranchDetail(b) {
+  const phoneLink = b.phoneHref || b.phone.replace(/\s/g,'');
+  const safeName = escapeHtml(b.name);
+  const safeBadge = b.badge;
+  const safeLocation = escapeHtml(b.locationLabel || b.address.split(',').slice(-2).join(',').trim());
+  const safeAddress = escapeHtml(b.address);
+  const safePhone = escapeHtml(b.phone);
+  const safeEmail = escapeHtml(b.email);
+  const safeWeekdayHours = escapeHtml(b.hours.weekday);
+  const safeSaturdayHours = escapeHtml(b.hours.saturday);
+  const mapLink = b.mapLink ? `
+      <div class="branch-info-row">
+        <div class="bri-icon">Map</div>
+        <div class="bri-text"><strong>Map Link</strong><a href="${escapeHtml(b.mapLink)}" target="_blank" rel="noopener">Open in Google Maps</a></div>
+      </div>
+    ` : '';
+
   document.getElementById('branchDetail').innerHTML = `
     <div class="branch-detail-header">
       <div class="branch-flag" style="${b.color}">${b.emoji}</div>
       <div class="branch-name-wrap">
-        <h4>${b.name} ${b.badge}</h4>
-        <span>${b.address.split(',').slice(-2).join(',').trim()}</span>
+        <h4>${safeName} ${safeBadge}</h4>
+        <span>${safeLocation}</span>
       </div>
     </div>
     <div class="branch-info-list">
       <div class="branch-info-row">
-        <div class="bri-icon">📍</div>
-        <div class="bri-text"><strong>Address</strong><span>${b.address}</span></div>
+        <div class="bri-icon">Adr</div>
+        <div class="bri-text"><strong>Address</strong><span>${safeAddress}</span></div>
       </div>
       <div class="branch-info-row">
-        <div class="bri-icon">📞</div>
-        <div class="bri-text"><strong>Phone</strong><a href="tel:${b.phone.replace(/\s/g,'')}">${b.phone}</a></div>
+        <div class="bri-icon">Tel</div>
+        <div class="bri-text"><strong>Phone</strong><a href="tel:${escapeHtml(phoneLink)}">${safePhone}</a></div>
       </div>
       <div class="branch-info-row">
-        <div class="bri-icon">✉️</div>
-        <div class="bri-text"><strong>Email</strong><a href="mailto:${b.email}">${b.email}</a></div>
+        <div class="bri-icon">Mail</div>
+        <div class="bri-text"><strong>Email</strong><a href="mailto:${safeEmail}">${safeEmail}</a></div>
       </div>
+      ${mapLink}
     </div>
     <div class="branch-hours">
-      <div class="hours-item"><strong>Weekdays</strong><span>${b.hours.weekday}</span></div>
-      <div class="hours-item"><strong>Saturday</strong><span>${b.hours.saturday}</span></div>
+      <div class="hours-item"><strong>Weekdays</strong><span>${safeWeekdayHours}</span></div>
+      <div class="hours-item"><strong>Saturday</strong><span>${safeSaturdayHours}</span></div>
     </div>
   `;
 }

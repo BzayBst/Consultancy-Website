@@ -3,10 +3,22 @@
 
 @php
   $appointmentPage = $appointmentPage ?? null;
+  $headOffice = $headOffice ?? [];
+  $branchOffices = collect($branchOffices ?? []);
+  $bookingBranches = collect([$headOffice])->merge($branchOffices)->filter(fn ($office) => filled($office['name'] ?? null))->values();
+  $firstBranch = $bookingBranches->first() ?? [];
+  $bookedSlots = $bookedSlots ?? [];
+  $branchSummary = $bookingBranches->pluck('location_label')->filter()->take(4)->implode(', ');
+  $primaryPhone = setting('contact_phone_primary') ?: setting('contact_phone_landline', '056-493528');
+  $secondaryPhone = setting('contact_phone_secondary');
+  $emailPrimary = setting('contact_email_primary', 'info@hasuedu.com');
+  $whatsappNumber = setting('social_whatsapp') ?: $primaryPhone;
+  $telPrimary = preg_replace('/[^+\d]/', '', $primaryPhone);
+  $whatsappHref = preg_replace('/[^+\d]/', '', $whatsappNumber);
 @endphp
 
 @section('title', 'Book a Consultation – ' . setting('general_site_name', 'HASU Educational Consultancy'))
-@section('meta_description', 'Book a free in-person consultation at any HASU Educational Consultancy branch — Bhairahawa, Kathmandu, Pokhara, or Chitwan.')
+@section('meta_description', 'Book a free in-person consultation at a HASU Educational Consultancy branch.')
 
 @push('head')
 <style>
@@ -293,17 +305,17 @@ input,textarea,select,button{font-family:inherit}
         <h1 class="page-hero-title">{!! str_replace($appointmentPage?->hero_highlight ?: 'Free', '<span>' . e($appointmentPage?->hero_highlight ?: 'Free') . '</span>', e($appointmentPage?->hero_title ?: 'Book Your Free Consultation')) !!}</h1>
         <p class="page-hero-sub">{{ $appointmentPage?->hero_subtitle ?: 'Schedule a visit at your nearest HASU branch. Our expert counselors will guide you on universities, visas, and the best study abroad pathway for you.' }}</p>
         <div class="hero-quick-contacts">
-          <a href="tel:+97756493528" class="hero-qc">
+          <a href="tel:{{ $telPrimary }}" class="hero-qc">
             <div class="hero-qc-icon">📞</div>
-            <div class="hero-qc-text"><strong>Call Us</strong><span>056-493528</span></div>
+            <div class="hero-qc-text"><strong>Call Us</strong><span>{{ $primaryPhone }}</span></div>
           </a>
-          <a href="mailto:info@hasuedu.com" class="hero-qc">
+          <a href="mailto:{{ $emailPrimary }}" class="hero-qc">
             <div class="hero-qc-icon">✉️</div>
-            <div class="hero-qc-text"><strong>Email Us</strong><span>info@hasuedu.com</span></div>
+            <div class="hero-qc-text"><strong>Email Us</strong><span>{{ $emailPrimary }}</span></div>
           </a>
-          <a href="https://wa.me/9779853646493" target="_blank" class="hero-qc">
+          <a href="{{ $whatsappHref ? 'https://wa.me/' . ltrim($whatsappHref, '+') : 'tel:' . $telPrimary }}" target="_blank" class="hero-qc">
             <div class="hero-qc-icon">💬</div>
-            <div class="hero-qc-text"><strong>WhatsApp</strong><span>9853646493</span></div>
+            <div class="hero-qc-text"><strong>WhatsApp</strong><span>{{ $whatsappNumber }}</span></div>
           </a>
         </div>
       </div>
@@ -332,8 +344,8 @@ input,textarea,select,button{font-family:inherit}
       <div class="info-strip-item">
         <div class="info-icon red">📍</div>
         <div class="info-text">
-          <strong>4 Branch Locations</strong>
-          <span>Bhairahawa, Kathmandu, Pokhara, Chitwan</span>
+          <strong>{{ $bookingBranches->count() }} Branch {{ $bookingBranches->count() === 1 ? 'Location' : 'Locations' }}</strong>
+          <span>{{ $branchSummary ?: 'Choose your nearest office' }}</span>
         </div>
       </div>
       <div class="info-strip-item">
@@ -381,46 +393,20 @@ input,textarea,select,button{font-family:inherit}
         <div class="step-panel active" id="step1">
           <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:14px;">Select your preferred branch</div>
           <div class="branch-cards" id="branchCards">
-            <div class="branch-card selected" data-branch="0">
-              <div class="branch-card-header">
-                <div class="bc-icon">🏢</div>
-                <div>
-                  <div class="bc-name">Bhairahawa <span class="bc-badge badge-hq">HQ</span></div>
+            @forelse($bookingBranches as $index => $branch)
+              <div class="branch-card {{ $index === 0 ? 'selected' : '' }}" data-branch="{{ $index }}">
+                <div class="branch-card-header">
+                  <div class="bc-icon">{{ ($branch['type'] ?? null) === 'hq' ? 'HQ' : 'BR' }}</div>
+                  <div>
+                    <div class="bc-name">{{ $branch['name'] }} <span class="bc-badge {{ ($branch['type'] ?? null) === 'hq' ? 'badge-hq' : 'badge-branch' }}">{{ ($branch['type'] ?? null) === 'hq' ? 'HQ' : 'Branch' }}</span></div>
+                  </div>
                 </div>
+                <div class="bc-address">{{ $branch['address'] ?: $branch['location_label'] }}</div>
+                <div class="bc-hours">{{ $branch['weekday_hours'] ?: 'Sun-Fri 9AM-5PM' }} @if(!empty($branch['saturday_hours'])) · {{ $branch['saturday_hours'] }} @endif</div>
               </div>
-              <div class="bc-address">Birendra Campus Gate, Bhairahawa-11, Rupandehi</div>
-              <div class="bc-hours">⏰ Sun–Fri 9AM–5PM · Sat 10AM–3PM</div>
-            </div>
-            <div class="branch-card" data-branch="1">
-              <div class="branch-card-header">
-                <div class="bc-icon">🏙️</div>
-                <div>
-                  <div class="bc-name">Kathmandu <span class="bc-badge badge-branch">Branch</span></div>
-                </div>
-              </div>
-              <div class="bc-address">New Baneshwor, Kathmandu, Bagmati Province</div>
-              <div class="bc-hours">⏰ Sun–Fri 9AM–5PM · Sat 10AM–2PM</div>
-            </div>
-            <div class="branch-card" data-branch="2">
-              <div class="branch-card-header">
-                <div class="bc-icon">⛰️</div>
-                <div>
-                  <div class="bc-name">Pokhara <span class="bc-badge badge-branch">Branch</span></div>
-                </div>
-              </div>
-              <div class="bc-address">Lakeside, Pokhara-8, Kaski, Gandaki Province</div>
-              <div class="bc-hours">⏰ Sun–Fri 9AM–5PM · Sat 10AM–2PM</div>
-            </div>
-            <div class="branch-card" data-branch="3">
-              <div class="branch-card-header">
-                <div class="bc-icon">🌿</div>
-                <div>
-                  <div class="bc-name">Chitwan <span class="bc-badge badge-branch">Branch</span></div>
-                </div>
-              </div>
-              <div class="bc-address">Narayangadh, Bharatpur-10, Chitwan</div>
-              <div class="bc-hours">⏰ Sun–Fri 9AM–5PM · Sat 10AM–2PM</div>
-            </div>
+            @empty
+              <div class="no-slots">No active branch offices are available for booking right now.</div>
+            @endforelse
           </div>
           <div class="step-actions">
             <span></span>
@@ -630,13 +616,13 @@ input,textarea,select,button{font-family:inherit}
             <h4>Branch Location</h4>
             <div class="mini-map-wrap">
               <iframe id="sideMap"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56519.23!2d83.38!3d27.505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3996864c32d4b3f1%3A0xf1eb7a94dba73b72!2sBhairahawa%2C%20Rupandehi!5e0!3m2!1sen!2snp!4v1700000000001!5m2!1sen!2snp"
+                src="{{ $firstBranch['map_embed_url'] ?? 'https://www.google.com/maps?q=' . urlencode($firstBranch['address'] ?? setting('contact_address', 'Nepal')) . '&output=embed' }}"
                 allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade">
               </iframe>
             </div>
-            <div class="map-branch-name" id="mapBranchName">🏢 Bhairahawa Headquarters</div>
-            <div class="map-branch-addr" id="mapBranchAddr">Birendra Campus Gate, Bhairahawa-11, Rupandehi</div>
+            <div class="map-branch-name" id="mapBranchName">{{ $firstBranch['name'] ?? 'Branch Location' }}</div>
+            <div class="map-branch-addr" id="mapBranchAddr">{{ $firstBranch['address'] ?? '' }}</div>
           </div>
 
           {{-- What to Bring --}}
@@ -770,6 +756,19 @@ const branches = [
   }
 ];
 
+const cmsBranches = @json($bookingBranches->values(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+if (cmsBranches.length) {
+  branches.splice(0, branches.length, ...cmsBranches.map((branch) => ({
+    name: branch.name || 'Branch Office',
+    short: branch.location_label || branch.name || 'Branch',
+    emoji: branch.type === 'hq' ? 'HQ' : 'BR',
+    address: branch.address || branch.location_label || '',
+    mapSrc: branch.map_embed_url || `https://www.google.com/maps?q=${encodeURIComponent(branch.address || branch.name || 'Nepal')}&output=embed`,
+    schedule: { closedDays: [], busySlots: [] }
+  })));
+}
+
+const BOOKED_SLOTS = @json($bookedSlots, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
 const ALL_SLOTS = [
   '9:00 AM','10:00 AM','11:00 AM','12:00 PM',
   '2:00 PM','3:00 PM','4:00 PM','5:00 PM'
@@ -873,17 +872,16 @@ function renderCal() {
     const date = new Date(calYear, calMonth, d);
     const dow  = date.getDay();
     const past = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const closed = branch.schedule.closedDays.includes(dow);
 
     el.className = 'cal-day';
     el.textContent = d;
 
     if (dow === 0) el.classList.add('sunday');
-    if (past || closed) { el.classList.add('past'); }
+    if (past) { el.classList.add('past'); }
     if (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear()) el.classList.add('today');
     if (selectedDate && selectedDate.d === d && selectedDate.m === calMonth && selectedDate.y === calYear) el.classList.add('selected');
 
-    if (!past && !closed) el.addEventListener('click', () => pickDate(d, el));
+    if (!past) el.addEventListener('click', () => pickDate(d, el));
     grid.appendChild(el);
   }
 }
@@ -919,10 +917,12 @@ function renderSlots() {
   const container = document.getElementById('timeSlots');
   container.innerHTML = '';
   const branch = branches[selectedBranch];
+  const dateValue = selectedDate ? `${selectedDate.y}-${String(selectedDate.m + 1).padStart(2, '0')}-${String(selectedDate.d).padStart(2, '0')}` : '';
+  const bookedForDate = BOOKED_SLOTS[`${branch.name}|${dateValue}`] || [];
 
   ALL_SLOTS.forEach((s, i) => {
     const el  = document.createElement('div');
-    const busy = branch.schedule.busySlots.includes(i);
+    const busy = bookedForDate.includes(s);
     el.className = 'slot' + (busy ? ' disabled' : '');
     el.innerHTML = busy ? s + '<span>Booked</span>' : s;
     if (!busy) el.addEventListener('click', () => pickSlot(s, el));
