@@ -19,7 +19,7 @@
     {{-- ── Sidebar ──────────────────────────────────────────────── --}}
     <aside class="admin-sidebar" id="sidebar">
         <div class="sidebar-logo">
-            <img src="{{ asset('logo.png') }}" alt="HASU">
+            <img src="{{ Storage::url(setting('general_logo')) }}" alt="HASU">
             <span>Admin</span>
         </div>
 
@@ -68,6 +68,10 @@
                     <a href="{{ route('admin.home.testimonials') }}"
                         class="{{ request()->routeIs('admin.home.testimonials') ? 'active' : '' }}">
                         Testimonials
+                    </a>
+                    <a href="{{ route('admin.home.popup-banners') }}"
+                        class="{{ request()->routeIs('admin.home.popup-banners') ? 'active' : '' }}">
+                        Popup Banners
                     </a>
                 </div>
             </div>
@@ -137,7 +141,13 @@
                 </svg>
                 Contact CMS
             </a>
-
+              <a href="{{ route('admin.ventures.index') }}"
+                class="{{ request()->routeIs('admin.ventures.index') ? 'active' : '' }}">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
+                </svg>
+                Ventures
+            </a>
             <a href="{{ route('admin.study-abroad.index') }}"
                 class="{{ request()->routeIs('admin.study-abroad.index') ? 'active' : '' }}">
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -266,9 +276,8 @@
         }
 
         .sidebar-logo img {
-            height: 36px;
+            height: 46px;
             width: auto;
-            filter: brightness(0) invert(1);
             object-fit: contain;
         }
 

@@ -181,9 +181,8 @@ body.admin-auth-body {
 }
 
 .auth-logo img {
-    height: 64px;
+    height: 84px;
     width: auto;
-    filter: brightness(0) invert(1);
     object-fit: contain;
 }
 

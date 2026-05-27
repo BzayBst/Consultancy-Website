@@ -16,6 +16,7 @@ use App\Livewire\Admin\Event;
 use App\Livewire\Admin\Gallery;
 use App\Livewire\Admin\Hero\HeroSlides;
 use App\Livewire\Admin\Home\HomeAbout;
+use App\Livewire\Admin\Home\HomePopupBanners;
 use App\Livewire\Admin\Home\HomeServices;
 use App\Livewire\Admin\Home\HomeTestimonials;
 use App\Livewire\Admin\Settings\SiteSettings;
@@ -121,6 +122,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
         Route::get('/home/about', HomeAbout::class)->name('home.about');
         Route::get('/home/services', HomeServices::class)->name('home.services');
         Route::get('/home/testimonials', HomeTestimonials::class)->name('home.testimonials');
+        Route::get('/home/popup-banners', HomePopupBanners::class)->name('home.popup-banners');
 
          
 

@@ -371,10 +371,100 @@
     btn2-link="{{ route('about') }}"
 />
 
+@if(($homePopupBanners ?? collect())->isNotEmpty())
+<div class="home-popup" id="homePopup" aria-hidden="true">
+  <div class="home-popup-backdrop" data-popup-close></div>
+  <div class="home-popup-dialog" role="dialog" aria-modal="true" aria-label="Home page announcement">
+    <button type="button" class="home-popup-close" data-popup-close aria-label="Close popup">x</button>
+    <div class="home-popup-frame">
+      @foreach($homePopupBanners as $banner)
+        <a href="{{ $banner->link_url ?: '#' }}" class="home-popup-slide {{ $loop->first ? 'active' : '' }}" data-popup-slide="{{ $loop->index }}" @if($banner->link_url) target="_blank" rel="noopener" @else onclick="return false" @endif>
+          <img src="{{ $banner->image_url }}" alt="{{ $banner->title ?: 'Announcement banner' }}">
+        </a>
+      @endforeach
+    </div>
+    @if($homePopupBanners->count() > 1)
+      <button type="button" class="home-popup-nav prev" id="homePopupPrev" aria-label="Previous banner">‹</button>
+      <button type="button" class="home-popup-nav next" id="homePopupNext" aria-label="Next banner">›</button>
+      <div class="home-popup-dots">
+        @foreach($homePopupBanners as $banner)
+          <button type="button" class="{{ $loop->first ? 'active' : '' }}" data-popup-dot="{{ $loop->index }}" aria-label="Show banner {{ $loop->iteration }}"></button>
+        @endforeach
+      </div>
+    @endif
+  </div>
+</div>
+
+<style>
+.home-popup{position:fixed;inset:0;z-index:5000;display:none;align-items:center;justify-content:center;padding:22px}
+.home-popup.show{display:flex}
+.home-popup-backdrop{position:absolute;inset:0;background:rgba(9,15,55,.72);backdrop-filter:blur(3px)}
+.home-popup-dialog{position:relative;width:min(92vw,760px);max-height:88vh;border-radius:10px;background:#fff;box-shadow:0 28px 90px rgba(0,0,0,.35);overflow:hidden}
+.home-popup-close{position:absolute;top:10px;right:10px;z-index:4;width:34px;height:34px;border:none;border-radius:50%;background:rgba(13,21,96,.88);color:#fff;font-size:18px;font-weight:800;cursor:pointer;line-height:1}
+.home-popup-frame{position:relative;background:#f8fafc}
+.home-popup-slide{display:none}
+.home-popup-slide.active{display:block}
+.home-popup-slide img{width:100%;max-height:82vh;object-fit:contain;display:block}
+.home-popup-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:38px;height:48px;border:none;border-radius:8px;background:rgba(13,21,96,.82);color:#fff;font-size:30px;line-height:1;cursor:pointer}
+.home-popup-nav.prev{left:12px}
+.home-popup-nav.next{right:12px}
+.home-popup-dots{position:absolute;left:0;right:0;bottom:12px;z-index:3;display:flex;justify-content:center;gap:8px}
+.home-popup-dots button{width:9px;height:9px;border-radius:999px;border:none;background:rgba(255,255,255,.65);cursor:pointer}
+.home-popup-dots button.active{width:24px;background:#cc2222}
+@media(max-width:560px){.home-popup{padding:14px}.home-popup-dialog{width:100%;border-radius:8px}.home-popup-nav{width:32px;height:42px;font-size:24px}}
+</style>
+@endif
+
 @endsection
 
 @push('scripts')
 <script>
+// Home popup banner
+(function () {
+  const popup = document.getElementById('homePopup');
+  if (!popup) return;
+
+  const slides = popup.querySelectorAll('[data-popup-slide]');
+  const dots = popup.querySelectorAll('[data-popup-dot]');
+  const prev = document.getElementById('homePopupPrev');
+  const next = document.getElementById('homePopupNext');
+  let current = 0;
+
+  function show(index) {
+    current = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => slide.classList.toggle('active', i === current));
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === current));
+  }
+
+  function closePopup() {
+    popup.classList.remove('show');
+    popup.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    sessionStorage.setItem('homePopupSeen', '1');
+  }
+
+  function openPopup() {
+    popup.classList.add('show');
+    popup.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  if (!sessionStorage.getItem('homePopupSeen')) {
+    window.setTimeout(openPopup, 450);
+  }
+
+  popup.querySelectorAll('[data-popup-close]').forEach(el => el.addEventListener('click', closePopup));
+  prev?.addEventListener('click', () => show(current - 1));
+  next?.addEventListener('click', () => show(current + 1));
+  dots.forEach(dot => dot.addEventListener('click', () => show(parseInt(dot.dataset.popupDot, 10))));
+  document.addEventListener('keydown', event => {
+    if (!popup.classList.contains('show')) return;
+    if (event.key === 'Escape') closePopup();
+    if (event.key === 'ArrowLeft') show(current - 1);
+    if (event.key === 'ArrowRight') show(current + 1);
+  });
+})();
+
 // ── Hero Slider ──────────────────────────────────────────────────────
 (function () {
   const textSlides   = document.querySelectorAll('.hero-text-slide');

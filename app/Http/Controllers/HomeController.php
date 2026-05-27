@@ -10,6 +10,7 @@ use App\Models\BlogPost;
 use App\Models\StudyAbroadDestination;
 use App\Models\StudyAbroadPage;
 use App\Models\HomeService;
+use App\Models\HomePopupBanner;
 use App\Models\HomeTestimonial;
 use App\Models\Venture;
 use App\Services\AboutService;
@@ -47,6 +48,7 @@ class HomeController extends Controller
                 ->take(4)
                 ->values(),
             'latestBlogPosts' => BlogPost::active()->published()->ordered()->take(3)->get(),
+            'homePopupBanners' => HomePopupBanner::active()->ordered()->get(),
         ]);
     }
 
