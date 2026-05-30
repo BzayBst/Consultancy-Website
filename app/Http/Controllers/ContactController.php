@@ -10,6 +10,7 @@ use App\Models\ContactPage;
 use App\Models\ContactSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class ContactController extends Controller
 {
@@ -25,6 +26,8 @@ class ContactController extends Controller
 
     public function submitContact(Request $request)
     {
+        $this->guardAgainstBotSubmission($request);
+
         $data = $request->validate([
             'first_name' => ['required', 'string', 'max:120'],
             'last_name' => ['required', 'string', 'max:120'],
@@ -54,6 +57,8 @@ class ContactController extends Controller
 
     public function submitAppointment(Request $request)
     {
+        $this->guardAgainstBotSubmission($request);
+
         $data = $request->validate([
             'branch' => ['required', 'string', 'max:160'],
             'appointment_date' => ['required', 'date'],
@@ -126,6 +131,23 @@ class ContactController extends Controller
             'map_embed_url' => $mapUrl,
             'map_link_url' => $mapUrl,
         ];
+    }
+
+    private function guardAgainstBotSubmission(Request $request): void
+    {
+        $startedAt = (int) $request->input('form_started_at', 0);
+        $elapsed = now()->timestamp - $startedAt;
+
+        if (
+            filled($request->input('company_website'))
+            || $startedAt <= 0
+            || $elapsed < 3
+            || $elapsed > 60 * 60 * 4
+        ) {
+            throw ValidationException::withMessages([
+                'form' => 'Please wait a moment and try submitting the form again.',
+            ]);
+        }
     }
 
     private function branchPayload(BranchOffice $branch): array

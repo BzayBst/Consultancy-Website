@@ -366,6 +366,11 @@ input,textarea,select,button{font-family:inherit}
 
       {{-- ===== BOOKING FORM CARD ===== --}}
       <div class="booking-card">
+        <div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" aria-hidden="true">
+          <label for="company_website">Company website</label>
+          <input type="text" id="company_website" tabindex="-1" autocomplete="off">
+        </div>
+        <input type="hidden" id="form_started_at" value="{{ now()->timestamp }}">
         <h3>{{ $appointmentPage?->form_title ?: 'Schedule Your Visit' }}</h3>
         <p>{{ $appointmentPage?->form_subtitle ?: 'Complete the steps below to book your in-person consultation at any HASU branch.' }}</p>
 
@@ -1027,7 +1032,9 @@ async function handleSubmit() {
         destination: document.getElementById('destination').value,
         service: document.getElementById('service').value,
         notes: document.getElementById('notes').value,
-        consent: document.getElementById('consent').checked ? 1 : ''
+        consent: document.getElementById('consent').checked ? 1 : '',
+        company_website: document.getElementById('company_website').value,
+        form_started_at: document.getElementById('form_started_at').value
       })
     });
 

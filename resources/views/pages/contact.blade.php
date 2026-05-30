@@ -374,6 +374,11 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
 
         <form id="contactForm" method="POST" action="{{ route('contact.submit') }}">
           @csrf
+          <div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" aria-hidden="true">
+            <label for="company_website">Company website</label>
+            <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+          </div>
+          <input type="hidden" name="form_started_at" value="{{ now()->timestamp }}">
           <div class="form-row">
             <div class="form-group">
               <label>First Name *</label>

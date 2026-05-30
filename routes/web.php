@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VentureController;
 use App\Livewire\Admin\About\AboutPage;
 use App\Livewire\Admin\About\CoreValues;
@@ -9,11 +9,12 @@ use App\Livewire\Admin\About\Team;
 use App\Livewire\Admin\About\WhyUs;
 use App\Livewire\Admin\Auth\Login;
 use App\Livewire\Admin\BlogPosts;
-use App\Livewire\Admin\CourseManager;
 use App\Livewire\Admin\ContactCms;
+use App\Livewire\Admin\CourseManager;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Event;
 use App\Livewire\Admin\Gallery;
+use App\Livewire\Admin\LeadManager;
 use App\Livewire\Admin\Hero\HeroSlides;
 use App\Livewire\Admin\Home\HomeAbout;
 use App\Livewire\Admin\Home\HomePopupBanners;
@@ -22,6 +23,7 @@ use App\Livewire\Admin\Home\HomeTestimonials;
 use App\Livewire\Admin\Settings\SiteSettings;
 use App\Livewire\Admin\StudyAbroad;
 use App\Livewire\Admin\Venture;
+use App\Models\StudyAbroadDestination;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -31,12 +33,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
-Route::post('/contact', [ContactController::class, 'submitContact'])->name('contact.submit');
+Route::post('/contact', [ContactController::class, 'submitContact'])
+    ->middleware('throttle:contact-form')
+    ->name('contact.submit');
 
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
-Route::get('/ventures',          [VentureController::class, 'index'])->name('ventures');
-Route::get('/ventures/{slug}',   [VentureController::class, 'show'])->name('ventures.show');
+Route::get('/ventures', [VentureController::class, 'index'])->name('ventures');
+Route::get('/ventures/{slug}', [VentureController::class, 'show'])->name('ventures.show');
 
 Route::get('/courses', [HomeController::class, 'courses'])->name('courses');
 
@@ -46,7 +50,7 @@ Route::get('/courses/{course:slug}', [HomeController::class, 'courseDetail'])->n
 Route::get('/study-abroad', [HomeController::class, 'studyAbroad'])->name('study-abroad');
 
 Route::get('/study-abroad-detail', function () {
-    $destination = \App\Models\StudyAbroadDestination::active()->ordered()->first();
+    $destination = StudyAbroadDestination::active()->ordered()->first();
 
     return $destination
         ? redirect()->route('study-abroad-detail', $destination->slug)
@@ -60,11 +64,13 @@ Route::get('/blog/{post:slug}', [HomeController::class, 'blogDetail'])->name('bl
 
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
-Route::get('/events', fn () => redirect(route('home') . '#events'))->name('events');
+Route::get('/events', fn () => redirect(route('home').'#events'))->name('events');
 Route::get('/events/{event}', [HomeController::class, 'eventDetail'])->name('events.show');
 
 Route::get('/book-appointment', [ContactController::class, 'appointment'])->name('book-appointment');
-Route::post('/book-appointment', [ContactController::class, 'submitAppointment'])->name('book-appointment.submit');
+Route::post('/book-appointment', [ContactController::class, 'submitAppointment'])
+    ->middleware('throttle:appointment-form')
+    ->name('book-appointment.submit');
 
 /*
 |--------------------------------------------------------------------------
@@ -97,7 +103,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
 
         Route::get('/about-page', AboutPage::class)->name('about-page');
 
-         // About page sections
+        // About page sections
         Route::get('/about-page/why-us', WhyUs::class)->name('about-page.why-us');
 
         Route::get('/teams', Team::class)->name('teams.index');
@@ -114,17 +120,17 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
 
         Route::get('/study-abroad', StudyAbroad::class)->name('study-abroad.index');
 
-         Route::get('/about/core-values', CoreValues::class)->name('about.core-values');
+        Route::get('/about/core-values', CoreValues::class)->name('about.core-values');
 
-         Route::get('ventures', Venture::class)->name('ventures.index');
+        Route::get('ventures', Venture::class)->name('ventures.index');
 
-           // Home page sections
+        // Home page sections
         Route::get('/home/about', HomeAbout::class)->name('home.about');
         Route::get('/home/services', HomeServices::class)->name('home.services');
         Route::get('/home/testimonials', HomeTestimonials::class)->name('home.testimonials');
         Route::get('/home/popup-banners', HomePopupBanners::class)->name('home.popup-banners');
 
-         
+        Route::get('/leads', LeadManager::class)->name('leads');
 
         // Logout (POST to prevent CSRF-free logouts)
         Route::post('/logout', function () {

@@ -24,6 +24,8 @@ class Gallery extends Component
 
     public string $title = '';
     public string $category = 'classes';
+    public string $media_type = 'image';
+    public string $link_url = '';
     public string $alt_text = '';
     public int $sort_order = 0;
     public bool $is_active = true;
@@ -47,6 +49,8 @@ class Gallery extends Component
         return [
             'title' => ['required', 'string', 'max:150'],
             'category' => ['required', 'string', 'max:60'],
+            'media_type' => ['required', 'in:image,youtube,facebook'],
+            'link_url' => ['nullable', 'required_unless:media_type,image', 'url', 'max:2048'],
             'alt_text' => ['nullable', 'string', 'max:180'],
             'sort_order' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],
@@ -85,6 +89,8 @@ class Gallery extends Component
         $this->editingId = $image->id;
         $this->title = $image->title;
         $this->category = $image->category;
+        $this->media_type = $image->media_type ?? 'image';
+        $this->link_url = $image->link_url ?? '';
         $this->alt_text = $image->alt_text ?? '';
         $this->sort_order = $image->sort_order;
         $this->is_active = $image->is_active;
@@ -105,6 +111,8 @@ class Gallery extends Component
         $data = [
             'title' => $this->title,
             'category' => Str::slug($this->category),
+            'media_type' => $this->media_type,
+            'link_url' => $this->media_type === 'image' ? null : $this->link_url,
             'alt_text' => $this->alt_text ?: null,
             'sort_order' => $this->sort_order,
             'is_active' => $this->is_active,
@@ -120,10 +128,10 @@ class Gallery extends Component
 
         if ($this->isEdit) {
             GalleryImage::withTrashed()->findOrFail($this->editingId)->update($data);
-            $message = 'Gallery image updated successfully.';
+            $message = 'Gallery item updated successfully.';
         } else {
             GalleryImage::create($data);
-            $message = 'Gallery image added successfully.';
+            $message = 'Gallery item added successfully.';
         }
 
         $this->closeModal();
@@ -154,7 +162,7 @@ class Gallery extends Component
 
         GalleryImage::findOrFail($this->confirmingDeleteId)->delete();
         $this->confirmingDeleteId = null;
-        session()->flash('success', 'Gallery image moved to trash.');
+        session()->flash('success', 'Gallery item moved to trash.');
     }
 
     public function confirmRestore(int $id): void
@@ -175,7 +183,7 @@ class Gallery extends Component
 
         GalleryImage::withTrashed()->findOrFail($this->confirmingRestoreId)->restore();
         $this->confirmingRestoreId = null;
-        session()->flash('success', 'Gallery image restored.');
+        session()->flash('success', 'Gallery item restored.');
     }
 
     private function resetForm(): void
@@ -184,6 +192,8 @@ class Gallery extends Component
         $this->editingId = null;
         $this->title = '';
         $this->category = 'classes';
+        $this->media_type = 'image';
+        $this->link_url = '';
         $this->alt_text = '';
         $this->sort_order = (GalleryImage::max('sort_order') ?? 0) + 1;
         $this->is_active = true;
@@ -205,6 +215,8 @@ class Gallery extends Component
             ->when($this->search, fn ($q) => $q->where(function ($q) {
                 $q->where('title', 'like', '%' . $this->search . '%')
                     ->orWhere('category', 'like', '%' . $this->search . '%')
+                    ->orWhere('media_type', 'like', '%' . $this->search . '%')
+                    ->orWhere('link_url', 'like', '%' . $this->search . '%')
                     ->orWhere('alt_text', 'like', '%' . $this->search . '%');
             }))
             ->when($this->filterCategory, fn ($q) => $q->where('category', $this->filterCategory))
@@ -221,6 +233,13 @@ class Gallery extends Component
                 ->distinct()
                 ->orderBy('category')
                 ->pluck('category'),
+            'showModal' => $this->showModal,
+            'isEdit' => $this->isEdit,
+            'media_type' => $this->media_type,
+            'photo' => $this->photo,
+            'existingPhoto' => $this->existingPhoto,
+            'confirmingDeleteId' => $this->confirmingDeleteId,
+            'confirmingRestoreId' => $this->confirmingRestoreId,
         ])->layout('admin.layouts.app', ['title' => 'Gallery']);
     }
 }

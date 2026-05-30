@@ -2,11 +2,11 @@
     <div class="gal-header">
         <div>
             <h1>Gallery</h1>
-            <p>Manage images shown on the frontend gallery page.</p>
+            <p>Manage photos, YouTube videos, and Facebook posts shown on the frontend gallery page.</p>
         </div>
         <div class="gal-header-actions">
             <a href="{{ route('gallery') }}" target="_blank" class="btn-preview">Preview Page</a>
-            <button wire:click="openCreate" class="btn-add">+ Add Image</button>
+            <button wire:click="openCreate" class="btn-add">+ Add Gallery Item</button>
         </div>
     </div>
 
@@ -46,6 +46,9 @@
                 <div class="gal-thumb">
                     <img src="{{ $image->image_url }}" alt="{{ $image->alt_text ?: $image->title }}">
                     <span class="gal-badge">{{ Str::headline($image->category) }}</span>
+                    @if(! $image->is_image)
+                        <span class="gal-type">{{ $image->media_label }}</span>
+                    @endif
                 </div>
                 <div class="gal-body">
                     <h3>{{ $image->title }}</h3>
@@ -54,8 +57,12 @@
                     @endif
                     <div class="gal-meta">
                         <span>Order {{ $image->sort_order }}</span>
+                        <span>{{ $image->media_label }}</span>
                         <span>{{ $image->is_active ? 'Visible' : 'Hidden' }}</span>
                     </div>
+                    @if($image->is_external)
+                        <a href="{{ $image->link_url }}" target="_blank" rel="noopener" class="gal-link">Open linked post</a>
+                    @endif
                 </div>
                 <div class="gal-actions">
                     @if($image->trashed())
@@ -73,7 +80,7 @@
         @empty
             <div class="gal-empty">
                 <strong>No gallery images yet.</strong>
-                <span>Add your first image to populate the frontend gallery.</span>
+                <span>Add your first photo, YouTube video, or Facebook post to populate the frontend gallery.</span>
             </div>
         @endforelse
     </div>
@@ -88,7 +95,7 @@
         <div class="modal-backdrop" x-on:keydown.escape.window="$wire.closeModal()">
             <div class="modal-box" @click.outside="$wire.closeModal()">
                 <div class="modal-head">
-                    <h2>{{ $isEdit ? 'Edit Gallery Image' : 'Add Gallery Image' }}</h2>
+                    <h2>{{ $isEdit ? 'Edit Gallery Item' : 'Add Gallery Item' }}</h2>
                     <button wire:click="closeModal" class="modal-close">x</button>
                 </div>
 
@@ -111,8 +118,22 @@
                                 @error('category') <small>{{ $message }}</small> @enderror
                             </div>
                             <div class="form-group">
+                                <label>Type <span>*</span></label>
+                                <select wire:model.live="media_type">
+                                    <option value="image">Photo</option>
+                                    <option value="youtube">YouTube Video</option>
+                                    <option value="facebook">Facebook Post</option>
+                                </select>
+                                @error('media_type') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>External Link @if($media_type !== 'image') <span>*</span> @endif</label>
+                                <input type="url" wire:model.live="link_url" placeholder="https://www.youtube.com/watch?v=...">
+                                @error('link_url') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group">
                                 <label>Alt Text</label>
-                                <input type="text" wire:model.live="alt_text" placeholder="Students attending a seminar">
+                                <input type="text" wire:model.live="alt_text" placeholder="Thumbnail description">
                                 @error('alt_text') <small>{{ $message }}</small> @enderror
                             </div>
                             <div class="form-group">
@@ -131,7 +152,7 @@
                                 @else
                                     <div>
                                         <strong>Upload image</strong>
-                                        <span>JPG, PNG or WebP up to 3MB</span>
+                                        <span>JPG, PNG or WebP thumbnail up to 3MB</span>
                                     </div>
                                 @endif
                                 <input type="file" wire:model="photo" accept="image/png,image/jpeg,image/webp">
@@ -160,8 +181,8 @@
     @if($confirmingDeleteId)
         <div class="modal-backdrop">
             <div class="confirm-box">
-                <h2>Delete image?</h2>
-                <p>This moves the image to trash. You can restore it later.</p>
+                <h2>Delete item?</h2>
+                <p>This moves the gallery item to trash. You can restore it later.</p>
                 <div>
                     <button wire:click="cancelDelete" class="btn-cancel">Cancel</button>
                     <button wire:click="delete" class="btn-confirm-delete">Delete</button>
@@ -173,8 +194,8 @@
     @if($confirmingRestoreId)
         <div class="modal-backdrop">
             <div class="confirm-box">
-                <h2>Restore image?</h2>
-                <p>This will return the image to the gallery manager.</p>
+                <h2>Restore item?</h2>
+                <p>This will return the item to the gallery manager.</p>
                 <div>
                     <button wire:click="cancelRestore" class="btn-cancel">Cancel</button>
                     <button wire:click="restore" class="btn-confirm-restore">Restore</button>
@@ -205,11 +226,14 @@
 .gal-thumb { position:relative;aspect-ratio:4/3;background:#e2e8f0;overflow:hidden; }
 .gal-thumb img { width:100%;height:100%;object-fit:cover;display:block; }
 .gal-badge { position:absolute;left:10px;bottom:10px;background:rgba(13,21,96,.9);color:#fff;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:700; }
+.gal-type { position:absolute;right:10px;top:10px;background:rgba(204,34,34,.92);color:#fff;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:800; }
 .gal-body { padding:13px 14px;flex:1; }
 .gal-body h3 { font-size:15px;color:var(--navy);margin:0 0 5px; }
 .gal-body p { color:var(--text);font-size:12px;line-height:1.4;margin:0 0 10px; }
 .gal-meta { display:flex;gap:8px;flex-wrap:wrap;color:#64748b;font-size:11px; }
 .gal-meta span { background:#f1f5f9;border-radius:999px;padding:3px 8px; }
+.gal-link { display:inline-flex;margin-top:10px;color:var(--blue);font-size:12px;font-weight:700;text-decoration:none; }
+.gal-link:hover { text-decoration:underline; }
 .gal-actions { display:flex;gap:6px;align-items:center;padding:12px 14px;border-top:1px solid var(--border);flex-wrap:wrap; }
 .gal-actions button { border:none;border-radius:7px;padding:7px 10px;font-size:12px;font-weight:700;cursor:pointer; }
 .btn-toggle.on { background:#dcfce7;color:#166534; }
@@ -236,8 +260,8 @@
 .form-group { display:flex;flex-direction:column;gap:6px; }
 .form-group label { color:var(--navy);font-size:13px;font-weight:700; }
 .form-group label span { color:var(--red); }
-.form-group input { border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font:inherit;outline:none; }
-.form-group input:focus { border-color:var(--blue);box-shadow:0 0 0 3px rgba(41,82,227,.1); }
+.form-group input,.form-group select { border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font:inherit;outline:none;background:#fff; }
+.form-group input:focus,.form-group select:focus { border-color:var(--blue);box-shadow:0 0 0 3px rgba(41,82,227,.1); }
 .form-group small,.upload-error { color:var(--red);font-size:12px; }
 .upload-row { margin-top:16px; }
 .upload-box { border:2px dashed var(--border);border-radius:10px;min-height:220px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;overflow:hidden;position:relative;background:#f8fafc; }

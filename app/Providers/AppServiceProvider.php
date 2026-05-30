@@ -22,6 +22,9 @@ use App\Repositories\SettingRepository;
 use App\Repositories\TeamRepository;
 use App\Repositories\VentureRepository;
 use App\Repositories\WhyUsRepository;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -74,6 +77,24 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        RateLimiter::for('contact-form', function (Request $request) {
+            $key = $request->ip().'|'.strtolower((string) $request->input('email'));
+
+            return [
+                Limit::perMinute(3)->by($key),
+                Limit::perHour(12)->by($request->ip()),
+                Limit::perDay(30)->by($request->ip()),
+            ];
+        });
+
+        RateLimiter::for('appointment-form', function (Request $request) {
+            $key = $request->ip().'|'.strtolower((string) $request->input('email'));
+
+            return [
+                Limit::perMinute(2)->by($key),
+                Limit::perHour(8)->by($request->ip()),
+                Limit::perDay(20)->by($request->ip()),
+            ];
+        });
     }
 }

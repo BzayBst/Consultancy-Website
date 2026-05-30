@@ -13,6 +13,8 @@ class GalleryImage extends Model
     protected $fillable = [
         'title',
         'category',
+        'media_type',
+        'link_url',
         'image_path',
         'alt_text',
         'sort_order',
@@ -29,6 +31,25 @@ class GalleryImage extends Model
         return Str::startsWith($this->image_path, ['http://', 'https://'])
             ? $this->image_path
             : asset('storage/' . $this->image_path);
+    }
+
+    public function getIsImageAttribute(): bool
+    {
+        return ($this->media_type ?? 'image') === 'image';
+    }
+
+    public function getIsExternalAttribute(): bool
+    {
+        return in_array($this->media_type, ['youtube', 'facebook'], true) && filled($this->link_url);
+    }
+
+    public function getMediaLabelAttribute(): string
+    {
+        return match ($this->media_type ?? 'image') {
+            'youtube' => 'YouTube',
+            'facebook' => 'Facebook',
+            default => 'Photo',
+        };
     }
 
     public function scopeActive($query)
