@@ -19,24 +19,25 @@
           @foreach ($slides as $index => $slide)
           <div class="hero-text-slide {{ $index === 0 ? 'active' : '' }}" data-slide="{{ $index }}">
 
-            @if ($slide->badge)
-              <div class="hero-badge-top">{{ $slide->badge }}</div>
+            @if (localized($slide, 'badge'))
+              <div class="hero-badge-top">{{ localized($slide, 'badge') }}</div>
             @endif
 
             <h1 class="hero-title">
-              @if ($slide->title_line1){{ $slide->title_line1 }}<br>@endif
-              @if ($slide->title_line2){{ $slide->title_line2 }} @endif
-              @if ($slide->title_highlight)<span class="highlight">{{ $slide->title_highlight }}</span>@endif
-              @if ($slide->title_line3)<br>{{ $slide->title_line3 }}@endif
+              @if (localized($slide, 'title_line1')){{ localized($slide, 'title_line1') }}<br>@endif
+              @if (localized($slide, 'title_line2')){{ localized($slide, 'title_line2') }} @endif
+              @if (localized($slide, 'title_highlight'))<span class="highlight">{{ localized($slide, 'title_highlight') }}</span>@endif
+              @if (localized($slide, 'title_line3'))<br>{{ localized($slide, 'title_line3') }}@endif
             </h1>
 
-            @if ($slide->description)
-              <p class="hero-desc">{{ $slide->description }}</p>
+            @if (localized($slide, 'description'))
+              <p class="hero-desc">{{ localized($slide, 'description') }}</p>
             @endif
 
-            @if (!empty($slide->features))
+            @php $heroFeatures = localized($slide, 'features') ?: $slide->features; @endphp
+            @if (!empty($heroFeatures))
             <div class="hero-features">
-              @foreach ($slide->features as $feat)
+              @foreach ($heroFeatures as $feat)
                 @if (!empty($feat['label']))
                 <div class="hero-feat">
                   <div class="hero-feat-icon">{{ $feat['icon'] ?? '' }}</div>
@@ -48,14 +49,14 @@
             @endif
 
             <div class="hero-btns">
-              @if ($slide->btn_primary_label)
+              @if (localized($slide, 'btn_primary_label'))
                 <a href="{{ $slide->btn_primary_href ?? '#' }}" class="btn btn-primary">
-                  {{ $slide->btn_primary_label }}
+                  {{ localized($slide, 'btn_primary_label') }}
                 </a>
               @endif
-              @if ($slide->btn_ghost_label)
+              @if (localized($slide, 'btn_ghost_label'))
                 <a href="{{ $slide->btn_ghost_href ?? '#' }}" class="btn-ghost">
-                  {{ $slide->btn_ghost_label }}
+                  {{ localized($slide, 'btn_ghost_label') }}
                 </a>
               @endif
             </div>
@@ -97,9 +98,9 @@
               <div class="hero-img-wrap">
                 @if (!empty($slide->image_path))
                   @if (str_starts_with($slide->image_path, 'http'))
-                    <img src="{{ $slide->image_path }}" alt="{{ $slide->image_alt ?? '' }}">
+                    <img src="{{ $slide->image_path }}" alt="{{ localized($slide, 'image_alt') ?? '' }}">
                   @else
-                    <img src="{{ Storage::url($slide->image_path) }}" alt="{{ $slide->image_alt ?? '' }}">
+                    <img src="{{ Storage::url($slide->image_path) }}" alt="{{ localized($slide, 'image_alt') ?? '' }}">
                   @endif
                 @endif
               </div>

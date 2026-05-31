@@ -9,18 +9,28 @@ class HeroSlide extends Model
 {
     protected $fillable = [
         'badge',
+        'badge_ja',
         'title_line1',
+        'title_line1_ja',
         'title_line2',
+        'title_line2_ja',
         'title_highlight',
+        'title_highlight_ja',
         'title_line3',
+        'title_line3_ja',
         'description',
+        'description_ja',
         'features',
+        'features_ja',
         'btn_primary_label',
+        'btn_primary_label_ja',
         'btn_primary_href',
         'btn_ghost_label',
+        'btn_ghost_label_ja',
         'btn_ghost_href',
         'image_path',
         'image_alt',
+        'image_alt_ja',
         'plane_emoji',
         'sort_order',
         'is_active',
@@ -28,6 +38,7 @@ class HeroSlide extends Model
 
     protected $casts = [
         'features'  => 'array',
+        'features_ja'  => 'array',
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];

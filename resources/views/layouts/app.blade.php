@@ -29,6 +29,39 @@
 
 {{-- Styles --}}
 <link rel="stylesheet" href="{{ asset('design/style.css') }}">
+<style>
+  .lang-switch,
+  .mobile-lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px;
+    border: 1px solid rgba(13, 21, 96, .16);
+    border-radius: 999px;
+    background: #fff;
+  }
+
+  .lang-switch a,
+  .mobile-lang-switch a {
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy, #0d1560);
+    text-decoration: none;
+  }
+
+  .lang-switch a.active,
+  .mobile-lang-switch a.active {
+    background: var(--red, #cc2222);
+    color: #fff;
+  }
+
+  .mobile-lang-switch {
+    justify-content: center;
+    margin-top: 8px;
+  }
+</style>
 
 {{-- Extra head --}}
 @stack('head')

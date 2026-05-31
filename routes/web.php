@@ -30,6 +30,18 @@ use Illuminate\Support\Facades\Route;
 //     return view('pages.home');
 // })->name('home');
 
+Route::get('/language/{locale}', function (string $locale) {
+    abort_unless(in_array($locale, ['en', 'ja'], true), 404);
+
+    session(['locale' => $locale]);
+
+    $redirect = request('redirect');
+
+    return $redirect
+        ? redirect()->away($redirect)
+        : redirect()->route('home');
+})->name('language.switch');
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
