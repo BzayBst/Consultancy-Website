@@ -18,33 +18,57 @@ class ContactCms extends Component
     public string $activeTab = 'contact-page';
 
     public string $contact_hero_title = '';
+    public string $contact_hero_title_ja = '';
     public string $contact_hero_highlight = '';
+    public string $contact_hero_highlight_ja = '';
     public string $contact_hero_subtitle = '';
+    public string $contact_hero_subtitle_ja = '';
     public string $contact_form_title = '';
+    public string $contact_form_title_ja = '';
     public string $contact_form_subtitle = '';
+    public string $contact_form_subtitle_ja = '';
     public string $contact_branch_title = '';
+    public string $contact_branch_title_ja = '';
     public string $contact_branch_subtitle = '';
+    public string $contact_branch_subtitle_ja = '';
     public string $contact_faq_label = '';
+    public string $contact_faq_label_ja = '';
     public string $contact_faq_title = '';
+    public string $contact_faq_title_ja = '';
     public string $contact_faq_subtitle = '';
+    public string $contact_faq_subtitle_ja = '';
     public string $contact_social_title = '';
+    public string $contact_social_title_ja = '';
     public string $contact_social_subtitle = '';
+    public string $contact_social_subtitle_ja = '';
 
     public string $appointment_hero_title = '';
+    public string $appointment_hero_title_ja = '';
     public string $appointment_hero_highlight = '';
+    public string $appointment_hero_highlight_ja = '';
     public string $appointment_hero_subtitle = '';
+    public string $appointment_hero_subtitle_ja = '';
     public string $appointment_form_title = '';
+    public string $appointment_form_title_ja = '';
     public string $appointment_form_subtitle = '';
+    public string $appointment_form_subtitle_ja = '';
     public string $appointment_faq_label = '';
+    public string $appointment_faq_label_ja = '';
     public string $appointment_faq_title = '';
+    public string $appointment_faq_title_ja = '';
     public string $appointment_faq_subtitle = '';
+    public string $appointment_faq_subtitle_ja = '';
     public string $appointment_cta_title = '';
+    public string $appointment_cta_title_ja = '';
     public string $appointment_cta_subtitle = '';
+    public string $appointment_cta_subtitle_ja = '';
 
     public ?int $branchId = null;
     public string $branch_name = '';
+    public string $branch_name_ja = '';
     public string $branch_location_label = '';
     public string $branch_address = '';
+    public string $branch_address_ja = '';
     public string $branch_phone = '';
     public string $branch_email = '';
     public string $branch_weekday_hours = '';
@@ -57,7 +81,9 @@ class ContactCms extends Component
     public bool $showFaqForm = false;
     public ?int $faqId = null;
     public string $faq_question = '';
+    public string $faq_question_ja = '';
     public string $faq_answer = '';
+    public string $faq_answer_ja = '';
     public int $faq_sort_order = 0;
     public bool $faq_is_active = true;
 
@@ -65,29 +91,51 @@ class ContactCms extends Component
     {
         $contact = ContactPage::first();
         $this->contact_hero_title = $contact?->hero_title ?? 'Get In Touch With HASU';
+        $this->contact_hero_title_ja = $contact?->hero_title_ja ?? '';
         $this->contact_hero_highlight = $contact?->hero_highlight ?? 'Touch';
+        $this->contact_hero_highlight_ja = $contact?->hero_highlight_ja ?? '';
         $this->contact_hero_subtitle = $contact?->hero_subtitle ?? 'Have questions about studying abroad, visa processing, or our courses? Our counselors are ready to guide you anytime.';
+        $this->contact_hero_subtitle_ja = $contact?->hero_subtitle_ja ?? '';
         $this->contact_form_title = $contact?->form_title ?? 'Send Us a Message';
+        $this->contact_form_title_ja = $contact?->form_title_ja ?? '';
         $this->contact_form_subtitle = $contact?->form_subtitle ?? 'Fill out the form below and our team will get back to you within 24 hours.';
+        $this->contact_form_subtitle_ja = $contact?->form_subtitle_ja ?? '';
         $this->contact_branch_title = $contact?->branch_title ?? 'Our Office Locations';
+        $this->contact_branch_title_ja = $contact?->branch_title_ja ?? '';
         $this->contact_branch_subtitle = $contact?->branch_subtitle ?? 'We have multiple branches across Nepal. Click on a branch to see its exact location on the map.';
+        $this->contact_branch_subtitle_ja = $contact?->branch_subtitle_ja ?? '';
         $this->contact_faq_label = $contact?->faq_label ?? 'Quick Answers';
+        $this->contact_faq_label_ja = $contact?->faq_label_ja ?? '';
         $this->contact_faq_title = $contact?->faq_title ?? 'Frequently Asked Questions';
+        $this->contact_faq_title_ja = $contact?->faq_title_ja ?? '';
         $this->contact_faq_subtitle = $contact?->faq_subtitle ?? 'Common questions from students and parents before reaching out to us.';
+        $this->contact_faq_subtitle_ja = $contact?->faq_subtitle_ja ?? '';
         $this->contact_social_title = $contact?->social_title ?? 'Connect With Us on Social Media';
+        $this->contact_social_title_ja = $contact?->social_title_ja ?? '';
         $this->contact_social_subtitle = $contact?->social_subtitle ?? 'Stay updated with news, events, scholarship alerts, student success stories, and study abroad tips.';
+        $this->contact_social_subtitle_ja = $contact?->social_subtitle_ja ?? '';
 
         $appointment = AppointmentPage::first();
         $this->appointment_hero_title = $appointment?->hero_title ?? 'Book Your Free Consultation';
+        $this->appointment_hero_title_ja = $appointment?->hero_title_ja ?? '';
         $this->appointment_hero_highlight = $appointment?->hero_highlight ?? 'Free';
+        $this->appointment_hero_highlight_ja = $appointment?->hero_highlight_ja ?? '';
         $this->appointment_hero_subtitle = $appointment?->hero_subtitle ?? 'Schedule a visit at your nearest HASU branch. Our expert counselors will guide you on universities, visas, and the best study abroad pathway for you.';
+        $this->appointment_hero_subtitle_ja = $appointment?->hero_subtitle_ja ?? '';
         $this->appointment_form_title = $appointment?->form_title ?? 'Schedule Your Visit';
+        $this->appointment_form_title_ja = $appointment?->form_title_ja ?? '';
         $this->appointment_form_subtitle = $appointment?->form_subtitle ?? 'Complete the steps below to book your in-person consultation at any HASU branch.';
+        $this->appointment_form_subtitle_ja = $appointment?->form_subtitle_ja ?? '';
         $this->appointment_faq_label = $appointment?->faq_label ?? 'Quick Answers';
+        $this->appointment_faq_label_ja = $appointment?->faq_label_ja ?? '';
         $this->appointment_faq_title = $appointment?->faq_title ?? 'Frequently Asked Questions';
+        $this->appointment_faq_title_ja = $appointment?->faq_title_ja ?? '';
         $this->appointment_faq_subtitle = $appointment?->faq_subtitle ?? 'Common questions about in-person consultations at HASU.';
+        $this->appointment_faq_subtitle_ja = $appointment?->faq_subtitle_ja ?? '';
         $this->appointment_cta_title = $appointment?->cta_title ?? 'Have Questions Before Booking?';
+        $this->appointment_cta_title_ja = $appointment?->cta_title_ja ?? '';
         $this->appointment_cta_subtitle = $appointment?->cta_subtitle ?? 'Our team is available on call, email, and WhatsApp to answer any questions before your visit.';
+        $this->appointment_cta_subtitle_ja = $appointment?->cta_subtitle_ja ?? '';
     }
 
     public function setTab(string $tab): void
@@ -100,32 +148,56 @@ class ContactCms extends Component
     {
         $this->validate([
             'contact_hero_title' => ['required', 'string', 'max:180'],
+            'contact_hero_title_ja' => ['nullable', 'string', 'max:180'],
             'contact_hero_highlight' => ['nullable', 'string', 'max:80'],
+            'contact_hero_highlight_ja' => ['nullable', 'string', 'max:80'],
             'contact_hero_subtitle' => ['nullable', 'string', 'max:600'],
+            'contact_hero_subtitle_ja' => ['nullable', 'string', 'max:600'],
             'contact_form_title' => ['nullable', 'string', 'max:160'],
+            'contact_form_title_ja' => ['nullable', 'string', 'max:160'],
             'contact_form_subtitle' => ['nullable', 'string', 'max:400'],
+            'contact_form_subtitle_ja' => ['nullable', 'string', 'max:400'],
             'contact_branch_title' => ['nullable', 'string', 'max:160'],
+            'contact_branch_title_ja' => ['nullable', 'string', 'max:160'],
             'contact_branch_subtitle' => ['nullable', 'string', 'max:400'],
+            'contact_branch_subtitle_ja' => ['nullable', 'string', 'max:400'],
             'contact_faq_label' => ['nullable', 'string', 'max:80'],
+            'contact_faq_label_ja' => ['nullable', 'string', 'max:80'],
             'contact_faq_title' => ['nullable', 'string', 'max:160'],
+            'contact_faq_title_ja' => ['nullable', 'string', 'max:160'],
             'contact_faq_subtitle' => ['nullable', 'string', 'max:400'],
+            'contact_faq_subtitle_ja' => ['nullable', 'string', 'max:400'],
             'contact_social_title' => ['nullable', 'string', 'max:160'],
+            'contact_social_title_ja' => ['nullable', 'string', 'max:160'],
             'contact_social_subtitle' => ['nullable', 'string', 'max:500'],
+            'contact_social_subtitle_ja' => ['nullable', 'string', 'max:500'],
         ]);
 
         ContactPage::updateOrCreate(['id' => 1], [
             'hero_title' => $this->contact_hero_title,
+            'hero_title_ja' => $this->contact_hero_title_ja ?: null,
             'hero_highlight' => $this->contact_hero_highlight,
+            'hero_highlight_ja' => $this->contact_hero_highlight_ja ?: null,
             'hero_subtitle' => $this->contact_hero_subtitle,
+            'hero_subtitle_ja' => $this->contact_hero_subtitle_ja ?: null,
             'form_title' => $this->contact_form_title,
+            'form_title_ja' => $this->contact_form_title_ja ?: null,
             'form_subtitle' => $this->contact_form_subtitle,
+            'form_subtitle_ja' => $this->contact_form_subtitle_ja ?: null,
             'branch_title' => $this->contact_branch_title,
+            'branch_title_ja' => $this->contact_branch_title_ja ?: null,
             'branch_subtitle' => $this->contact_branch_subtitle,
+            'branch_subtitle_ja' => $this->contact_branch_subtitle_ja ?: null,
             'faq_label' => $this->contact_faq_label,
+            'faq_label_ja' => $this->contact_faq_label_ja ?: null,
             'faq_title' => $this->contact_faq_title,
+            'faq_title_ja' => $this->contact_faq_title_ja ?: null,
             'faq_subtitle' => $this->contact_faq_subtitle,
+            'faq_subtitle_ja' => $this->contact_faq_subtitle_ja ?: null,
             'social_title' => $this->contact_social_title,
+            'social_title_ja' => $this->contact_social_title_ja ?: null,
             'social_subtitle' => $this->contact_social_subtitle,
+            'social_subtitle_ja' => $this->contact_social_subtitle_ja ?: null,
         ]);
 
         session()->flash('success', 'Contact page saved.');
@@ -135,28 +207,48 @@ class ContactCms extends Component
     {
         $this->validate([
             'appointment_hero_title' => ['required', 'string', 'max:180'],
+            'appointment_hero_title_ja' => ['nullable', 'string', 'max:180'],
             'appointment_hero_highlight' => ['nullable', 'string', 'max:80'],
+            'appointment_hero_highlight_ja' => ['nullable', 'string', 'max:80'],
             'appointment_hero_subtitle' => ['nullable', 'string', 'max:600'],
+            'appointment_hero_subtitle_ja' => ['nullable', 'string', 'max:600'],
             'appointment_form_title' => ['nullable', 'string', 'max:160'],
+            'appointment_form_title_ja' => ['nullable', 'string', 'max:160'],
             'appointment_form_subtitle' => ['nullable', 'string', 'max:400'],
+            'appointment_form_subtitle_ja' => ['nullable', 'string', 'max:400'],
             'appointment_faq_label' => ['nullable', 'string', 'max:80'],
+            'appointment_faq_label_ja' => ['nullable', 'string', 'max:80'],
             'appointment_faq_title' => ['nullable', 'string', 'max:160'],
+            'appointment_faq_title_ja' => ['nullable', 'string', 'max:160'],
             'appointment_faq_subtitle' => ['nullable', 'string', 'max:400'],
+            'appointment_faq_subtitle_ja' => ['nullable', 'string', 'max:400'],
             'appointment_cta_title' => ['nullable', 'string', 'max:160'],
+            'appointment_cta_title_ja' => ['nullable', 'string', 'max:160'],
             'appointment_cta_subtitle' => ['nullable', 'string', 'max:500'],
+            'appointment_cta_subtitle_ja' => ['nullable', 'string', 'max:500'],
         ]);
 
         AppointmentPage::updateOrCreate(['id' => 1], [
             'hero_title' => $this->appointment_hero_title,
+            'hero_title_ja' => $this->appointment_hero_title_ja ?: null,
             'hero_highlight' => $this->appointment_hero_highlight,
+            'hero_highlight_ja' => $this->appointment_hero_highlight_ja ?: null,
             'hero_subtitle' => $this->appointment_hero_subtitle,
+            'hero_subtitle_ja' => $this->appointment_hero_subtitle_ja ?: null,
             'form_title' => $this->appointment_form_title,
+            'form_title_ja' => $this->appointment_form_title_ja ?: null,
             'form_subtitle' => $this->appointment_form_subtitle,
+            'form_subtitle_ja' => $this->appointment_form_subtitle_ja ?: null,
             'faq_label' => $this->appointment_faq_label,
+            'faq_label_ja' => $this->appointment_faq_label_ja ?: null,
             'faq_title' => $this->appointment_faq_title,
+            'faq_title_ja' => $this->appointment_faq_title_ja ?: null,
             'faq_subtitle' => $this->appointment_faq_subtitle,
+            'faq_subtitle_ja' => $this->appointment_faq_subtitle_ja ?: null,
             'cta_title' => $this->appointment_cta_title,
+            'cta_title_ja' => $this->appointment_cta_title_ja ?: null,
             'cta_subtitle' => $this->appointment_cta_subtitle,
+            'cta_subtitle_ja' => $this->appointment_cta_subtitle_ja ?: null,
         ]);
 
         session()->flash('success', 'Appointment page saved.');
@@ -178,8 +270,10 @@ class ContactCms extends Component
     {
         $data = $this->validate([
             'branch_name' => ['required', 'string', 'max:160'],
+            'branch_name_ja' => ['nullable', 'string', 'max:160'],
             'branch_location_label' => ['nullable', 'string', 'max:160'],
             'branch_address' => ['nullable', 'string', 'max:800'],
+            'branch_address_ja' => ['nullable', 'string', 'max:800'],
             'branch_phone' => ['nullable', 'string', 'max:120'],
             'branch_email' => ['nullable', 'email', 'max:160'],
             'branch_weekday_hours' => ['nullable', 'string', 'max:120'],
@@ -194,8 +288,10 @@ class ContactCms extends Component
             ['id' => $this->branchId],
             [
                 'name' => $data['branch_name'],
+                'name_ja' => $data['branch_name_ja'] ?? null,
                 'location_label' => $data['branch_location_label'],
                 'address' => $data['branch_address'],
+                'address_ja' => $data['branch_address_ja'] ?? null,
                 'phone' => $data['branch_phone'],
                 'email' => $data['branch_email'],
                 'weekday_hours' => $data['branch_weekday_hours'],
@@ -217,8 +313,10 @@ class ContactCms extends Component
 
         $this->branchId = $branch->id;
         $this->branch_name = $branch->name;
+        $this->branch_name_ja = $branch->name_ja ?? '';
         $this->branch_location_label = $branch->location_label ?? '';
         $this->branch_address = $branch->address ?? '';
+        $this->branch_address_ja = $branch->address_ja ?? '';
         $this->branch_phone = $branch->phone ?? '';
         $this->branch_email = $branch->email ?? '';
         $this->branch_weekday_hours = $branch->weekday_hours ?? '';
@@ -247,8 +345,10 @@ class ContactCms extends Component
     {
         $this->branchId = null;
         $this->branch_name = '';
+        $this->branch_name_ja = '';
         $this->branch_location_label = '';
         $this->branch_address = '';
+        $this->branch_address_ja = '';
         $this->branch_phone = '';
         $this->branch_email = '';
         $this->branch_weekday_hours = '';
@@ -270,7 +370,9 @@ class ContactCms extends Component
     {
         $data = $this->validate([
             'faq_question' => ['required', 'string', 'max:255'],
+            'faq_question_ja' => ['nullable', 'string', 'max:255'],
             'faq_answer' => ['required', 'string', 'max:1200'],
+            'faq_answer_ja' => ['nullable', 'string', 'max:1200'],
             'faq_sort_order' => ['integer', 'min:0', 'max:9999'],
             'faq_is_active' => ['boolean'],
         ]);
@@ -279,7 +381,9 @@ class ContactCms extends Component
             ['id' => $this->faqId],
             [
                 'question' => $data['faq_question'],
+                'question_ja' => $data['faq_question_ja'] ?? null,
                 'answer' => $data['faq_answer'],
+                'answer_ja' => $data['faq_answer_ja'] ?? null,
                 'sort_order' => $data['faq_sort_order'],
                 'is_active' => $data['faq_is_active'],
             ]
@@ -295,7 +399,9 @@ class ContactCms extends Component
 
         $this->faqId = $faq->id;
         $this->faq_question = $faq->question;
+        $this->faq_question_ja = $faq->question_ja ?? '';
         $this->faq_answer = $faq->answer;
+        $this->faq_answer_ja = $faq->answer_ja ?? '';
         $this->faq_sort_order = $faq->sort_order;
         $this->faq_is_active = $faq->is_active;
         $this->showFaqForm = true;
@@ -319,7 +425,9 @@ class ContactCms extends Component
     {
         $this->faqId = null;
         $this->faq_question = '';
+        $this->faq_question_ja = '';
         $this->faq_answer = '';
+        $this->faq_answer_ja = '';
         $this->faq_sort_order = 0;
         $this->faq_is_active = true;
         $this->showFaqForm = false;

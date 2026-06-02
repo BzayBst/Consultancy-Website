@@ -9,17 +9,19 @@ class HomeAbout extends Model
     protected $table = 'home_abouts';
 
     protected $fillable = [
-        'image_path', 'image_alt',
-        'badge_number', 'badge_label',
-        'section_label', 'section_title',
-        'paragraph_1', 'paragraph_2',
-        'badges', 'perks',
-        'cta_label', 'cta_href',
+        'image_path', 'image_alt', 'image_alt_ja',
+        'badge_number', 'badge_label', 'badge_label_ja',
+        'section_label', 'section_title', 'section_label_ja', 'section_title_ja',
+        'paragraph_1', 'paragraph_2', 'paragraph_1_ja', 'paragraph_2_ja',
+        'badges', 'perks', 'badges_ja', 'perks_ja',
+        'cta_label', 'cta_href', 'cta_label_ja',
     ];
 
     protected $casts = [
         'badges' => 'array',
         'perks'  => 'array',
+        'badges_ja' => 'array',
+        'perks_ja' => 'array',
     ];
 
     public function imageUrl(): ?string

@@ -1,8 +1,8 @@
 {{-- resources/views/pages/event-detail.blade.php --}}
 @extends('layouts.app', ['active' => 'events'])
 
-@section('title', $event->title . ' – ' . setting('general_site_name', 'HASU Educational Consultancy'))
-@section('meta_description', $event->description ?? 'Event details at HASU Educational Consultancy.')
+@section('title', localized($event, 'title') . ' – ' . setting('general_site_name', 'HASU Educational Consultancy'))
+@section('meta_description', localized($event, 'description') ?? 'Event details at HASU Educational Consultancy.')
 
 @push('head')
 <style>
@@ -141,13 +141,13 @@
 {{-- ===== PAGE HERO ===== --}}
 <x-frontend.page-hero
     badge="📅 {{ ucfirst($event->status) }}"
-    title="{{ $event->title }}"
-    highlight="{{ $event->title }}"
-    subtitle="{{ $event->description }}"
+    title="{{ localized($event, 'title') }}"
+    highlight="{{ localized($event, 'title') }}"
+    subtitle="{{ localized($event, 'description') }}"
     :breadcrumbs="[
         ['label' => 'Home',   'url' => route('home')],
         ['label' => 'Events', 'url' => route('events')],
-        ['label' => $event->title],
+        ['label' => localized($event, 'title')],
     ]" />
 
 {{-- ===== EVENT MAIN ===== --}}
@@ -163,7 +163,7 @@
                     <span class="ed-badge {{ $event->status }}">{{ strtoupper($event->status) }}</span>
                 </div>
 
-                <h1 class="ed-title">{{ $event->title }}</h1>
+                <h1 class="ed-title">{{ localized($event, 'title') }}</h1>
 
                 {{-- Meta chips --}}
                 <div class="ed-meta">
@@ -191,7 +191,7 @@
                 {{-- Hero image --}}
                 @if($event->image)
                 <div class="ed-hero-img">
-                    <img src="{{ asset('storage/'.$event->image) }}" alt="{{ $event->title }}">
+                    <img src="{{ asset('storage/'.$event->image) }}" alt="{{ localized($event, 'title') }}">
                 </div>
                 @else
                 <div class="ed-hero-img-placeholder fade-up">
@@ -202,11 +202,11 @@
                 {{-- Long description --}}
                 @if($event->long_description)
                 <div class="ed-description">
-                    {!! nl2br(e($event->long_description)) !!}
+                    {!! nl2br(e(localized($event, 'long_description'))) !!}
                 </div>
                 @elseif($event->description)
                 <div class="ed-description">
-                    <p>{{ $event->description }}</p>
+                    <p>{{ localized($event, 'description') }}</p>
                 </div>
                 @endif
 
@@ -306,9 +306,9 @@
                         <div class="ed-share-links">
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}"
                                target="_blank" class="ed-share-link" title="Share on Facebook">📘</a>
-                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($event->title) }}"
+                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode(localized($event, 'title')) }}"
                                target="_blank" class="ed-share-link" title="Share on Twitter">𝕏</a>
-                            <a href="https://api.whatsapp.com/send?text={{ urlencode($event->title . ' – ' . request()->url()) }}"
+                            <a href="https://api.whatsapp.com/send?text={{ urlencode(localized($event, 'title') . ' – ' . request()->url()) }}"
                                target="_blank" class="ed-share-link" title="Share on WhatsApp">💬</a>
                         </div>
                     </div>
@@ -334,7 +334,7 @@
             <a href="{{ route('events.show', $other->id) }}" class="ed-other-card fade-up">
                 <div class="ed-other-img">
                     @if($other->image)
-                        <img src="{{ asset('storage/'.$other->image) }}" alt="{{ $other->title }}">
+                        <img src="{{ asset('storage/'.$other->image) }}" alt="{{ localized($other, 'title') }}">
                     @else
                         <div class="ed-other-img-placeholder">📅</div>
                     @endif
@@ -345,8 +345,8 @@
                 </div>
                 <div class="ed-other-body">
                     <span class="ed-other-status {{ $other->status }}">{{ ucfirst($other->status) }}</span>
-                    <h4>{{ $other->title }}</h4>
-                    <p>{{ Str::limit($other->description, 80) }}</p>
+                    <h4>{{ localized($other, 'title') }}</h4>
+                    <p>{{ Str::limit(localized($other, 'description'), 80) }}</p>
                     <div class="ed-other-meta">
                         @if($other->location)<span>📍 {{ $other->location }}</span>@endif
                         @if($other->organizer)<span>ℹ️ {{ $other->organizer }}</span>@endif

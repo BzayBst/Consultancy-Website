@@ -21,17 +21,17 @@
 
         {{-- Label --}}
         <div class="section-label" style="color:#ffaaaa">
-          {{ $section?->section_label ?? 'Why Choose HASU' }}
+          {{ localized($section, 'section_label') ?: 'Why Choose HASU' }}
         </div>
 
         {{-- Title --}}
         <h2 class="section-title" style="color:#fff">
-          {{ $section?->title ?? 'Reasons Students Trust Us' }}
+          {{ localized($section, 'title') ?: 'Reasons Students Trust Us' }}
         </h2>
 
         {{-- Description --}}
         @if ($section?->description)
-          <p>{{ $section->description }}</p>
+          <p>{{ localized($section, 'description') }}</p>
         @endif
 
         {{-- Feature cards --}}
@@ -40,9 +40,9 @@
           @foreach ($features as $feat)
           <div class="why-feat">
             <div class="why-feat-icon">{{ $feat->icon }}</div>
-            <h5>{{ $feat->title }}</h5>
+            <h5>{{ localized($feat, 'title') }}</h5>
             @if ($feat->description)
-              <p>{{ $feat->description }}</p>
+              <p>{{ localized($feat, 'description') }}</p>
             @endif
           </div>
           @endforeach

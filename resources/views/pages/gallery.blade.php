@@ -241,13 +241,13 @@
                             class="gallery-item gallery-image-item fade-up"
                             data-category="{{ $image->category }}"
                             data-full="{{ $image->image_url }}"
-                            data-title="{{ $image->title }}"
+                            data-title="{{ localized($image, 'title') }}"
                             @if($i > 0) style="transition-delay:{{ round(($i % 4) * 0.1, 2) }}s" @endif
                         >
-                            <img src="{{ $image->image_url }}" alt="{{ $image->alt_text ?: $image->title }}">
+                            <img src="{{ $image->image_url }}" alt="{{ localized($image, 'alt_text') ?: localized($image, 'title') }}">
                             <span class="gallery-media-badge">Photo</span>
                             <div class="gallery-overlay">
-                                <h4>{{ $image->title }}</h4>
+                                <h4>{{ localized($image, 'title') }}</h4>
                             </div>
                         </button>
                     @else
@@ -259,11 +259,11 @@
                             data-category="{{ $image->category }}"
                             @if($i > 0) style="transition-delay:{{ round(($i % 4) * 0.1, 2) }}s" @endif
                         >
-                            <img src="{{ $image->image_url }}" alt="{{ $image->alt_text ?: $image->title }}">
+                            <img src="{{ $image->image_url }}" alt="{{ localized($image, 'alt_text') ?: localized($image, 'title') }}">
                             <span class="gallery-media-badge">{{ $image->media_label }}</span>
                             <div class="gallery-play"><span>&#9658;</span></div>
                             <div class="gallery-overlay">
-                                <h4>{{ $image->title }}</h4>
+                                <h4>{{ localized($image, 'title') }}</h4>
                             </div>
                         </a>
                     @endif

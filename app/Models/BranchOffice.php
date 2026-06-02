@@ -8,12 +8,17 @@ class BranchOffice extends Model
 {
     protected $fillable = [
         'name',
+        'name_ja',
         'location_label',
+        'location_label_ja',
         'address',
+        'address_ja',
         'phone',
         'email',
         'weekday_hours',
+        'weekday_hours_ja',
         'saturday_hours',
+        'saturday_hours_ja',
         'map_embed_url',
         'map_link_url',
         'sort_order',

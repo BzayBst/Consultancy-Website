@@ -22,9 +22,9 @@
 {{-- ===== PAGE HERO ===== --}}
 <x-frontend.page-hero
     badge="{{ $aboutHero?->badge ?: 'Est. ' . setting('general_established', '2013') . ' - Chitwan, Nepal' }}"
-    title="{{ $aboutHero?->title ?: 'Your Trusted Partner in' }}"
-    highlight="{{ $aboutHero?->highlight ?: 'Global Education' }}"
-    subtitle="{{ $aboutHero?->subtitle ?: 'For over a decade, HASU Educational Consultancy has been guiding Nepali students toward world-class academic opportunities and brighter futures.' }}"
+    title="{{ localized($aboutHero, 'title') ?: 'Your Trusted Partner in' }}"
+    highlight="{{ localized($aboutHero, 'highlight') ?: 'Global Education' }}"
+    subtitle="{{ localized($aboutHero, 'subtitle') ?: 'For over a decade, HASU Educational Consultancy has been guiding Nepali students toward world-class academic opportunities and brighter futures.' }}"
     :breadcrumbs="[['label'=>'Home','url'=> route('home')], ['label'=>'About Us']]"
 />
 
@@ -33,13 +33,13 @@
   <div class="container">
     <div class="story-inner">
       <div class="story-img-wrap fade-up">
-        <img src="{{ $storyImage }}" alt="{{ $aboutStory?->section_title ?: 'HASU Office' }}">
+        <img src="{{ $storyImage }}" alt="{{ localized($aboutStory, 'section_title') ?: 'HASU Office' }}">
 
         <div class="story-img-float">
           <div class="icon">{{ $aboutStory?->float_badge_icon ?: '*' }}</div>
           <div>
-            <strong>{{ $aboutStory?->float_badge_title ?: 'Best Consultancy' }}</strong>
-            <small>{{ $aboutStory?->float_badge_subtitle ?: 'Bhairahawa Region, 2023' }}</small>
+            <strong>{{ localized($aboutStory, 'float_badge_title') ?: 'Best Consultancy' }}</strong>
+            <small>{{ localized($aboutStory, 'float_badge_subtitle') ?: 'Bhairahawa Region, 2023' }}</small>
           </div>
         </div>
 
@@ -50,15 +50,15 @@
       </div>
 
       <div class="story-content fade-up" style="transition-delay:.15s">
-        <div class="section-label">{{ $aboutStory?->section_label ?: 'Our Story' }}</div>
-        <h2 class="section-title">{{ $aboutStory?->section_title ?: 'How HASU Began Its Journey' }}</h2>
+        <div class="section-label">{{ localized($aboutStory, 'section_label') ?: 'Our Story' }}</div>
+        <h2 class="section-title">{{ localized($aboutStory, 'section_title') ?: 'How HASU Began Its Journey' }}</h2>
 
         @if($aboutStory?->paragraph_1)
-          <p>{{ $aboutStory->paragraph_1 }}</p>
+          <p>{{ localized($aboutStory, 'paragraph_1') }}</p>
         @endif
 
         @if($aboutStory?->paragraph_2)
-          <p>{{ $aboutStory->paragraph_2 }}</p>
+          <p>{{ localized($aboutStory, 'paragraph_2') }}</p>
         @endif
 
         @if(! $aboutStory?->paragraph_1 && ! $aboutStory?->paragraph_2)
@@ -71,9 +71,9 @@
           <div class="milestone">
             <div class="milestone-year">{{ $m->year }}</div>
             <div class="milestone-info">
-              <h5>{{ $m->title }}</h5>
-              @if($m->description)
-                <p>{{ $m->description }}</p>
+              <h5>{{ localized($m, 'title') }}</h5>
+              @if(localized($m, 'description'))
+                <p>{{ localized($m, 'description') }}</p>
               @endif
             </div>
           </div>
@@ -115,8 +115,8 @@
       @foreach($aboutMvCards as $i => $card)
       <div class="mv-card fade-up" @if($i > 0) style="transition-delay:{{ round($i * 0.1, 2) }}s" @endif>
         <div class="mv-icon">{{ $card->icon }}</div>
-        <h3>{{ $card->title }}</h3>
-        <p>{{ $card->body }}</p>
+        <h3>{{ localized($card, 'title') }}</h3>
+        <p>{{ localized($card, 'body') }}</p>
       </div>
       @endforeach
     </div>
@@ -145,9 +145,9 @@
       <div class="team-card fade-up" @if($i > 0) style="transition-delay:{{ round($i * 0.1, 2) }}s" @endif>
         <div class="team-photo">
           @if($member->photo)
-            <img src="{{ $member->photo_url }}" alt="{{ $member->name }}">
+            <img src="{{ $member->photo_url }}" alt="{{ localized($member, 'name') }}">
           @else
-            <div class="team-photo-placeholder">{{ strtoupper(substr($member->name, 0, 1)) }}</div>
+            <div class="team-photo-placeholder">{{ strtoupper(substr(localized($member, 'name'), 0, 1)) }}</div>
           @endif
 
           @if(! empty($member->social_links))
@@ -168,8 +168,8 @@
         </div>
 
         <div class="team-body">
-          <div class="team-name">{{ $member->name }}</div>
-          <div class="team-role">{{ $member->designation }}</div>
+          <div class="team-name">{{ localized($member, 'name') }}</div>
+          <div class="team-role">{{ localized($member, 'designation') }}</div>
           @if($member->bio)
             <div class="team-bio">{{ $member->bio }}</div>
           @endif

@@ -23,14 +23,20 @@ class BlogPosts extends Component
     public ?int $editingId = null;
 
     public string $title = '';
+    public string $title_ja = '';
     public string $slug = '';
     public string $category = '';
     public string $excerpt = '';
+    public string $excerpt_ja = '';
     public string $content = '';
+    public string $content_ja = '';
     public string $image_alt = '';
+    public string $image_alt_ja = '';
     public string $published_at = '';
     public string $meta_title = '';
+    public string $meta_title_ja = '';
     public string $meta_description = '';
+    public string $meta_description_ja = '';
     public bool $is_featured = false;
     public bool $is_active = true;
     public int $sort_order = 0;
@@ -52,6 +58,7 @@ class BlogPosts extends Component
     {
         return [
             'title' => ['required', 'string', 'max:180'],
+            'title_ja' => ['nullable', 'string', 'max:180'],
             'slug' => [
                 'nullable',
                 'string',
@@ -60,11 +67,16 @@ class BlogPosts extends Component
             ],
             'category' => ['nullable', 'string', 'max:80'],
             'excerpt' => ['nullable', 'string', 'max:500'],
+            'excerpt_ja' => ['nullable', 'string', 'max:500'],
             'content' => ['nullable', 'string'],
+            'content_ja' => ['nullable', 'string'],
             'image_alt' => ['nullable', 'string', 'max:180'],
+            'image_alt_ja' => ['nullable', 'string', 'max:180'],
             'published_at' => ['nullable', 'date'],
             'meta_title' => ['nullable', 'string', 'max:180'],
+            'meta_title_ja' => ['nullable', 'string', 'max:180'],
             'meta_description' => ['nullable', 'string', 'max:500'],
+            'meta_description_ja' => ['nullable', 'string', 'max:500'],
             'is_featured' => ['boolean'],
             'is_active' => ['boolean'],
             'sort_order' => ['required', 'integer', 'min:0'],
@@ -103,14 +115,20 @@ class BlogPosts extends Component
         $this->isEdit = true;
         $this->editingId = $post->id;
         $this->title = $post->title;
+        $this->title_ja = $post->title_ja ?? '';
         $this->slug = $post->slug;
         $this->category = $post->category ?? '';
         $this->excerpt = $post->excerpt ?? '';
+        $this->excerpt_ja = $post->excerpt_ja ?? '';
         $this->content = $post->content ?? '';
+        $this->content_ja = $post->content_ja ?? '';
         $this->image_alt = $post->image_alt ?? '';
+        $this->image_alt_ja = $post->image_alt_ja ?? '';
         $this->published_at = $post->published_at?->format('Y-m-d') ?? '';
         $this->meta_title = $post->meta_title ?? '';
+        $this->meta_title_ja = $post->meta_title_ja ?? '';
         $this->meta_description = $post->meta_description ?? '';
+        $this->meta_description_ja = $post->meta_description_ja ?? '';
         $this->is_featured = $post->is_featured;
         $this->is_active = $post->is_active;
         $this->sort_order = $post->sort_order;
@@ -130,14 +148,20 @@ class BlogPosts extends Component
 
         $data = [
             'title' => $this->title,
+            'title_ja' => $this->title_ja ?: null,
             'slug' => $this->slug ?: Str::slug($this->title),
             'category' => $this->category ?: null,
             'excerpt' => $this->excerpt ?: null,
+            'excerpt_ja' => $this->excerpt_ja ?: null,
             'content' => $this->content ?: null,
+            'content_ja' => $this->content_ja ?: null,
             'image_alt' => $this->image_alt ?: null,
+            'image_alt_ja' => $this->image_alt_ja ?: null,
             'published_at' => $this->published_at ?: null,
             'meta_title' => $this->meta_title ?: null,
+            'meta_title_ja' => $this->meta_title_ja ?: null,
             'meta_description' => $this->meta_description ?: null,
+            'meta_description_ja' => $this->meta_description_ja ?: null,
             'is_featured' => $this->is_featured,
             'is_active' => $this->is_active,
             'sort_order' => $this->sort_order,
@@ -217,14 +241,20 @@ class BlogPosts extends Component
         $this->isEdit = false;
         $this->editingId = null;
         $this->title = '';
+        $this->title_ja = '';
         $this->slug = '';
         $this->category = '';
         $this->excerpt = '';
+        $this->excerpt_ja = '';
         $this->content = '';
+        $this->content_ja = '';
         $this->image_alt = '';
+        $this->image_alt_ja = '';
         $this->published_at = now()->format('Y-m-d');
         $this->meta_title = '';
+        $this->meta_title_ja = '';
         $this->meta_description = '';
+        $this->meta_description_ja = '';
         $this->is_featured = false;
         $this->is_active = true;
         $this->sort_order = (BlogPost::max('sort_order') ?? 0) + 1;
@@ -246,8 +276,10 @@ class BlogPosts extends Component
             'posts' => BlogPost::withTrashed()
                 ->when($this->search, fn ($query) => $query->where(function ($query) {
                     $query->where('title', 'like', '%' . $this->search . '%')
+                        ->orWhere('title_ja', 'like', '%' . $this->search . '%')
                         ->orWhere('category', 'like', '%' . $this->search . '%')
-                        ->orWhere('excerpt', 'like', '%' . $this->search . '%');
+                        ->orWhere('excerpt', 'like', '%' . $this->search . '%')
+                        ->orWhere('excerpt_ja', 'like', '%' . $this->search . '%');
                 }))
                 ->when($this->filterActive === 'active', fn ($query) => $query->whereNull('deleted_at')->where('is_active', true))
                 ->when($this->filterActive === 'inactive', fn ($query) => $query->whereNull('deleted_at')->where('is_active', false))

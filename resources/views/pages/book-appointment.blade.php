@@ -302,8 +302,8 @@ input,textarea,select,button{font-family:inherit}
           <a href="{{ route('home') }}">Home</a><span>›</span>
           <span style="color:rgba(255,255,255,.9)">Book a Consultation</span>
         </div>
-        <h1 class="page-hero-title">{!! str_replace($appointmentPage?->hero_highlight ?: 'Free', '<span>' . e($appointmentPage?->hero_highlight ?: 'Free') . '</span>', e($appointmentPage?->hero_title ?: 'Book Your Free Consultation')) !!}</h1>
-        <p class="page-hero-sub">{{ $appointmentPage?->hero_subtitle ?: 'Schedule a visit at your nearest HASU branch. Our expert counselors will guide you on universities, visas, and the best study abroad pathway for you.' }}</p>
+        <h1 class="page-hero-title">{!! str_replace(localized($appointmentPage, 'hero_highlight') ?: 'Free', '<span>' . e(localized($appointmentPage, 'hero_highlight') ?: 'Free') . '</span>', e(localized($appointmentPage, 'hero_title') ?: 'Book Your Free Consultation')) !!}</h1>
+        <p class="page-hero-sub">{{ localized($appointmentPage, 'hero_subtitle') ?: 'Schedule a visit at your nearest HASU branch. Our expert counselors will guide you on universities, visas, and the best study abroad pathway for you.' }}</p>
         <div class="hero-quick-contacts">
           <a href="tel:{{ $telPrimary }}" class="hero-qc">
             <div class="hero-qc-icon">📞</div>
@@ -371,8 +371,8 @@ input,textarea,select,button{font-family:inherit}
           <input type="text" id="company_website" tabindex="-1" autocomplete="off">
         </div>
         <input type="hidden" id="form_started_at" value="{{ now()->timestamp }}">
-        <h3>{{ $appointmentPage?->form_title ?: 'Schedule Your Visit' }}</h3>
-        <p>{{ $appointmentPage?->form_subtitle ?: 'Complete the steps below to book your in-person consultation at any HASU branch.' }}</p>
+        <h3>{{ localized($appointmentPage, 'form_title') ?: 'Schedule Your Visit' }}</h3>
+        <p>{{ localized($appointmentPage, 'form_subtitle') ?: 'Complete the steps below to book your in-person consultation at any HASU branch.' }}</p>
 
         {{-- Step Indicator --}}
         <div class="steps-indicator" id="stepsIndicator">
@@ -668,9 +668,9 @@ input,textarea,select,button{font-family:inherit}
 <section id="faq-strip" class="section">
   <div class="container">
     <div style="text-align:center;margin-bottom:0" class="fade-up">
-      <div class="section-label">{{ $appointmentPage?->faq_label ?: 'Quick Answers' }}</div>
-      <h2 class="section-title">{{ $appointmentPage?->faq_title ?: 'Frequently Asked Questions' }}</h2>
-      <p class="section-sub" style="margin-bottom:0">{{ $appointmentPage?->faq_subtitle ?: 'Common questions about in-person consultations at HASU.' }}</p>
+      <div class="section-label">{{ localized($appointmentPage, 'faq_label') ?: 'Quick Answers' }}</div>
+      <h2 class="section-title">{{ localized($appointmentPage, 'faq_title') ?: 'Frequently Asked Questions' }}</h2>
+      <p class="section-sub" style="margin-bottom:0">{{ localized($appointmentPage, 'faq_subtitle') ?: 'Common questions about in-person consultations at HASU.' }}</p>
     </div>
     <div class="faq-grid">
       <div class="faq-item fade-up">
@@ -706,8 +706,8 @@ input,textarea,select,button{font-family:inherit}
   <div class="container">
     <div class="cta-inner">
       <div class="cta-text fade-up">
-        <h2>{{ $appointmentPage?->cta_title ?: 'Have Questions Before Booking?' }}</h2>
-        <p>{{ $appointmentPage?->cta_subtitle ?: 'Our team is available on call, email, and WhatsApp to answer any questions before your visit.' }}</p>
+        <h2>{{ localized($appointmentPage, 'cta_title') ?: 'Have Questions Before Booking?' }}</h2>
+        <p>{{ localized($appointmentPage, 'cta_subtitle') ?: 'Our team is available on call, email, and WhatsApp to answer any questions before your visit.' }}</p>
         <div class="cta-actions">
           <a href="{{ route('contact') }}" class="btn-cta-primary">Contact Us</a>
           <a href="https://wa.me/9779853646493" target="_blank" class="btn-ghost">💬 WhatsApp Us</a>

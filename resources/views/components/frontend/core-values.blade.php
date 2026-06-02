@@ -8,10 +8,10 @@
   <div class="container">
 
     <div class="section-head fade-up">
-      <div class="section-label">{{ $section?->section_label ?? 'Core Values' }}</div>
-      <h2 class="section-title">{{ $section?->title ?? 'The Principles We Live By' }}</h2>
+      <div class="section-label">{{ localized($section, 'section_label') ?: 'Core Values' }}</div>
+      <h2 class="section-title">{{ localized($section, 'title') ?: 'The Principles We Live By' }}</h2>
       @if ($section?->subtitle)
-        <p class="section-sub">{{ $section->subtitle }}</p>
+        <p class="section-sub">{{ localized($section, 'subtitle') }}</p>
       @endif
     </div>
 
@@ -21,9 +21,9 @@
       <div class="value-card fade-up" @if($i > 0) style="transition-delay:{{ round($i * 0.08, 2) }}s" @endif>
         <div class="value-icon">{{ $value->icon }}</div>
         <div>
-          <h4>{{ $value->title }}</h4>
+          <h4>{{ localized($value, 'title') }}</h4>
           @if ($value->description)
-            <p>{{ $value->description }}</p>
+            <p>{{ localized($value, 'description') }}</p>
           @endif
         </div>
       </div>

@@ -23,6 +23,7 @@ class HomeAbout extends Component
 
     #[Validate('nullable|string|max:150')]
     public string $image_alt = '';
+    public string $image_alt_ja = '';
 
     // ── Badge ─────────────────────────────────────────────────────────────
     #[Validate('nullable|string|max:20')]
@@ -30,28 +31,38 @@ class HomeAbout extends Component
 
     #[Validate('nullable|string|max:80')]
     public string $badge_label = '';
+    public string $badge_label_ja = '';
 
     // ── Text ──────────────────────────────────────────────────────────────
     #[Validate('required|string|max:100')]
     public string $section_label = '';
+    public string $section_label_ja = '';
 
     #[Validate('required|string|max:200')]
     public string $section_title = '';
+    public string $section_title_ja = '';
 
     #[Validate('nullable|string|max:1500')]
     public string $paragraph_1 = '';
+    public string $paragraph_1_ja = '';
 
     #[Validate('nullable|string|max:1500')]
     public string $paragraph_2 = '';
+    public string $paragraph_2_ja = '';
 
     // ── Badges (icon chips) ───────────────────────────────────────────────
     public array $badges = [
         ['icon' => '', 'label' => ''],
         ['icon' => '', 'label' => ''],
     ];
+    public array $badges_ja = [
+        ['icon' => '', 'label' => ''],
+        ['icon' => '', 'label' => ''],
+    ];
 
     // ── Perks list ────────────────────────────────────────────────────────
     public array $perks = ['', '', ''];
+    public array $perks_ja = ['', '', ''];
 
     // ── CTA ───────────────────────────────────────────────────────────────
     #[Validate('nullable|string|max:80')]
@@ -68,13 +79,20 @@ class HomeAbout extends Component
 
         $this->image_current = $r->image_path;
         $this->image_alt     = $r->image_alt     ?? '';
+        $this->image_alt_ja  = $r->image_alt_ja  ?? '';
         $this->badge_number  = $r->badge_number  ?? '';
         $this->badge_label   = $r->badge_label   ?? '';
+        $this->badge_label_ja = $r->badge_label_ja ?? '';
         $this->section_label = $r->section_label ?? '';
+        $this->section_label_ja = $r->section_label_ja ?? '';
         $this->section_title = $r->section_title ?? '';
+        $this->section_title_ja = $r->section_title_ja ?? '';
         $this->paragraph_1   = $r->paragraph_1   ?? '';
+        $this->paragraph_1_ja = $r->paragraph_1_ja ?? '';
         $this->paragraph_2   = $r->paragraph_2   ?? '';
+        $this->paragraph_2_ja = $r->paragraph_2_ja ?? '';
         $this->cta_label     = $r->cta_label     ?? '';
+        $this->cta_label_ja  = $r->cta_label_ja  ?? '';
         $this->cta_href      = $r->cta_href      ?? '';
 
         // Badges — ensure minimum 2 rows
@@ -82,10 +100,18 @@ class HomeAbout extends Component
         while (count($b) < 2) $b[] = ['icon' => '', 'label' => ''];
         $this->badges = $b;
 
+        $bja = is_array($r->badges_ja) ? $r->badges_ja : [];
+        while (count($bja) < 2) $bja[] = ['icon' => '', 'label' => ''];
+        $this->badges_ja = $bja;
+
         // Perks — ensure minimum 3 rows
         $p = is_array($r->perks) ? $r->perks : [];
         while (count($p) < 3) $p[] = '';
         $this->perks = $p;
+
+        $pja = is_array($r->perks_ja) ? $r->perks_ja : [];
+        while (count($pja) < 3) $pja[] = '';
+        $this->perks_ja = $pja;
     }
 
     // ── Badge row helpers ─────────────────────────────────────────────────
@@ -118,27 +144,43 @@ class HomeAbout extends Component
         $this->validate([
             'image_upload'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
             'image_alt'     => 'nullable|string|max:150',
+            'image_alt_ja'  => 'nullable|string|max:150',
             'badge_number'  => 'nullable|string|max:20',
             'badge_label'   => 'nullable|string|max:80',
+            'badge_label_ja' => 'nullable|string|max:80',
             'section_label' => 'required|string|max:100',
+            'section_label_ja' => 'nullable|string|max:100',
             'section_title' => 'required|string|max:200',
+            'section_title_ja' => 'nullable|string|max:200',
             'paragraph_1'   => 'nullable|string|max:1500',
+            'paragraph_1_ja' => 'nullable|string|max:1500',
             'paragraph_2'   => 'nullable|string|max:1500',
+            'paragraph_2_ja' => 'nullable|string|max:1500',
             'cta_label'     => 'nullable|string|max:80',
+            'cta_label_ja'  => 'nullable|string|max:80',
             'cta_href'      => 'nullable|string|max:255',
         ]);
 
         $saved = $service->save([
             'image_alt'     => $this->image_alt,
+            'image_alt_ja'  => $this->image_alt_ja,
             'badge_number'  => $this->badge_number,
             'badge_label'   => $this->badge_label,
+            'badge_label_ja' => $this->badge_label_ja,
             'section_label' => $this->section_label,
+            'section_label_ja' => $this->section_label_ja,
             'section_title' => $this->section_title,
+            'section_title_ja' => $this->section_title_ja,
             'paragraph_1'   => $this->paragraph_1,
+            'paragraph_1_ja' => $this->paragraph_1_ja,
             'paragraph_2'   => $this->paragraph_2,
+            'paragraph_2_ja' => $this->paragraph_2_ja,
             'badges'        => $this->badges,
+            'badges_ja'     => $this->badges_ja,
             'perks'         => $this->perks,
+            'perks_ja'      => $this->perks_ja,
             'cta_label'     => $this->cta_label,
+            'cta_label_ja'  => $this->cta_label_ja,
             'cta_href'      => $this->cta_href,
         ], $this->image_upload);
 

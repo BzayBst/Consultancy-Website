@@ -126,6 +126,11 @@
                         <input type="text" wire:model="image_alt" placeholder="About HASU">
                         @error('image_alt') <span class="fe">{{ $message }}</span> @enderror
                     </div>
+                    <div class="form-group">
+                        <label>Image Alt Text (Japanese)</label>
+                        <input type="text" wire:model="image_alt_ja" placeholder="HASUについて">
+                        @error('image_alt_ja') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
 
                     <div class="badge-mini-preview">
                         <strong>{{ $badge_number ?: '11' }}</strong>
@@ -142,6 +147,13 @@
                             <label>Badge Label</label>
                             <input type="text" wire:model.live="badge_label" placeholder="Years of Experience">
                             @error('badge_label') <span class="fe">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+                    <div class="ha-grid-2" style="margin-top:8px">
+                        <div class="form-group">
+                            <label>Badge Label (Japanese)</label>
+                            <input type="text" wire:model.live="badge_label_ja" placeholder="経験年数">
+                            @error('badge_label_ja') <span class="fe">{{ $message }}</span> @enderror
                         </div>
                     </div>
                 </div>
@@ -162,9 +174,19 @@
                         @error('section_label') <span class="fe">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group">
+                        <label>Section Label (Japanese)</label>
+                        <input type="text" wire:model.live="section_label_ja" placeholder="私たちの物語">
+                        @error('section_label_ja') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group">
                         <label>Section Title <span class="req">*</span></label>
                         <input type="text" wire:model.live="section_title" placeholder="Your Trusted Partner in Global Education">
                         @error('section_title') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group">
+                        <label>Section Title (Japanese)</label>
+                        <input type="text" wire:model.live="section_title_ja" placeholder="信頼できるパートナー">
+                        @error('section_title_ja') <span class="fe">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group ha-full">
                         <label>Paragraph 1</label>
@@ -174,11 +196,23 @@
                         @error('paragraph_1') <span class="fe">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group ha-full">
+                        <label>Paragraph 1 (Japanese)</label>
+                        <textarea wire:model.live="paragraph_1_ja" rows="4" placeholder="2013年に創設され、2015年に正式登録されました..."></textarea>
+                        <div class="char-count">{{ strlen($paragraph_1_ja) }} / 1500</div>
+                        @error('paragraph_1_ja') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group ha-full">
                         <label>Paragraph 2</label>
                         <textarea wire:model.live="paragraph_2" rows="3"
                                   placeholder="We specialize in Japanese language prep (NAT, JLPT, J-TEST)..."></textarea>
                         <div class="char-count">{{ strlen($paragraph_2) }} / 1500</div>
                         @error('paragraph_2') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group ha-full">
+                        <label>Paragraph 2 (Japanese)</label>
+                        <textarea wire:model.live="paragraph_2_ja" rows="3" placeholder="私たちは日本語の準備を専門としています..."></textarea>
+                        <div class="char-count">{{ strlen($paragraph_2_ja) }} / 1500</div>
+                        @error('paragraph_2_ja') <span class="fe">{{ $message }}</span> @enderror
                     </div>
                 </div>
             </div>
@@ -205,6 +239,19 @@
                     <button type="button" wire:click="removeBadge({{ $i }})" class="row-remove">✕</button>
                 </div>
                 @endforeach
+                <hr style="margin:12px 0">
+                <div style="margin-top:8px; font-weight:700; color:#334155;">Japanese labels</div>
+                @foreach ($badges_ja as $i => $badgeja)
+                <div class="badge-row">
+                    <input type="text"
+                           wire:model.live="badges_ja.{{ $i }}.icon"
+                           class="badge-icon-input" placeholder="🏅" maxlength="10">
+                    <input type="text"
+                           wire:model.live="badges_ja.{{ $i }}.label"
+                           class="badge-label-input" placeholder="最高の移民リソース">
+                    <button type="button" wire:click="removeBadge({{ $i }})" class="row-remove">✕</button>
+                </div>
+                @endforeach
             </div>
         </div>
 
@@ -227,6 +274,17 @@
                     <button type="button" wire:click="removePerk({{ $i }})" class="row-remove">✕</button>
                 </div>
                 @endforeach
+                <hr style="margin:12px 0">
+                <div style="margin-top:8px; font-weight:700; color:#334155;">Japanese perks</div>
+                @foreach ($perks_ja as $i => $perkja)
+                <div class="perk-row">
+                    <span class="perk-check">✓</span>
+                    <input type="text"
+                           wire:model.live="perks_ja.{{ $i }}"
+                           placeholder="100%本物の支援を提供します">
+                    <button type="button" wire:click="removePerk({{ $i }})" class="row-remove">✕</button>
+                </div>
+                @endforeach
             </div>
         </div>
 
@@ -240,6 +298,11 @@
                     <label>Button Label</label>
                     <input type="text" wire:model="cta_label" placeholder="Know More">
                     @error('cta_label') <span class="fe">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group">
+                    <label>Button Label (Japanese)</label>
+                    <input type="text" wire:model="cta_label_ja" placeholder="詳細はこちら">
+                    @error('cta_label_ja') <span class="fe">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group">
                     <label>Button Link (href)</label>

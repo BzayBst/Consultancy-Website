@@ -8,7 +8,9 @@ class ContactFaq extends Model
 {
     protected $fillable = [
         'question',
+        'question_ja',
         'answer',
+        'answer_ja',
         'sort_order',
         'is_active',
     ];

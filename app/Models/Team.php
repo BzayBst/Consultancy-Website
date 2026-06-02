@@ -13,9 +13,12 @@ class Team extends Model
 
     protected $fillable = [
         'name',
+        'name_ja',
         'slug',
         'designation',
+        'designation_ja',
         'bio',
+        'bio_ja',
         'photo',
         'email',
         'phone',

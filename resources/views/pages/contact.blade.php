@@ -295,8 +295,8 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
           <a href="{{ route('home') }}">Home</a><span>›</span>
           <span style="color:rgba(255,255,255,.9)">Contact Us</span>
         </div>
-        <h1 class="page-hero-title">{!! str_replace($contactPage?->hero_highlight ?: 'Touch', '<span>' . e($contactPage?->hero_highlight ?: 'Touch') . '</span>', e($contactPage?->hero_title ?: 'Get In Touch With HASU')) !!}</h1>
-        <p class="page-hero-sub">{{ $contactPage?->hero_subtitle ?: 'Have questions about studying abroad, visa processing, or our courses? Our counselors are ready to guide you anytime.' }}</p>
+        <h1 class="page-hero-title">{!! str_replace(localized($contactPage, 'hero_highlight') ?: 'Touch', '<span>' . e(localized($contactPage, 'hero_highlight') ?: 'Touch') . '</span>', e(localized($contactPage, 'hero_title') ?: 'Get In Touch With HASU')) !!}</h1>
+        <p class="page-hero-sub">{{ localized($contactPage, 'hero_subtitle') ?: 'Have questions about studying abroad, visa processing, or our courses? Our counselors are ready to guide you anytime.' }}</p>
         <div class="hero-quick-contacts">
           <a href="tel:{{ $telPrimary }}" class="hero-qc">
             <div class="hero-qc-icon">📞</div>
@@ -362,8 +362,8 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
 
       <!-- CONTACT FORM -->
       <div class="form-card fade-left">
-        <h3>{{ $contactPage?->form_title ?: 'Send Us a Message' }}</h3>
-        <p>{{ $contactPage?->form_subtitle ?: 'Fill out the form below and our team will get back to you within 24 hours.' }}</p>
+        <h3>{{ localized($contactPage, 'form_title') ?: 'Send Us a Message' }}</h3>
+        <p>{{ localized($contactPage, 'form_subtitle') ?: 'Fill out the form below and our team will get back to you within 24 hours.' }}</p>
 
         @if(session('contact_success'))
           <div class="success-msg" style="display:block;margin-bottom:16px">{{ session('contact_success') }}</div>
@@ -441,8 +441,8 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
 
       <!-- BRANCHES + MAP -->
       <div class="branch-panel fade-right">
-        <h3 class="branch-panel-title">{{ $contactPage?->branch_title ?: 'Our Office Locations' }}</h3>
-        <p class="branch-panel-sub">{{ $contactPage?->branch_subtitle ?: 'We have multiple branches across Nepal. Click on a branch to see its exact location on the map.' }}</p>
+        <h3 class="branch-panel-title">{{ localized($contactPage, 'branch_title') ?: 'Our Office Locations' }}</h3>
+        <p class="branch-panel-sub">{{ localized($contactPage, 'branch_subtitle') ?: 'We have multiple branches across Nepal. Click on a branch to see its exact location on the map.' }}</p>
 
         <!-- Branch Tabs -->
         <div class="branch-tabs" id="branchTabs">
@@ -479,16 +479,16 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
 <section id="faq-strip" class="section">
   <div class="container">
     <div style="text-align:center;margin-bottom:0" class="fade-up">
-      <div class="section-label">{{ $contactPage?->faq_label ?: 'Quick Answers' }}</div>
-      <h2 class="section-title">{{ $contactPage?->faq_title ?: 'Frequently Asked Questions' }}</h2>
-      <p class="section-sub" style="margin-bottom:0">{{ $contactPage?->faq_subtitle ?: 'Common questions from students and parents before reaching out to us.' }}</p>
+      <div class="section-label">{{ localized($contactPage, 'faq_label') ?: 'Quick Answers' }}</div>
+      <h2 class="section-title">{{ localized($contactPage, 'faq_title') ?: 'Frequently Asked Questions' }}</h2>
+      <p class="section-sub" style="margin-bottom:0">{{ localized($contactPage, 'faq_subtitle') ?: 'Common questions from students and parents before reaching out to us.' }}</p>
     </div>
     @if($contactFaqs->isNotEmpty())
       <div class="faq-grid">
         @foreach($contactFaqs as $faq)
           <div class="faq-item fade-up" style="transition-delay:{{ min($loop->index * .05, .25) }}s" onclick="toggleFaq(this)">
-            <div class="faq-q"><span>{{ $faq->question }}</span><div class="faq-toggle">+</div></div>
-            <div class="faq-a">{{ $faq->answer }}</div>
+            <div class="faq-q"><span>{{ localized($faq, 'question') }}</span><div class="faq-toggle">+</div></div>
+            <div class="faq-a">{{ localized($faq, 'answer') }}</div>
           </div>
         @endforeach
       </div>
@@ -502,8 +502,8 @@ footer{background:linear-gradient(160deg,#060d2e 0%,var(--navy) 60%,#2a0808 100%
     <div class="social-strip-inner">
       <div class="fade-left">
         <div class="section-label" style="justify-content:flex-start"><span style="width:32px;height:2px;background:var(--red);display:block"></span> Follow Us</div>
-        <h2>{{ $contactPage?->social_title ?: 'Connect With Us on Social Media' }}</h2>
-        <p>{{ $contactPage?->social_subtitle ?: 'Stay updated with the latest news, events, scholarship alerts, student success stories, and study abroad tips by following our social channels.' }}</p>
+        <h2>{{ localized($contactPage, 'social_title') ?: 'Connect With Us on Social Media' }}</h2>
+        <p>{{ localized($contactPage, 'social_subtitle') ?: 'Stay updated with the latest news, events, scholarship alerts, student success stories, and study abroad tips by following our social channels.' }}</p>
       </div>
       <div class="social-links-grid fade-right">
         @forelse($socialLinks as $social)

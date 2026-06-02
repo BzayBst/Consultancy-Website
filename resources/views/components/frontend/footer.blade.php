@@ -13,6 +13,7 @@
   $youtube    = setting('social_youtube');
   $instagram  = setting('social_instagram');
   $year       = date('Y');
+  $isJa       = app()->isLocale('ja');
 @endphp
 
 <footer>
@@ -47,7 +48,7 @@
 
       {{-- Services --}}
       <div class="footer-col">
-        <h5>Our Services</h5>
+        <h5>{{ $isJa ? 'サービス' : 'Our Services' }}</h5>
         <ul>
           <li><a href="#">Visa Assistance</a></li>
           <li><a href="#">Financial Assistance</a></li>
@@ -58,7 +59,7 @@
 
       {{-- Quick Links --}}
       <div class="footer-col">
-        <h5>Quick Links</h5>
+        <h5>{{ $isJa ? 'クイックリンク' : 'Quick Links' }}</h5>
         <ul>
           <li><a href="{{ route('home') }}">Home</a></li>
           <li><a href="{{ route('about') }}">About Us</a></li>
@@ -70,7 +71,7 @@
 
       {{-- Contact --}}
       <div class="footer-col">
-        <h5>Get In Touch</h5>
+        <h5>{{ $isJa ? 'お問い合わせ' : 'Get In Touch' }}</h5>
         <ul class="footer-contact-list">
           <li><span class="ic">📍</span> {{ $address }}</li>
           <li>

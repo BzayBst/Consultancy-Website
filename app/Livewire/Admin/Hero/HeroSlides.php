@@ -46,6 +46,8 @@ class HeroSlides extends Component
     public string $image_url         = '';   // external URL fallback
     public $image_upload             = null; // UploadedFile
     public ?string $image_current    = null; // existing stored path
+    public string $image_alt         = '';
+    public string $image_alt_ja      = '';
     public string $plane_emoji       = '✈️';
     public bool   $is_active         = true;
 
@@ -88,6 +90,8 @@ class HeroSlides extends Component
             'btn_ghost_href'      => 'nullable|string|max:200',
             'image_url'           => 'nullable|url|max:500',
             'image_upload'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'image_alt'           => 'nullable|string|max:150',
+            'image_alt_ja'        => 'nullable|string|max:150',
             'plane_emoji'         => 'nullable|string|max:10',
             'is_active'           => 'boolean',
             'features'            => 'array',
@@ -151,6 +155,9 @@ class HeroSlides extends Component
             $this->image_url     = '';
         }
 
+        $this->image_alt      = $slide->image_alt ?? '';
+        $this->image_alt_ja   = $slide->image_alt_ja ?? '';
+
         // Features — ensure 4 rows minimum
         $feats = is_array($slide->features) ? $slide->features : [];
         while (count($feats) < 4) {
@@ -200,6 +207,8 @@ class HeroSlides extends Component
             'btn_ghost_label'   => $this->btn_ghost_label,
             'btn_ghost_label_ja' => $this->btn_ghost_label_ja ?: null,
             'btn_ghost_href'    => $this->btn_ghost_href,
+            'image_alt'         => $this->image_alt ?: null,
+            'image_alt_ja'      => $this->image_alt_ja ?: null,
             'plane_emoji'       => $this->plane_emoji,
             'is_active'         => $this->is_active,
             'features_ja'       => array_values(array_filter($this->features_ja, fn ($f) => ! empty($f['label']))),
@@ -276,7 +285,7 @@ class HeroSlides extends Component
             'title_line3', 'title_line3_ja', 'description', 'description_ja',
             'btn_primary_label', 'btn_primary_label_ja', 'btn_primary_href',
             'btn_ghost_label', 'btn_ghost_label_ja', 'btn_ghost_href', 'image_url', 'image_upload',
-            'image_current', 'plane_emoji', 'is_active',
+            'image_current', 'image_alt', 'image_alt_ja', 'plane_emoji', 'is_active',
         ]);
         $this->plane_emoji = '✈️';
         $this->is_active   = true;

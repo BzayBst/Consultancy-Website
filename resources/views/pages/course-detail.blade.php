@@ -1,46 +1,46 @@
 @extends('layouts.app', ['active' => 'course-detail'])
 
-@section('title', $course->title . ' - ' . setting('general_site_name', 'HASU Educational Consultancy'))
-@section('meta_description', $course->excerpt ?: $course->overview ?: 'Course details from HASU Educational Consultancy.')
+@section('title', localized($course, 'title') . ' - ' . setting('general_site_name', 'HASU Educational Consultancy'))
+@section('meta_description', localized($course, 'excerpt') ?: localized($course, 'overview') ?: 'Course details from HASU Educational Consultancy.')
 
 @section('content')
     <x-frontend.page-hero
-        badge="{{ $course->badge ?: $coursePage?->hero_badge ?: 'HASU Language Institute' }}"
-        title="{{ $course->title }}"
+        badge="{{ localized($course, 'badge') ?: localized($coursePage, 'hero_badge') ?: 'HASU Language Institute' }}"
+        title="{{ localized($course, 'title') }}"
         highlight="Course"
-        subtitle="{{ $course->excerpt ?: $coursePage?->hero_subtitle }}"
-        :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'All Courses', 'url' => route('courses')], ['label' => $course->title]]"
+        subtitle="{{ localized($course, 'excerpt') ?: localized($coursePage, 'hero_subtitle') }}"
+        :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'All Courses', 'url' => route('courses')], ['label' => localized($course, 'title')]]"
     />
 
     <section class="cd-main section">
       <div class="container">
         <div class="cd-layout">
           <div class="cd-content fade-up">
-            <h1 class="cd-title">{{ $course->title }}</h1>
-            @if(! empty($course->meta_items))
+            <h1 class="cd-title">{{ localized($course, 'title') }}</h1>
+            @if(! empty(localized($course, 'meta_items')))
             <div class="cd-meta">
-              @foreach($course->meta_items as $item)
+              @foreach(localized($course, 'meta_items') as $item)
                 <span>{{ $item['label'] ?? '' }}</span>
               @endforeach
             </div>
             @endif
 
             <div class="cd-description">
-              @if($course->overview)
-                <p>{{ $course->overview }}</p>
+              @if(localized($course, 'overview'))
+                <p>{{ localized($course, 'overview') }}</p>
               @endif
-              @foreach($course->description ?? [] as $paragraph)
+              @foreach(localized($course, 'description') ?? [] as $paragraph)
                 @if(! empty($paragraph['body']))
                   <p>{{ $paragraph['body'] }}</p>
                 @endif
               @endforeach
             </div>
 
-            @if(! empty($course->highlights))
+            @if(! empty(localized($course, 'highlights')))
             <div class="cd-highlights">
               <h3>What You Will Learn</h3>
               <ul>
-                @foreach($course->highlights as $highlight)
+                @foreach(localized($course, 'highlights') as $highlight)
                   @if(! empty($highlight['item']))
                     <li>{{ $highlight['item'] }}</li>
                   @endif
@@ -56,12 +56,12 @@
 
           <aside class="cd-sidebar fade-up" style="transition-delay:.1s">
             <div class="cd-sidebar-card">
-              <div class="cd-sidebar-flag">{{ $course->badge ?: 'Course' }}</div>
-              <h3>{{ $course->sidebar_title ?: 'Enroll Today' }}</h3>
-              <p>{{ $course->sidebar_subtitle ?: 'Book your placement test and start your learning journey.' }}</p>
-              @if(! empty($course->sidebar_items))
+              <div class="cd-sidebar-flag">{{ localized($course, 'badge') ?: 'Course' }}</div>
+              <h3>{{ localized($course, 'sidebar_title') ?: 'Enroll Today' }}</h3>
+              <p>{{ localized($course, 'sidebar_subtitle') ?: 'Book your placement test and start your learning journey.' }}</p>
+              @if(! empty(localized($course, 'sidebar_items')))
               <ul class="cd-sidebar-info">
-                @foreach($course->sidebar_items as $item)
+                @foreach(localized($course, 'sidebar_items') as $item)
                   <li><span>{{ $item['label'] ?? '' }}</span><strong>{{ $item['value'] ?? '' }}</strong></li>
                 @endforeach
               </ul>
@@ -87,15 +87,15 @@
           <a href="{{ route('course.show', $other->slug) }}" class="course-card course-card-link fade-up" style="transition-delay:{{ $i * .1 }}s">
             <div class="course-img">
               @if($other->image_url)
-                <img src="{{ $other->image_url }}" alt="{{ $other->title }}">
+                <img src="{{ $other->image_url }}" alt="{{ localized($other, 'title') }}">
               @endif
-              @if($other->badge)
-                <div class="course-flag">{{ $other->badge }}</div>
+              @if(localized($other, 'badge'))
+                <div class="course-flag">{{ localized($other, 'badge') }}</div>
               @endif
             </div>
             <div class="course-body">
-              <h4>{{ $other->title }}</h4>
-              <p>{{ $other->excerpt }}</p>
+              <h4>{{ localized($other, 'title') }}</h4>
+              <p>{{ localized($other, 'excerpt') }}</p>
               <span class="course-card-cta">View Course</span>
             </div>
           </a>
@@ -116,11 +116,11 @@
         <div class="container">
             <div class="cta-inner">
                 <div class="cta-text fade-up">
-                    <h2>{{ $coursePage?->cta_title ?: 'Not Sure Which Course Is Right for You?' }}</h2>
-                    <p>{{ $coursePage?->cta_subtitle ?: 'Visit our campus or book a free assessment. We will recommend the best program for your goals.' }}</p>
+                    <h2>{{ localized($coursePage, 'cta_title') ?: 'Not Sure Which Course Is Right for You?' }}</h2>
+                    <p>{{ localized($coursePage, 'cta_subtitle') ?: 'Visit our campus or book a free assessment. We will recommend the best program for your goals.' }}</p>
                     <div class="cta-actions">
-                        <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-cta-primary">{{ $coursePage?->cta_button_label ?: 'Apply Now' }}</a>
-                        <a href="{{ $coursePage?->cta_phone_url ?: 'tel:+97756493528' }}" class="btn btn-cta-ghost">{{ $coursePage?->cta_phone_label ?: 'Call Us Today' }}</a>
+                        <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-cta-primary">{{ localized($coursePage, 'cta_button_label') ?: 'Apply Now' }}</a>
+                        <a href="{{ $coursePage?->cta_phone_url ?: 'tel:+97756493528' }}" class="btn btn-cta-ghost">{{ localized($coursePage, 'cta_phone_label') ?: 'Call Us Today' }}</a>
                     </div>
                 </div>
             </div>

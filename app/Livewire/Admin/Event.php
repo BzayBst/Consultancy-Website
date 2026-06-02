@@ -42,8 +42,11 @@ class Event extends Component
     /*  Form fields — basic                                                 */
     /* ------------------------------------------------------------------ */
     public string $ev_title        = '';
+    public string $ev_title_ja     = '';
     public string $description     = '';
+    public string $description_ja  = '';
     public string $long_description= '';
+    public string $long_description_ja = '';
     public string $highlights_raw  = ''; // newline-separated list → stored as JSON array
     public string $event_date      = '';
     public string $event_end_date  = '';
@@ -82,8 +85,11 @@ class Event extends Component
     {
         return [
             'ev_title'         => ['required', 'string', 'max:200'],
+            'ev_title_ja'      => ['nullable', 'string', 'max:200'],
             'description'      => ['nullable', 'string', 'max:400'],
+            'description_ja'   => ['nullable', 'string', 'max:400'],
             'long_description' => ['nullable', 'string'],
+            'long_description_ja' => ['nullable', 'string'],
             'highlights_raw'   => ['nullable', 'string'],
             'event_date'       => ['required', 'date'],
             'event_end_date'   => ['nullable', 'date', 'after_or_equal:event_date'],
@@ -161,8 +167,11 @@ class Event extends Component
         $event = $service->find($id);
 
         $this->ev_title         = $event->title;
+        $this->ev_title_ja      = $event->title_ja ?? '';
         $this->description      = $event->description      ?? '';
+        $this->description_ja   = $event->description_ja ?? '';
         $this->long_description = $event->long_description ?? '';
+        $this->long_description_ja = $event->long_description_ja ?? '';
         $this->highlights_raw   = $event->highlights
                                     ? implode("\n", $event->highlights)
                                     : '';
@@ -201,8 +210,11 @@ class Event extends Component
 
         $data = [
             'title'            => $this->ev_title,
+            'title_ja'         => $this->ev_title_ja ?: null,
             'description'      => $this->description      ?: null,
+            'description_ja'   => $this->description_ja ?: null,
             'long_description' => $this->long_description ?: null,
+            'long_description_ja' => $this->long_description_ja ?: null,
             'highlights'       => $highlights ?: null,
             'event_date'       => $this->event_date,
             'event_end_date'   => $this->event_end_date   ?: null,
@@ -281,8 +293,11 @@ class Event extends Component
         $this->resetValidation();
         $this->editingId        = null;
         $this->ev_title         = '';
+        $this->ev_title_ja      = '';
         $this->description      = '';
+        $this->description_ja   = '';
         $this->long_description = '';
+        $this->long_description_ja = '';
         $this->highlights_raw   = '';
         $this->event_date       = '';
         $this->event_end_date   = '';

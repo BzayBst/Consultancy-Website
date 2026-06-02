@@ -17,14 +17,23 @@ class StudyAbroad extends Component
     public string $activeTab = 'page';
 
     public string $hero_badge = '';
+    public string $hero_badge_ja = '';
     public string $hero_title = '';
+    public string $hero_title_ja = '';
     public string $hero_highlight = '';
+    public string $hero_highlight_ja = '';
     public string $hero_subtitle = '';
+    public string $hero_subtitle_ja = '';
     public string $section_label = '';
+    public string $section_label_ja = '';
     public string $section_title = '';
+    public string $section_title_ja = '';
     public string $cta_title = '';
+    public string $cta_title_ja = '';
     public string $cta_subtitle = '';
+    public string $cta_subtitle_ja = '';
     public string $cta_button_label = '';
+    public string $cta_button_label_ja = '';
     public string $cta_button_url = '';
 
     public string $search = '';
@@ -41,13 +50,19 @@ class StudyAbroad extends Component
     public string $flag = '';
     public string $card_tag = '';
     public string $card_title = '';
+    public string $card_title_ja = '';
     public string $card_description = '';
+    public string $card_description_ja = '';
     public string $overview = '';
+    public string $overview_ja = '';
     public string $benefits_title = '';
+    public string $benefits_title_ja = '';
     public string $benefits_description = '';
+    public string $benefits_description_ja = '';
     public array $benefits = [];
     public array $courses = [];
     public string $scholarship_text = '';
+    public string $scholarship_text_ja = '';
     public array $cities = [];
     public array $universities = [];
     public array $cityImageUploads = [];
@@ -74,14 +89,23 @@ class StudyAbroad extends Component
         $page = StudyAbroadPage::first();
 
         $this->hero_badge = $page?->hero_badge ?? 'Global Opportunities';
+        $this->hero_badge_ja = $page?->hero_badge_ja ?? '';
         $this->hero_title = $page?->hero_title ?? 'Choose Your Dream';
+        $this->hero_title_ja = $page?->hero_title_ja ?? '';
         $this->hero_highlight = $page?->hero_highlight ?? 'Destination';
+        $this->hero_highlight_ja = $page?->hero_highlight_ja ?? '';
         $this->hero_subtitle = $page?->hero_subtitle ?? 'Explore top study abroad destinations and unlock world-class education with our expert visa and admission guidance.';
+        $this->hero_subtitle_ja = $page?->hero_subtitle_ja ?? '';
         $this->section_label = $page?->section_label ?? 'Explore';
+        $this->section_label_ja = $page?->section_label_ja ?? '';
         $this->section_title = $page?->section_title ?? 'Popular Countries';
+        $this->section_title_ja = $page?->section_title_ja ?? '';
         $this->cta_title = $page?->cta_title ?? 'Confused About Where to Apply?';
+        $this->cta_title_ja = $page?->cta_title_ja ?? '';
         $this->cta_subtitle = $page?->cta_subtitle ?? 'Book a free counseling session. We will evaluate your profile and recommend the perfect country and university for you.';
+        $this->cta_subtitle_ja = $page?->cta_subtitle_ja ?? '';
         $this->cta_button_label = $page?->cta_button_label ?? 'Book Consultation';
+        $this->cta_button_label_ja = $page?->cta_button_label_ja ?? '';
         $this->cta_button_url = $page?->cta_button_url ?? route('contact');
     }
 
@@ -109,27 +133,45 @@ class StudyAbroad extends Component
     {
         $this->validate([
             'hero_badge' => ['nullable', 'string', 'max:120'],
+            'hero_badge_ja' => ['nullable', 'string', 'max:120'],
             'hero_title' => ['required', 'string', 'max:160'],
+            'hero_title_ja' => ['nullable', 'string', 'max:160'],
             'hero_highlight' => ['nullable', 'string', 'max:80'],
+            'hero_highlight_ja' => ['nullable', 'string', 'max:80'],
             'hero_subtitle' => ['nullable', 'string', 'max:400'],
+            'hero_subtitle_ja' => ['nullable', 'string', 'max:400'],
             'section_label' => ['nullable', 'string', 'max:80'],
+            'section_label_ja' => ['nullable', 'string', 'max:80'],
             'section_title' => ['required', 'string', 'max:160'],
+            'section_title_ja' => ['nullable', 'string', 'max:160'],
             'cta_title' => ['nullable', 'string', 'max:160'],
+            'cta_title_ja' => ['nullable', 'string', 'max:160'],
             'cta_subtitle' => ['nullable', 'string', 'max:400'],
+            'cta_subtitle_ja' => ['nullable', 'string', 'max:400'],
             'cta_button_label' => ['nullable', 'string', 'max:80'],
+            'cta_button_label_ja' => ['nullable', 'string', 'max:80'],
             'cta_button_url' => ['nullable', 'string', 'max:255'],
         ]);
 
         StudyAbroadPage::updateOrCreate(['id' => 1], [
             'hero_badge' => $this->hero_badge,
+            'hero_badge_ja' => $this->hero_badge_ja ?: null,
             'hero_title' => $this->hero_title,
+            'hero_title_ja' => $this->hero_title_ja ?: null,
             'hero_highlight' => $this->hero_highlight,
+            'hero_highlight_ja' => $this->hero_highlight_ja ?: null,
             'hero_subtitle' => $this->hero_subtitle,
+            'hero_subtitle_ja' => $this->hero_subtitle_ja ?: null,
             'section_label' => $this->section_label,
+            'section_label_ja' => $this->section_label_ja ?: null,
             'section_title' => $this->section_title,
+            'section_title_ja' => $this->section_title_ja ?: null,
             'cta_title' => $this->cta_title,
+            'cta_title_ja' => $this->cta_title_ja ?: null,
             'cta_subtitle' => $this->cta_subtitle,
+            'cta_subtitle_ja' => $this->cta_subtitle_ja ?: null,
             'cta_button_label' => $this->cta_button_label,
+            'cta_button_label_ja' => $this->cta_button_label_ja ?: null,
             'cta_button_url' => $this->cta_button_url,
         ]);
 
@@ -156,13 +198,19 @@ class StudyAbroad extends Component
         $this->flag = $destination->flag ?? '';
         $this->card_tag = $destination->card_tag ?? '';
         $this->card_title = $destination->card_title ?? '';
+        $this->card_title_ja = $destination->card_title_ja ?? '';
         $this->card_description = $destination->card_description ?? '';
+        $this->card_description_ja = $destination->card_description_ja ?? '';
         $this->overview = $destination->overview ?? '';
+        $this->overview_ja = $destination->overview_ja ?? '';
         $this->benefits_title = $destination->benefits_title ?? '';
+        $this->benefits_title_ja = $destination->benefits_title_ja ?? '';
         $this->benefits_description = $destination->benefits_description ?? '';
+        $this->benefits_description_ja = $destination->benefits_description_ja ?? '';
         $this->benefits = $this->normalizeRows($destination->benefits ?? [], ['icon', 'title', 'description']);
         $this->courses = $this->normalizeRows($destination->courses ?? [], ['tag', 'title', 'description']);
         $this->scholarship_text = $destination->scholarship_text ?? '';
+        $this->scholarship_text_ja = $destination->scholarship_text_ja ?? '';
         $this->cities = $this->normalizeRows($destination->cities ?? [], ['title', 'description', 'image']);
         $this->universities = $this->normalizeRows($destination->universities ?? [], ['name', 'logo']);
         $this->faqs = $this->normalizeRows($destination->faqs ?? [], ['question', 'answer']);
@@ -186,10 +234,15 @@ class StudyAbroad extends Component
             'flag' => ['nullable', 'string', 'max:20'],
             'card_tag' => ['nullable', 'string', 'max:120'],
             'card_title' => ['nullable', 'string', 'max:160'],
+            'card_title_ja' => ['nullable', 'string', 'max:160'],
             'card_description' => ['nullable', 'string', 'max:500'],
+            'card_description_ja' => ['nullable', 'string', 'max:500'],
             'overview' => ['nullable', 'string', 'max:2000'],
+            'overview_ja' => ['nullable', 'string', 'max:2000'],
             'benefits_title' => ['nullable', 'string', 'max:160'],
+            'benefits_title_ja' => ['nullable', 'string', 'max:160'],
             'benefits_description' => ['nullable', 'string', 'max:500'],
+            'benefits_description_ja' => ['nullable', 'string', 'max:500'],
             'benefits.*.icon' => ['nullable', 'string', 'max:20'],
             'benefits.*.title' => ['nullable', 'string', 'max:120'],
             'benefits.*.description' => ['nullable', 'string', 'max:400'],
@@ -197,6 +250,7 @@ class StudyAbroad extends Component
             'courses.*.title' => ['nullable', 'string', 'max:120'],
             'courses.*.description' => ['nullable', 'string', 'max:400'],
             'scholarship_text' => ['nullable', 'string', 'max:1000'],
+            'scholarship_text_ja' => ['nullable', 'string', 'max:1000'],
             'cities.*.title' => ['nullable', 'string', 'max:120'],
             'cities.*.description' => ['nullable', 'string', 'max:400'],
             'cities.*.image' => ['nullable', 'string', 'max:500'],
@@ -247,13 +301,19 @@ class StudyAbroad extends Component
             'flag' => $this->flag ?: null,
             'card_tag' => $this->card_tag ?: null,
             'card_title' => $this->card_title ?: 'Study in ' . $this->country,
+            'card_title_ja' => $this->card_title_ja ?: null,
             'card_description' => $this->card_description ?: null,
+            'card_description_ja' => $this->card_description_ja ?: null,
             'overview' => $this->overview ?: null,
+            'overview_ja' => $this->overview_ja ?: null,
             'benefits_title' => $this->benefits_title ?: null,
+            'benefits_title_ja' => $this->benefits_title_ja ?: null,
             'benefits_description' => $this->benefits_description ?: null,
+            'benefits_description_ja' => $this->benefits_description_ja ?: null,
             'benefits' => $this->cleanRows($this->benefits),
             'courses' => $this->cleanRows($this->courses),
             'scholarship_text' => $this->scholarship_text ?: null,
+            'scholarship_text_ja' => $this->scholarship_text_ja ?: null,
             'cities' => $this->cleanRows($cities),
             'universities' => $this->cleanRows($universities),
             'faqs' => $this->cleanRows($this->faqs),
@@ -395,13 +455,19 @@ class StudyAbroad extends Component
         $this->flag = '';
         $this->card_tag = '';
         $this->card_title = '';
+        $this->card_title_ja = '';
         $this->card_description = '';
+        $this->card_description_ja = '';
         $this->overview = '';
+        $this->overview_ja = '';
         $this->benefits_title = '';
+        $this->benefits_title_ja = '';
         $this->benefits_description = '';
+        $this->benefits_description_ja = '';
         $this->benefits = [];
         $this->courses = [];
         $this->scholarship_text = '';
+        $this->scholarship_text_ja = '';
         $this->cities = [];
         $this->universities = [];
         $this->cityImageUploads = [];

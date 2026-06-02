@@ -46,7 +46,7 @@
                 <a href="{{ route('blog.show', $post->slug) }}" class="blog-card fade-up" @if($i > 0) style="transition-delay:{{ round(($i % 6) * .08, 2) }}s" @endif>
                     <div class="blog-img">
                         @if($post->image_url)
-                            <img src="{{ $post->image_url }}" alt="{{ $post->image_alt ?: $post->title }}">
+                            <img src="{{ $post->image_url }}" alt="{{ localized($post, 'image_alt') ?: localized($post, 'title') }}">
                         @endif
                     </div>
                     <div class="blog-content">
@@ -58,9 +58,9 @@
                                 <span>{{ $post->published_at->format('M d, Y') }}</span>
                             @endif
                         </div>
-                        <h3 class="blog-title">{{ $post->title }}</h3>
-                        @if($post->excerpt)
-                            <p class="blog-excerpt">{{ $post->excerpt }}</p>
+                        <h3 class="blog-title">{{ localized($post, 'title') }}</h3>
+                        @if(localized($post, 'excerpt'))
+                            <p class="blog-excerpt">{{ localized($post, 'excerpt') }}</p>
                         @endif
                         <span class="blog-read-more">Read Full Article</span>
                     </div>

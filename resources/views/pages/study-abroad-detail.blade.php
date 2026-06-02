@@ -1,7 +1,7 @@
 @extends('layouts.app', ['active' => 'study-abroad'])
 
-@section('title', ($destination->card_title ?: 'Study in ' . $destination->country) . ' - ' . setting('general_site_name', 'HASU Educational Consultancy'))
-@section('meta_description', $destination->card_description ?: 'Study abroad destination details, benefits, courses, cities, institutions, and FAQs.')
+@section('title', (localized($destination, 'card_title') ?: 'Study in ' . $destination->country) . ' - ' . setting('general_site_name', 'HASU Educational Consultancy'))
+@section('meta_description', localized($destination, 'card_description') ?: 'Study abroad destination details, benefits, courses, cities, institutions, and FAQs.')
 
 @php
   $studyAbroadMediaUrl = fn ($path) => \Illuminate\Support\Str::startsWith($path, ['http://', 'https://'])
@@ -30,19 +30,19 @@
 @section('content')
     <x-frontend.page-hero
         badge="{{ $studyAbroadPage?->hero_badge ?: 'Global Opportunities' }}"
-        title="{{ $destination->card_title ?: 'Study in' }}"
-        highlight="{{ $destination->card_title ? '' : $destination->country }}"
-        subtitle="{{ $destination->card_description ?: $studyAbroadPage?->hero_subtitle }}"
+        title="{{ localized($destination, 'card_title') ?: 'Study in' }}"
+        highlight="{{ localized($destination, 'card_title') ? '' : $destination->country }}"
+        subtitle="{{ localized($destination, 'card_description') ?: localized($studyAbroadPage, 'hero_subtitle') }}"
         :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'Study Abroad', 'url' => route('study-abroad')], ['label' => $destination->country]]"
     />
 
-    @if($destination->overview)
+    @if(localized($destination, 'overview'))
     <section class="detail-section">
       <div class="container fade-up">
         <div style="max-width: 800px; margin: 0 auto; text-align: center;">
           <div class="section-label">Overview</div>
           <h2 class="section-title">Your Pathway to {{ $destination->country }}</h2>
-          <p style="font-size: 1.1rem; color: #555; line-height: 1.8;">{{ $destination->overview }}</p>
+          <p style="font-size: 1.1rem; color: #555; line-height: 1.8;">{{ localized($destination, 'overview') }}</p>
         </div>
       </div>
     </section>
@@ -54,9 +54,9 @@
         <div class="courses-why-inner fade-up">
           <div class="courses-why-text">
             <div class="section-label courses-why-label">Benefits</div>
-            <h2 class="courses-why-title">{{ $destination->benefits_title ?: 'Why Study in ' . $destination->country . '?' }}</h2>
-            @if($destination->benefits_description)
-              <p>{{ $destination->benefits_description }}</p>
+            <h2 class="courses-why-title">{{ localized($destination, 'benefits_title') ?: 'Why Study in ' . $destination->country . '?' }}</h2>
+            @if(localized($destination, 'benefits_description'))
+              <p>{{ localized($destination, 'benefits_description') }}</p>
             @endif
           </div>
           <div class="courses-why-grid">
@@ -99,13 +99,13 @@
     </section>
     @endif
 
-    @if($destination->scholarship_text)
+    @if(localized($destination, 'scholarship_text'))
     <section class="detail-section">
       <div class="container">
         <div class="fade-up" style="background: var(--blue); color: white; padding: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 30px;">
           <div style="flex: 1; min-width: 300px;">
             <h2 style="margin-top: 0;">Scholarship Opportunities</h2>
-            <p style="color: rgba(255,255,255,0.9); margin-bottom: 0; font-size: 1.1rem;">{{ $destination->scholarship_text }}</p>
+            <p style="color: rgba(255,255,255,0.9); margin-bottom: 0; font-size: 1.1rem;">{{ localized($destination, 'scholarship_text') }}</p>
           </div>
           <div>
             <a href="{{ route('contact') }}" class="btn" style="background: #fff; color: var(--blue); font-weight: 600;">Check Your Eligibility</a>

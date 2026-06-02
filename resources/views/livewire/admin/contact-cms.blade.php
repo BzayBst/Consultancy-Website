@@ -28,17 +28,29 @@
         <div class="sa-card-header"><h2>Contact Page Text</h2><p>Controls major headings and helper text.</p></div>
         <div class="form-grid">
             <div class="form-group"><label>Hero Title</label><input type="text" wire:model.live="contact_hero_title"></div>
+            <div class="form-group"><label>Hero Title (Japanese)</label><input type="text" wire:model.live="contact_hero_title_ja"></div>
             <div class="form-group"><label>Hero Highlight</label><input type="text" wire:model.live="contact_hero_highlight"></div>
+            <div class="form-group"><label>Hero Highlight (Japanese)</label><input type="text" wire:model.live="contact_hero_highlight_ja"></div>
             <div class="form-group full"><label>Hero Subtitle</label><textarea rows="3" wire:model.live="contact_hero_subtitle"></textarea></div>
+            <div class="form-group full"><label>Hero Subtitle (Japanese)</label><textarea rows="3" wire:model.live="contact_hero_subtitle_ja"></textarea></div>
             <div class="form-group"><label>Form Title</label><input type="text" wire:model.live="contact_form_title"></div>
+            <div class="form-group"><label>Form Title (Japanese)</label><input type="text" wire:model.live="contact_form_title_ja"></div>
             <div class="form-group"><label>Branch Title</label><input type="text" wire:model.live="contact_branch_title"></div>
+            <div class="form-group"><label>Branch Title (Japanese)</label><input type="text" wire:model.live="contact_branch_title_ja"></div>
             <div class="form-group full"><label>Form Subtitle</label><textarea rows="2" wire:model.live="contact_form_subtitle"></textarea></div>
+            <div class="form-group full"><label>Form Subtitle (Japanese)</label><textarea rows="2" wire:model.live="contact_form_subtitle_ja"></textarea></div>
             <div class="form-group full"><label>Branch Subtitle</label><textarea rows="2" wire:model.live="contact_branch_subtitle"></textarea></div>
+            <div class="form-group full"><label>Branch Subtitle (Japanese)</label><textarea rows="2" wire:model.live="contact_branch_subtitle_ja"></textarea></div>
             <div class="form-group"><label>FAQ Label</label><input type="text" wire:model.live="contact_faq_label"></div>
+            <div class="form-group"><label>FAQ Label (Japanese)</label><input type="text" wire:model.live="contact_faq_label_ja"></div>
             <div class="form-group"><label>FAQ Title</label><input type="text" wire:model.live="contact_faq_title"></div>
+            <div class="form-group"><label>FAQ Title (Japanese)</label><input type="text" wire:model.live="contact_faq_title_ja"></div>
             <div class="form-group full"><label>FAQ Subtitle</label><textarea rows="2" wire:model.live="contact_faq_subtitle"></textarea></div>
+            <div class="form-group full"><label>FAQ Subtitle (Japanese)</label><textarea rows="2" wire:model.live="contact_faq_subtitle_ja"></textarea></div>
             <div class="form-group"><label>Social Title</label><input type="text" wire:model.live="contact_social_title"></div>
+            <div class="form-group"><label>Social Title (Japanese)</label><input type="text" wire:model.live="contact_social_title_ja"></div>
             <div class="form-group full"><label>Social Subtitle</label><textarea rows="2" wire:model.live="contact_social_subtitle"></textarea></div>
+            <div class="form-group full"><label>Social Subtitle (Japanese)</label><textarea rows="2" wire:model.live="contact_social_subtitle_ja"></textarea></div>
         </div>
         <div class="sa-actions"><button class="btn-save">Save Contact Page</button></div>
     </form>
@@ -53,8 +65,10 @@
             </div>
             <div class="form-grid">
                 <div class="form-group"><label>Branch Name *</label><input type="text" wire:model.live="branch_name" placeholder="Kathmandu Branch"></div>
+                <div class="form-group"><label>Branch Name (Japanese)</label><input type="text" wire:model.live="branch_name_ja"></div>
                 <div class="form-group"><label>Location Label</label><input type="text" wire:model.live="branch_location_label" placeholder="Kathmandu, Nepal"></div>
                 <div class="form-group full"><label>Address</label><textarea rows="3" wire:model.live="branch_address"></textarea></div>
+                <div class="form-group full"><label>Address (Japanese)</label><textarea rows="3" wire:model.live="branch_address_ja"></textarea></div>
                 <div class="form-group"><label>Phone</label><input type="text" wire:model.live="branch_phone" placeholder="01-XXXXXXX | 9841XXXXXX"></div>
                 <div class="form-group"><label>Email</label><input type="email" wire:model.live="branch_email" placeholder="branch@hasuedu.com"></div>
                 <div class="form-group"><label>Weekday Hours</label><input type="text" wire:model.live="branch_weekday_hours" placeholder="Sun-Fri 9AM-5PM"></div>
@@ -109,7 +123,9 @@
                 <form wire:submit="saveFaq" class="contact-faq-form">
                     <div class="form-grid no-pad">
                         <div class="form-group full"><label>Question *</label><input type="text" wire:model.live="faq_question"></div>
+                        <div class="form-group full"><label>Question (Japanese)</label><input type="text" wire:model.live="faq_question_ja"></div>
                         <div class="form-group full"><label>Answer *</label><textarea rows="4" wire:model.live="faq_answer"></textarea></div>
+                        <div class="form-group full"><label>Answer (Japanese)</label><textarea rows="4" wire:model.live="faq_answer_ja"></textarea></div>
                         <div class="form-group"><label>Sort Order</label><input type="number" min="0" wire:model.live="faq_sort_order"></div>
                         <div class="form-group checkbox-row"><label><input type="checkbox" wire:model.live="faq_is_active"> Active on contact page</label></div>
                     </div>
@@ -160,15 +176,25 @@
         <div class="sa-card-header"><h2>Booking Page Text</h2><p>Controls major headings and helper text.</p></div>
         <div class="form-grid">
             <div class="form-group"><label>Hero Title</label><input type="text" wire:model.live="appointment_hero_title"></div>
+            <div class="form-group"><label>Hero Title (Japanese)</label><input type="text" wire:model.live="appointment_hero_title_ja"></div>
             <div class="form-group"><label>Hero Highlight</label><input type="text" wire:model.live="appointment_hero_highlight"></div>
+            <div class="form-group"><label>Hero Highlight (Japanese)</label><input type="text" wire:model.live="appointment_hero_highlight_ja"></div>
             <div class="form-group full"><label>Hero Subtitle</label><textarea rows="3" wire:model.live="appointment_hero_subtitle"></textarea></div>
+            <div class="form-group full"><label>Hero Subtitle (Japanese)</label><textarea rows="3" wire:model.live="appointment_hero_subtitle_ja"></textarea></div>
             <div class="form-group"><label>Form Title</label><input type="text" wire:model.live="appointment_form_title"></div>
+            <div class="form-group"><label>Form Title (Japanese)</label><input type="text" wire:model.live="appointment_form_title_ja"></div>
             <div class="form-group full"><label>Form Subtitle</label><textarea rows="2" wire:model.live="appointment_form_subtitle"></textarea></div>
+            <div class="form-group full"><label>Form Subtitle (Japanese)</label><textarea rows="2" wire:model.live="appointment_form_subtitle_ja"></textarea></div>
             <div class="form-group"><label>FAQ Label</label><input type="text" wire:model.live="appointment_faq_label"></div>
+            <div class="form-group"><label>FAQ Label (Japanese)</label><input type="text" wire:model.live="appointment_faq_label_ja"></div>
             <div class="form-group"><label>FAQ Title</label><input type="text" wire:model.live="appointment_faq_title"></div>
+            <div class="form-group"><label>FAQ Title (Japanese)</label><input type="text" wire:model.live="appointment_faq_title_ja"></div>
             <div class="form-group full"><label>FAQ Subtitle</label><textarea rows="2" wire:model.live="appointment_faq_subtitle"></textarea></div>
+            <div class="form-group full"><label>FAQ Subtitle (Japanese)</label><textarea rows="2" wire:model.live="appointment_faq_subtitle_ja"></textarea></div>
             <div class="form-group"><label>CTA Title</label><input type="text" wire:model.live="appointment_cta_title"></div>
+            <div class="form-group"><label>CTA Title (Japanese)</label><input type="text" wire:model.live="appointment_cta_title_ja"></div>
             <div class="form-group full"><label>CTA Subtitle</label><textarea rows="2" wire:model.live="appointment_cta_subtitle"></textarea></div>
+            <div class="form-group full"><label>CTA Subtitle (Japanese)</label><textarea rows="2" wire:model.live="appointment_cta_subtitle_ja"></textarea></div>
         </div>
         <div class="sa-actions"><button class="btn-save">Save Booking Page</button></div>
     </form>

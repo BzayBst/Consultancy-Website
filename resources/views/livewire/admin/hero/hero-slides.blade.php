@@ -130,6 +130,12 @@
                                 @error('badge') <span class="field-error">{{ $message }}</span> @enderror
                             </div>
                             <div class="form-group">
+                                <label>Badge Text (Japanese)</label>
+                                <input type="text" wire:model="badge_ja"
+                                       placeholder="HASUと共に明るい未来を築く">
+                                @error('badge_ja') <span class="field-error">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="form-group">
                                 <label>Plane / Accent Emoji</label>
                                 <input type="text" wire:model="plane_emoji" placeholder="✈️" maxlength="10">
                                 @error('plane_emoji') <span class="field-error">{{ $message }}</span> @enderror
@@ -176,6 +182,26 @@
                                        placeholder="With HASU">
                             </div>
                         </div>
+
+                        <div style="margin-top:12px; font-weight:700; color:#334155">Japanese title lines</div>
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label>Line 1 (Japanese)</label>
+                                <input type="text" wire:model.live="title_line1_ja" placeholder="教育を形作る">
+                            </div>
+                            <div class="form-group">
+                                <label>Line 2 (Japanese)</label>
+                                <input type="text" wire:model.live="title_line2_ja" placeholder="そしてキャリア">
+                            </div>
+                            <div class="form-group">
+                                <label>Highlighted Word (Japanese)</label>
+                                <input type="text" wire:model.live="title_highlight_ja" placeholder="夢">
+                            </div>
+                            <div class="form-group">
+                                <label>Line 3 (Japanese)</label>
+                                <input type="text" wire:model.live="title_line3_ja" placeholder="HASUと共に">
+                            </div>
+                        </div>
                     </div>
 
                     {{-- ── Section: Description ── --}}
@@ -185,6 +211,11 @@
                             <textarea wire:model="description" rows="2"
                                       placeholder="Your trusted partner for global education and career success."></textarea>
                             @error('description') <span class="field-error">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Description (Japanese)</label>
+                            <textarea wire:model="description_ja" rows="2" placeholder="グローバル教育とキャリア成功の信頼できるパートナーです。"></textarea>
+                            @error('description_ja') <span class="field-error">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
@@ -259,6 +290,17 @@
                                 </div>
                                 @error('image_upload') <span class="field-error">{{ $message }}</span> @enderror
                                 <div wire:loading wire:target="image_upload" class="uploading-msg">Uploading…</div>
+
+                                <div style="margin-top:10px">
+                                    <label>Image Alt Text</label>
+                                    <input type="text" wire:model="image_alt" placeholder="Hero image description">
+                                    @error('image_alt') <span class="field-error">{{ $message }}</span> @enderror
+                                </div>
+                                <div style="margin-top:8px">
+                                    <label>Image Alt Text (Japanese)</label>
+                                    <input type="text" wire:model="image_alt_ja" placeholder="ヒーロー画像の説明">
+                                    @error('image_alt_ja') <span class="field-error">{{ $message }}</span> @enderror
+                                </div>
                             </div>
 
                             {{-- OR external URL --}}

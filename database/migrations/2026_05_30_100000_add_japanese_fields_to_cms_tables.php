@@ -20,18 +20,21 @@ return new class extends Migration
             'image_alt' => 'string',
         ],
         'home_abouts' => [
+            'image_alt' => 'string',
             'badge_label' => 'string',
             'section_label' => 'string',
             'section_title' => 'string',
             'paragraph_1' => 'text',
             'paragraph_2' => 'text',
             'badges' => 'json',
+            'perks' => 'json',
             'cta_label' => 'string',
         ],
         'home_services' => [
             'section_label' => 'string',
             'section_title' => 'string',
             'section_subtitle' => 'text',
+            'services' => 'json',
         ],
         'home_testimonials' => [
             'section_label' => 'string',
@@ -39,7 +42,7 @@ return new class extends Migration
             'section_subtitle' => 'text',
         ],
         'home_popup_banners' => [
-            'title' => 'string',
+            'section_title' => 'string',
             'subtitle' => 'text',
             'button_label' => 'string',
         ],
@@ -69,8 +72,10 @@ return new class extends Migration
             'subtitle' => 'text',
         ],
         'about_stories' => [
+            'float_badge_title' => 'string',
+            'float_badge_subtitle' => 'string',
             'section_label' => 'string',
-            'title' => 'string',
+            'section_title' => 'string',
             'paragraph_1' => 'text',
             'paragraph_2' => 'text',
         ],
@@ -86,6 +91,7 @@ return new class extends Migration
             'body' => 'text',
         ],
         'course_pages' => [
+            'hero_badge' => 'string',
             'hero_title' => 'string',
             'hero_highlight' => 'string',
             'hero_subtitle' => 'text',
@@ -116,6 +122,7 @@ return new class extends Migration
             'sidebar_items' => 'json',
         ],
         'study_abroad_pages' => [
+            'hero_badge' => 'string',
             'hero_title' => 'string',
             'hero_highlight' => 'string',
             'hero_subtitle' => 'text',
@@ -204,7 +211,7 @@ return new class extends Migration
         ],
         'teams' => [
             'name' => 'string',
-            'role' => 'string',
+            'designation' => 'string',
             'bio' => 'text',
         ],
     ];

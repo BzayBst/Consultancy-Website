@@ -297,7 +297,7 @@
                         @endforeach
                     </div>
 
-                    @if($courseTab === 'listing')
+                     @if($courseTab === 'listing')
                     <div class="subtab-panel">
                         <div class="modal-section-title">Listing Card</div>
                         <div class="form-grid no-pad">
@@ -305,6 +305,11 @@
                                 <label>Title <span>*</span></label>
                                 <input type="text" wire:model.live="title" placeholder="Japanese Language Course">
                                 @error('title') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Title (Japanese)</label>
+                                <input type="text" wire:model.live="title_ja" placeholder="日本語コース">
+                                @error('title_ja') <small>{{ $message }}</small> @enderror
                             </div>
                             <div class="form-group">
                                 <label>Slug</label>
@@ -335,6 +340,10 @@
                             <div class="form-group full">
                                 <label>Excerpt</label>
                                 <textarea rows="3" wire:model.live="excerpt"></textarea>
+                            </div>
+                            <div class="form-group full">
+                                <label>Excerpt (Japanese)</label>
+                                <textarea rows="3" wire:model.live="excerpt_ja"></textarea>
                             </div>
                         </div>
 
@@ -368,6 +377,10 @@
                         <div class="form-group full">
                             <label>Overview</label>
                             <textarea rows="5" wire:model.live="overview"></textarea>
+                        </div>
+                        <div class="form-group full">
+                            <label>Overview (Japanese)</label>
+                            <textarea rows="5" wire:model.live="overview_ja"></textarea>
                         </div>
                         <div class="modal-section-title with-action">
                             <span>Description Paragraphs</span>
@@ -444,8 +457,16 @@
                                 <input type="text" wire:model.live="sidebar_title" placeholder="Enroll Today">
                             </div>
                             <div class="form-group">
+                                <label>Sidebar Title (Japanese)</label>
+                                <input type="text" wire:model.live="sidebar_title_ja">
+                            </div>
+                            <div class="form-group">
                                 <label>Sidebar Subtitle</label>
                                 <textarea rows="3" wire:model.live="sidebar_subtitle"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Sidebar Subtitle (Japanese)</label>
+                                <textarea rows="3" wire:model.live="sidebar_subtitle_ja"></textarea>
                             </div>
                         </div>
                         <div class="modal-section-title with-action">

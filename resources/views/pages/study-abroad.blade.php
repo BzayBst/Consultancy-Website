@@ -11,9 +11,9 @@
     {{-- ===== PAGE HERO ===== --}}
     <x-frontend.page-hero
         badge="{{ $studyAbroadPage?->hero_badge ?: 'Global Opportunities' }}"
-        title="{{ $studyAbroadPage?->hero_title ?: 'Choose Your Dream' }}"
-        highlight="{{ $studyAbroadPage?->hero_highlight ?: 'Destination' }}"
-        subtitle="{{ $studyAbroadPage?->hero_subtitle ?: 'Explore top study abroad destinations and unlock world-class education with our expert visa and admission guidance.' }}"
+        title="{{ localized($studyAbroadPage, 'hero_title') ?: 'Choose Your Dream' }}"
+        highlight="{{ localized($studyAbroadPage, 'hero_highlight') ?: 'Destination' }}"
+        subtitle="{{ localized($studyAbroadPage, 'hero_subtitle') ?: 'Explore top study abroad destinations and unlock world-class education with our expert visa and admission guidance.' }}"
         :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'Study Abroad']]"
     />
 
@@ -21,8 +21,8 @@
         <div class="container">
             <div class="courses-listing-head fade-up">
                 <div>
-                    <div class="section-label" style="margin-bottom:8px">{{ $studyAbroadPage?->section_label ?: 'Explore' }}</div>
-                    <h2 class="section-title" style="margin-bottom:0;text-align:left">{{ $studyAbroadPage?->section_title ?: 'Popular Countries' }}</h2>
+                    <div class="section-label" style="margin-bottom:8px">{{ localized($studyAbroadPage, 'section_label') ?: 'Explore' }}</div>
+                    <h2 class="section-title" style="margin-bottom:0;text-align:left">{{ localized($studyAbroadPage, 'section_title') ?: 'Popular Countries' }}</h2>
                 </div>
             </div>
 
@@ -36,7 +36,7 @@
                 >
                     <div class="course-img">
                         @if($destination->card_image_url)
-                            <img src="{{ $destination->card_image_url }}" alt="{{ $destination->card_title ?: 'Study in ' . $destination->country }}">
+                            <img src="{{ $destination->card_image_url }}" alt="{{ localized($destination, 'card_title') ?: 'Study in ' . $destination->country }}">
                         @endif
                         <div class="course-flag">{{ trim(($destination->flag ?: '') . ' ' . $destination->country) }}</div>
                     </div>
@@ -44,9 +44,9 @@
                         @if($destination->card_tag)
                             <span class="course-list-tag">{{ $destination->card_tag }}</span>
                         @endif
-                        <h4>{{ $destination->card_title ?: 'Study in ' . $destination->country }}</h4>
-                        @if($destination->card_description)
-                            <p>{{ $destination->card_description }}</p>
+                        <h4>{{ localized($destination, 'card_title') ?: 'Study in ' . $destination->country }}</h4>
+                        @if(localized($destination, 'card_description'))
+                            <p>{{ localized($destination, 'card_description') }}</p>
                         @endif
                         <span class="course-card-cta">Explore {{ $destination->country }} →</span>
                     </div>
@@ -66,11 +66,11 @@
         <div class="container">
             <div class="cta-inner">
                 <div class="cta-text fade-up">
-                    <h2>{{ $studyAbroadPage?->cta_title ?: 'Confused About Where to Apply?' }}</h2>
-                    <p>{{ $studyAbroadPage?->cta_subtitle ?: 'Book a free counseling session. We will evaluate your profile and recommend the perfect country and university for you.' }}</p>
+                    <h2>{{ localized($studyAbroadPage, 'cta_title') ?: 'Confused About Where to Apply?' }}</h2>
+                    <p>{{ localized($studyAbroadPage, 'cta_subtitle') ?: 'Book a free counseling session. We will evaluate your profile and recommend the perfect country and university for you.' }}</p>
                     <div class="cta-actions">
                         <a href="{{ $studyAbroadPage?->cta_button_url ?: route('contact') }}" class="btn btn-cta-primary">
-                            {{ $studyAbroadPage?->cta_button_label ?: 'Book Consultation' }}
+                            {{ localized($studyAbroadPage, 'cta_button_label') ?: 'Book Consultation' }}
                         </a>
                     </div>
                 </div>

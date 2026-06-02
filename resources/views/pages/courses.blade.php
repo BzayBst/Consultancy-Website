@@ -9,23 +9,23 @@
 @endphp
 
 @section('title', 'Courses - ' . setting('general_site_name', 'HASU Educational Consultancy'))
-@section('meta_description', $coursePage?->hero_subtitle ?: 'Explore the courses offered by HASU Educational Consultancy.')
+@section('meta_description', localized($coursePage, 'hero_subtitle') ?: 'Explore the courses offered by HASU Educational Consultancy.')
 
 @section('content')
     <x-frontend.page-hero
-        badge="{{ $coursePage?->hero_badge ?: 'HASU Language Institute' }}"
-        title="{{ $coursePage?->hero_title ?: 'Language & Test Prep' }}"
-        highlight="{{ $coursePage?->hero_highlight ?: 'Courses' }}"
-        subtitle="{{ $coursePage?->hero_subtitle ?: 'Internationally recognized language training and exam preparation taught by certified experts at our institute.' }}"
+        badge="{{ localized($coursePage, 'hero_badge') ?: 'HASU Language Institute' }}"
+        title="{{ localized($coursePage, 'hero_title') ?: 'Language & Test Prep' }}"
+        highlight="{{ localized($coursePage, 'hero_highlight') ?: 'Courses' }}"
+        subtitle="{{ localized($coursePage, 'hero_subtitle') ?: 'Internationally recognized language training and exam preparation taught by certified experts at our institute.' }}"
         :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'All Courses']]"
     />
 
     <section id="courses-intro" class="section">
         <div class="container">
             <div class="courses-page-intro fade-up">
-                <div class="section-label">{{ $coursePage?->intro_label ?: 'What We Teach' }}</div>
-                <h2 class="section-title">{{ $coursePage?->intro_title ?: 'Prepare for Your Future Abroad' }}</h2>
-                <p class="section-sub">{{ $coursePage?->intro_subtitle ?: 'From language mastery to test preparation, HASU offers structured programs with mock tests, small batches, and personalized coaching.' }}</p>
+                <div class="section-label">{{ localized($coursePage, 'intro_label') ?: 'What We Teach' }}</div>
+                <h2 class="section-title">{{ localized($coursePage, 'intro_title') ?: 'Prepare for Your Future Abroad' }}</h2>
+                <p class="section-sub">{{ localized($coursePage, 'intro_subtitle') ?: 'From language mastery to test preparation, HASU offers structured programs with mock tests, small batches, and personalized coaching.' }}</p>
             </div>
         </div>
     </section>
@@ -51,21 +51,21 @@
             <div class="course-featured-card fade-up">
                 <div class="cf-img">
                     @if($featuredCourse->image_url)
-                        <img src="{{ $featuredCourse->image_url }}" alt="{{ $featuredCourse->title }}">
+                        <img src="{{ $featuredCourse->image_url }}" alt="{{ localized($featuredCourse, 'title') }}">
                     @endif
-                    @if($featuredCourse->badge)
-                        <span class="course-flag">{{ $featuredCourse->badge }}</span>
+                    @if(localized($featuredCourse, 'badge'))
+                        <span class="course-flag">{{ localized($featuredCourse, 'badge') }}</span>
                     @endif
                 </div>
                 <div class="cf-body">
-                    @if($featuredCourse->tag)
-                        <span class="course-list-tag" style="background:var(--blue-light);color:var(--blue)">{{ $featuredCourse->tag }}</span>
+                    @if(localized($featuredCourse, 'tag'))
+                        <span class="course-list-tag" style="background:var(--blue-light);color:var(--blue)">{{ localized($featuredCourse, 'tag') }}</span>
                     @endif
-                    <h2>{{ $featuredCourse->title }}</h2>
-                    <p>{{ $featuredCourse->excerpt ?: $featuredCourse->overview }}</p>
-                    @if(! empty($featuredCourse->highlights))
+                    <h2>{{ localized($featuredCourse, 'title') }}</h2>
+                    <p>{{ localized($featuredCourse, 'excerpt') ?: localized($featuredCourse, 'overview') }}</p>
+                    @if(! empty(localized($featuredCourse, 'highlights')))
                     <ul class="cf-highlights">
-                        @foreach(array_slice($featuredCourse->highlights, 0, 3) as $highlight)
+                        @foreach(array_slice(localized($featuredCourse, 'highlights'), 0, 3) as $highlight)
                             <li>{{ $highlight['item'] ?? '' }}</li>
                         @endforeach
                     </ul>
@@ -84,8 +84,8 @@
         <div class="container">
             <div class="courses-listing-head fade-up">
                 <div>
-                    <div class="section-label" style="margin-bottom:8px">{{ $coursePage?->catalog_label ?: 'Browse All' }}</div>
-                    <h2 class="section-title" style="margin-bottom:0;text-align:left">{{ $coursePage?->catalog_title ?: 'Our Course Catalog' }}</h2>
+                    <div class="section-label" style="margin-bottom:8px">{{ localized($coursePage, 'catalog_label') ?: 'Browse All' }}</div>
+                    <h2 class="section-title" style="margin-bottom:0;text-align:left">{{ localized($coursePage, 'catalog_title') ?: 'Our Course Catalog' }}</h2>
                 </div>
                 @if($courseCategories->isNotEmpty())
                 <div class="course-filters" id="courseFilters">
@@ -103,18 +103,18 @@
                     data-category="{{ $course->category }}" style="transition-delay:{{ ($i % 6) * .06 }}s">
                     <div class="course-img">
                         @if($course->image_url)
-                            <img src="{{ $course->image_url }}" alt="{{ $course->title }}">
+                            <img src="{{ $course->image_url }}" alt="{{ localized($course, 'title') }}">
                         @endif
-                        @if($course->badge)
-                            <div class="course-flag">{{ $course->badge }}</div>
+                        @if(localized($course, 'badge'))
+                            <div class="course-flag">{{ localized($course, 'badge') }}</div>
                         @endif
                     </div>
                     <div class="course-body">
-                        @if($course->tag)
-                            <span class="course-list-tag">{{ $course->tag }}</span>
+                        @if(localized($course, 'tag'))
+                            <span class="course-list-tag">{{ localized($course, 'tag') }}</span>
                         @endif
-                        <h4>{{ $course->title }}</h4>
-                        <p>{{ $course->excerpt }}</p>
+                        <h4>{{ localized($course, 'title') }}</h4>
+                        <p>{{ localized($course, 'excerpt') }}</p>
                         <span class="course-card-cta">View Course</span>
                     </div>
                 </a>
@@ -133,9 +133,9 @@
         <div class="container">
             <div class="courses-why-inner fade-up">
                 <div class="courses-why-text">
-                    <div class="section-label courses-why-label">{{ $coursePage?->why_label ?: 'Why HASU' }}</div>
-                    <h2 class="courses-why-title">{{ $coursePage?->why_title ?: 'Why Students Choose Our Courses' }}</h2>
-                    <p>{{ $coursePage?->why_description }}</p>
+                    <div class="section-label courses-why-label">{{ localized($coursePage, 'why_label') ?: 'Why HASU' }}</div>
+                    <h2 class="courses-why-title">{{ localized($coursePage, 'why_title') ?: 'Why Students Choose Our Courses' }}</h2>
+                    <p>{{ localized($coursePage, 'why_description') }}</p>
                     <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-primary">Book Free Assessment</a>
                 </div>
                 <div class="courses-why-grid">
@@ -156,11 +156,11 @@
         <div class="container">
             <div class="cta-inner">
                 <div class="cta-text fade-up">
-                    <h2>{{ $coursePage?->cta_title ?: 'Not Sure Which Course Is Right for You?' }}</h2>
-                    <p>{{ $coursePage?->cta_subtitle ?: 'Visit our campus or book a free assessment. We will recommend the best program for your goals.' }}</p>
+                    <h2>{{ localized($coursePage, 'cta_title') ?: 'Not Sure Which Course Is Right for You?' }}</h2>
+                    <p>{{ localized($coursePage, 'cta_subtitle') ?: 'Visit our campus or book a free assessment. We will recommend the best program for your goals.' }}</p>
                     <div class="cta-actions">
-                        <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-cta-primary">{{ $coursePage?->cta_button_label ?: 'Apply Now' }}</a>
-                        <a href="{{ $coursePage?->cta_phone_url ?: 'tel:+97756493528' }}" class="btn btn-cta-ghost">{{ $coursePage?->cta_phone_label ?: 'Call Us Today' }}</a>
+                        <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-cta-primary">{{ localized($coursePage, 'cta_button_label') ?: 'Apply Now' }}</a>
+                        <a href="{{ $coursePage?->cta_phone_url ?: 'tel:+97756493528' }}" class="btn btn-cta-ghost">{{ localized($coursePage, 'cta_phone_label') ?: 'Call Us Today' }}</a>
                     </div>
                 </div>
                 <div class="cta-contact cta-contact-card fade-up" style="transition-delay:.15s">

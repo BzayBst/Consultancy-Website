@@ -1,7 +1,7 @@
 @extends('layouts.app', ['active' => 'blog'])
 
-@section('title', ($post->meta_title ?: $post->title) . ' - ' . setting('general_site_name', 'HASU Educational Consultancy'))
-@section('meta_description', $post->meta_description ?: $post->excerpt ?: 'Blog article from HASU Educational Consultancy.')
+@section('title', (localized($post, 'meta_title') ?: localized($post, 'title')) . ' - ' . setting('general_site_name', 'HASU Educational Consultancy'))
+@section('meta_description', localized($post, 'meta_description') ?: localized($post, 'excerpt') ?: 'Blog article from HASU Educational Consultancy.')
 
 @push('head')
 <style>
@@ -35,10 +35,10 @@
 @section('content')
     <x-frontend.page-hero
         badge="{{ $post->category ?: 'Blog' }}"
-        title="{{ $post->title }}"
+        title="{{ localized($post, 'title') }}"
         highlight="Article"
-        subtitle="{{ $post->excerpt }}"
-        :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'Blogs', 'url' => route('blog')], ['label' => $post->title]]"
+        subtitle="{{ localized($post, 'excerpt') }}"
+        :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'Blogs', 'url' => route('blog')], ['label' => localized($post, 'title')]]"
     />
 
     <section class="bd-main">
@@ -47,7 +47,7 @@
                 <article class="bd-article fade-up">
                     <div class="bd-image">
                         @if($post->image_url)
-                            <img src="{{ $post->image_url }}" alt="{{ $post->image_alt ?: $post->title }}">
+                            <img src="{{ $post->image_url }}" alt="{{ localized($post, 'image_alt') ?: localized($post, 'title') }}">
                         @endif
                     </div>
                     <div class="bd-body">
@@ -55,12 +55,12 @@
                             @if($post->category)<span class="course-list-tag">{{ $post->category }}</span>@endif
                             @if($post->published_at)<span>{{ $post->published_at->format('M d, Y') }}</span>@endif
                         </div>
-                        <h1 class="bd-title">{{ $post->title }}</h1>
-                        @if($post->excerpt)
-                            <p class="bd-excerpt">{{ $post->excerpt }}</p>
+                        <h1 class="bd-title">{{ localized($post, 'title') }}</h1>
+                        @if(localized($post, 'excerpt'))
+                            <p class="bd-excerpt">{{ localized($post, 'excerpt') }}</p>
                         @endif
                         <div class="bd-content">
-                            {!! $post->content ?: '<p>Content coming soon.</p>' !!}
+                            {!! localized($post, 'content') ?: '<p>Content coming soon.</p>' !!}
                         </div>
                     </div>
                 </article>
@@ -72,11 +72,11 @@
                             <a href="{{ route('blog.show', $other->slug) }}" class="bd-other">
                                 <div class="bd-other-img">
                                     @if($other->image_url)
-                                        <img src="{{ $other->image_url }}" alt="{{ $other->image_alt ?: $other->title }}">
+                                        <img src="{{ $other->image_url }}" alt="{{ localized($other, 'image_alt') ?: localized($other, 'title') }}">
                                     @endif
                                 </div>
                                 <div>
-                                    <h4>{{ $other->title }}</h4>
+                                    <h4>{{ localized($other, 'title') }}</h4>
                                     <span>{{ $other->published_at?->format('M d, Y') }}</span>
                                 </div>
                             </a>

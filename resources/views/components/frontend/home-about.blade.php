@@ -18,29 +18,29 @@
       {{-- ── Left: image + exp badge ── --}}
       <div class="about-img-wrap fade-up">
         @if ($r->image_path)
-          <img src="{{ $r->imageUrl() }}" alt="{{ $r->image_alt ?? 'About HASU' }}">
+          <img src="{{ $r->imageUrl() }}" alt="{{ localized($r, 'image_alt') ?: 'About HASU' }}">
         @else
           <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b6175?w=700&q=80" alt="About HASU">
         @endif
 
         <div class="about-exp-badge">
           <strong>{{ $r->badge_number ?? (setting('general_established') ? (date('Y') - (int)setting('general_established')) : '11') }}</strong>
-          <span>{{ $r->badge_label ?? 'Years of Experience' }}</span>
+          <span>{{ localized($r, 'badge_label') ?: 'Years of Experience' }}</span>
         </div>
       </div>
 
       {{-- ── Right: text content ── --}}
       <div class="about-content fade-up" style="transition-delay:.15s">
 
-        <div class="section-label">{{ $r->section_label ?? 'About The Company' }}</div>
-        <h2 class="section-title">{{ $r->section_title ?? 'Your Trusted Partner in Global Education' }}</h2>
+        <div class="section-label">{{ localized($r, 'section_label') ?: 'About The Company' }}</div>
+        <h2 class="section-title">{{ localized($r, 'section_title') ?: 'Your Trusted Partner in Global Education' }}</h2>
 
         @if ($r->paragraph_1)
-          <p>{{ $r->paragraph_1 }}</p>
+          <p>{{ localized($r, 'paragraph_1') }}</p>
         @endif
 
         @if ($r->paragraph_2)
-          <p>{{ $r->paragraph_2 }}</p>
+          <p>{{ localized($r, 'paragraph_2') }}</p>
         @endif
 
         {{-- Badges --}}
@@ -84,7 +84,7 @@
         <br>
         @if ($r->cta_label)
           <a href="{{ $r->cta_href ?? route('about') }}" class="btn btn-primary">
-            {{ $r->cta_label }}
+            {{ localized($r, 'cta_label') }}
           </a>
         @endif
 

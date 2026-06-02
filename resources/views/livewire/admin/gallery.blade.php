@@ -108,6 +108,11 @@
                                 @error('title') <small>{{ $message }}</small> @enderror
                             </div>
                             <div class="form-group">
+                                <label>Title (Japanese)</label>
+                                <input type="text" wire:model.live="title_ja" placeholder="オーストラリア留学セミナー">
+                                @error('title_ja') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group">
                                 <label>Category <span>*</span></label>
                                 <input type="text" wire:model.live="category" list="gallery-categories" placeholder="classes">
                                 <datalist id="gallery-categories">
@@ -135,6 +140,11 @@
                                 <label>Alt Text</label>
                                 <input type="text" wire:model.live="alt_text" placeholder="Thumbnail description">
                                 @error('alt_text') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Alt Text (Japanese)</label>
+                                <input type="text" wire:model.live="alt_text_ja" placeholder="サムネイル説明">
+                                @error('alt_text_ja') <small>{{ $message }}</small> @enderror
                             </div>
                             <div class="form-group">
                                 <label>Sort Order <span>*</span></label>

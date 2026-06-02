@@ -1,8 +1,8 @@
 {{-- resources/views/pages/venture-detail.blade.php --}}
 @extends('layouts.app', ['active' => 'ventures'])
 
-@section('title', $venture->name . ' – ' . setting('general_site_name', 'HASU Educational Consultancy'))
-@section('meta_description', $venture->tagline ?? $venture->description ?? 'HASU venture details.')
+@section('title', localized($venture, 'name') . ' – ' . setting('general_site_name', 'HASU Educational Consultancy'))
+@section('meta_description', localized($venture, 'tagline') ?? localized($venture, 'description') ?? 'HASU venture details.')
 
 @push('head')
 <style>
@@ -172,31 +172,31 @@
                 <div class="breadcrumb">
                     <a href="{{ route('home') }}">Home</a><span>›</span>
                     <a href="{{ route('ventures') }}">Our Ventures</a><span>›</span>
-                    <span style="color:rgba(255,255,255,.9)">{{ $venture->name }}</span>
+                    <span style="color:rgba(255,255,255,.9)">{{ localized($venture, 'name') }}</span>
                 </div>
                 <div class="vd-hero-brand">
                     <div class="vd-hero-logo">{{ $venture->emoji }}</div>
                     <div>
-                        @if($venture->tag_label)
+                        @if(localized($venture, 'tag_label'))
                         <span class="venture-tag vd-tag"
                               style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9)">
-                            {{ $venture->tag_label }}
+                            {{ localized($venture, 'tag_label') }}
                         </span>
                         @endif
-                        <h1>{{ $venture->name }}
-                            @if($venture->tagline)
-                            <br><span class="highlight" style="color:#f4c842;font-size:.75em">{{ $venture->tagline }}</span>
+                        <h1>{{ localized($venture, 'name') }}
+                            @if(localized($venture, 'tagline'))
+                            <br><span class="highlight" style="color:#f4c842;font-size:.75em">{{ localized($venture, 'tagline') }}</span>
                             @endif
                         </h1>
                     </div>
                 </div>
-                @if($venture->description)
-                <p class="vd-hero-desc">{{ $venture->description }}</p>
+                @if(localized($venture, 'description'))
+                <p class="vd-hero-desc">{{ localized($venture, 'description') }}</p>
                 @endif
                 <div class="vd-hero-actions">
-                    @if($venture->primary_btn_label)
+                    @if(localized($venture, 'primary_btn_label'))
                     <a href="{{ $venture->primary_btn_url ?? route('contact') }}" class="btn btn-primary">
-                        {{ $venture->primary_btn_label }}
+                        {{ localized($venture, 'primary_btn_label') }}
                     </a>
                     @else
                     <a href="{{ route('contact') }}" class="btn btn-primary">Book Free Counseling</a>
@@ -211,7 +211,7 @@
             <div class="vd-hero-visual">
                 <div class="vd-hero-banner" style="{{ $venture->banner_style }}">
                     @if($venture->banner_image)
-                        <img src="{{ $venture->banner_image_url }}" alt="{{ $venture->name }}">
+                        <img src="{{ $venture->banner_image_url }}" alt="{{ localized($venture, 'name') }}">
                     @else
                         <div class="vd-hero-banner-placeholder">{{ $venture->emoji }}</div>
                     @endif
@@ -265,23 +265,23 @@
 
             {{-- ── Left content ── --}}
             <div class="cd-content fade-up">
-                <h1 class="cd-title">{{ $venture->name }}</h1>
+                <h1 class="cd-title">{{ localized($venture, 'name') }}</h1>
 
-                @if($venture->long_description)
+                @if(localized($venture, 'long_description'))
                 <div class="cd-description">
-                    {!! nl2br(e($venture->long_description)) !!}
+                    {!! nl2br(e(localized($venture, 'long_description'))) !!}
                 </div>
-                @elseif($venture->description)
+                @elseif(localized($venture, 'description'))
                 <div class="cd-description">
-                    <p>{{ $venture->description }}</p>
+                    <p>{{ localized($venture, 'description') }}</p>
                 </div>
                 @endif
 
-                @if($venture->highlights && count($venture->highlights))
+                @if(localized($venture, 'highlights') && count(localized($venture, 'highlights')))
                 <div class="cd-highlights">
-                    <h3>{{ $venture->section_title ?? 'What We Do' }}</h3>
+                    <h3>{{ localized($venture, 'section_title') ?? 'What We Do' }}</h3>
                     <ul>
-                        @foreach($venture->highlights as $point)
+                        @foreach(localized($venture, 'highlights') as $point)
                         <li>{{ $point }}</li>
                         @endforeach
                     </ul>
@@ -293,9 +293,9 @@
             <aside class="cd-sidebar fade-up" style="transition-delay:.1s">
                 <div class="cd-sidebar-card">
                     <div class="cd-sidebar-flag">{{ $venture->emoji }}</div>
-                    <h3>{{ $venture->name }}</h3>
-                    @if($venture->tagline)
-                    <p>{{ $venture->tagline }}</p>
+                    <h3>{{ localized($venture, 'name') }}</h3>
+                    @if(localized($venture, 'tagline'))
+                    <p>{{ localized($venture, 'tagline') }}</p>
                     @else
                     <p>Get in touch with our team to learn more about this venture.</p>
                     @endif
@@ -327,10 +327,10 @@
                         @endif
                     </ul>
 
-                    @if($venture->primary_btn_label)
+                    @if(localized($venture, 'primary_btn_label'))
                     <a href="{{ $venture->primary_btn_url ?? route('contact') }}"
                        class="btn btn-primary btn-block">
-                        {{ $venture->primary_btn_label }}
+                        {{ localized($venture, 'primary_btn_label') }}
                     </a>
                     @else
                     <a href="{{ route('contact') }}" class="btn btn-primary btn-block">
@@ -338,10 +338,10 @@
                     </a>
                     @endif
 
-                    @if($venture->secondary_btn_label)
+                    @if(localized($venture, 'secondary_btn_label'))
                     <a href="{{ $venture->secondary_btn_url ?? route('contact') }}"
                        class="btn btn-secondary btn-block">
-                        {{ $venture->secondary_btn_label }}
+                        {{ localized($venture, 'secondary_btn_label') }}
                     </a>
                     @else
                     <a href="tel:{{ setting('general_phone', '+97756493528') }}"
@@ -355,9 +355,9 @@
                         <div class="vd-share-links">
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}"
                                target="_blank" class="vd-share-link" title="Share on Facebook">📘</a>
-                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($venture->name) }}"
+                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode(localized($venture, 'name')) }}"
                                target="_blank" class="vd-share-link" title="Share on Twitter">𝕏</a>
-                            <a href="https://api.whatsapp.com/send?text={{ urlencode($venture->name . ' – ' . request()->url()) }}"
+                            <a href="https://api.whatsapp.com/send?text={{ urlencode(localized($venture, 'name') . ' – ' . request()->url()) }}"
                                target="_blank" class="vd-share-link" title="Share on WhatsApp">💬</a>
                         </div>
                     </div>
@@ -385,9 +385,9 @@
                 <div class="vd-related-icon" style="{{ $other->banner_style }}">
                     {{ $other->emoji }}
                 </div>
-                <h4>{{ $other->name }}</h4>
-                @if($other->description)
-                <p>{{ Str::limit($other->description, 80) }}</p>
+                <h4>{{ localized($other, 'name') }}</h4>
+                @if(localized($other, 'description'))
+                <p>{{ Str::limit(localized($other, 'description'), 80) }}</p>
                 @endif
                 <span class="vd-related-link">View Venture →</span>
             </a>

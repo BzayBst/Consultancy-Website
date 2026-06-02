@@ -33,7 +33,7 @@
         <div class="venture-featured-card fade-up">
             <div class="vf-banner" style="background:linear-gradient({{ $featured->banner_gradient ?? '135deg,#0d1560,#2952e3' }})">
                 @if($featured->banner_image)
-                    <img src="{{ $featured->banner_image_url }}" class="vf-banner-img" alt="{{ $featured->name }}">
+                    <img src="{{ $featured->banner_image_url }}" class="vf-banner-img" alt="{{ localized($featured, 'name') }}">
                 @endif
                 <span class="venture-status status-{{ str_replace('_','-',$featured->status) }}">
                     {{ $featured->status_label }}
@@ -43,41 +43,41 @@
             <div class="vf-body">
                 <div class="vf-logo">{{ $featured->emoji }}</div>
                 <div class="vf-content">
-                    @if($featured->tag_label)
+                    @if(localized($featured, 'tag_label'))
                     <span class="venture-tag"
                           style="background:{{ $featured->tag_bg ?? '#e8edfd' }};color:{{ $featured->tag_color ?? '#2952e3' }}">
-                        {{ $featured->tag_label }}
+                        {{ localized($featured, 'tag_label') }}
                     </span>
                     @endif
-                    <h2>{{ $featured->name }}</h2>
-                    @if($featured->tagline)
-                    <p class="vf-tagline">{{ $featured->tagline }}</p>
+                    <h2>{{ localized($featured, 'name') }}</h2>
+                    @if(localized($featured, 'tagline'))
+                    <p class="vf-tagline">{{ localized($featured, 'tagline') }}</p>
                     @endif
-                    @if($featured->description)
-                    <p>{{ $featured->description }}</p>
+                    @if(localized($featured, 'description'))
+                    <p>{{ localized($featured, 'description') }}</p>
                     @endif
-                    @if($featured->highlights)
+                    @if(localized($featured, 'highlights'))
                     <ul class="vf-highlights">
-                        @foreach($featured->highlights as $h)
+                        @foreach(localized($featured, 'highlights') as $h)
                         <li>{{ $h }}</li>
                         @endforeach
                     </ul>
                     @endif
                     <div class="vf-actions">
-                        @if($featured->primary_btn_label)
+                    @if(localized($featured, 'primary_btn_label'))
                         <a href="{{ $featured->primary_btn_url ?? route('ventures.show', $featured->slug) }}"
                            class="btn btn-primary">
-                            {{ $featured->primary_btn_label }}
+                            {{ localized($featured, 'primary_btn_label') }}
                         </a>
                         @else
                         <a href="{{ route('ventures.show', $featured->slug) }}" class="btn btn-primary">
                             View Full Details →
                         </a>
                         @endif
-                        @if($featured->secondary_btn_label)
+                        @if(localized($featured, 'secondary_btn_label'))
                         <a href="{{ $featured->secondary_btn_url ?? route('contact') }}"
                            class="btn btn-secondary">
-                            {{ $featured->secondary_btn_label }}
+                            {{ localized($featured, 'secondary_btn_label') }}
                         </a>
                         @endif
                     </div>
@@ -114,22 +114,22 @@
                 </span>
                 <div class="venture-banner" style="{{ $venture->banner_style }}">
                     @if($venture->banner_image)
-                        <img src="{{ $venture->banner_image_url }}" class="venture-banner-img" alt="{{ $venture->name }}">
+                        <img src="{{ $venture->banner_image_url }}" class="venture-banner-img" alt="{{ localized($venture, 'name') }}">
                     @else
                         <span style="font-size:72px;opacity:.12;user-select:none">{{ $venture->emoji }}</span>
                     @endif
                 </div>
                 <div class="venture-logo-wrap">{{ $venture->emoji }}</div>
                 <div class="venture-body">
-                    @if($venture->tag_label)
+                    @if(localized($venture, 'tag_label'))
                     <span class="venture-tag"
                           style="background:{{ $venture->tag_bg ?? '#e8edfd' }};color:{{ $venture->tag_color ?? '#2952e3' }}">
-                        {{ $venture->tag_label }}
+                        {{ localized($venture, 'tag_label') }}
                     </span>
                     @endif
-                    <h3>{{ $venture->name }}</h3>
-                    @if($venture->description)
-                    <p>{{ Str::limit($venture->description, 100) }}</p>
+                    <h3>{{ localized($venture, 'name') }}</h3>
+                    @if(localized($venture, 'description'))
+                    <p>{{ Str::limit(localized($venture, 'description'), 100) }}</p>
                     @endif
                     <div class="venture-meta">
                         @if($venture->location)<span>📍 {{ $venture->location }}</span>@endif
@@ -139,12 +139,12 @@
                 <div class="venture-links">
                     <a href="{{ $venture->primary_btn_url ?? route('ventures.show', $venture->slug) }}"
                        class="venture-link primary">
-                        {{ $venture->primary_btn_label ?? 'Learn More →' }}
+                        {{ localized($venture, 'primary_btn_label') ?? 'Learn More →' }}
                     </a>
-                    @if($venture->secondary_btn_label)
+                    @if(localized($venture, 'secondary_btn_label'))
                     <a href="{{ $venture->secondary_btn_url ?? route('contact') }}"
                        class="venture-link outline">
-                        {{ $venture->secondary_btn_label }}
+                        {{ localized($venture, 'secondary_btn_label') }}
                     </a>
                     @endif
                 </div>

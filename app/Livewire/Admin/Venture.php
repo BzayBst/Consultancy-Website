@@ -37,10 +37,12 @@ class Venture extends Component
 
     /* ── Form fields ── */
     public string $name = '';
+    public string $name_ja = '';
 
     public string $slug = '';
 
     public string $tagline = '';
+    public string $tagline_ja = '';
 
     public string $category = 'education';
 
@@ -51,6 +53,7 @@ class Venture extends Component
     public string $banner_gradient = '135deg,#0d1560,#2952e3';
 
     public string $tag_label = '';
+    public string $tag_label_ja = '';
 
     public string $tag_color = '#2952e3';
 
@@ -59,12 +62,15 @@ class Venture extends Component
     public string $accent_color = '#2952e3';
 
     public string $description = '';
+    public string $description_ja = '';
 
     public string $long_description = '';
+    public string $long_description_ja = '';
 
     public string $highlights_raw = '';
 
     public string $section_title = 'What We Do';
+    public string $section_title_ja = '何をするか';
 
     public string $location = '';
 
@@ -77,10 +83,12 @@ class Venture extends Component
     public string $website_url = '';
 
     public string $primary_btn_label = 'Learn More →';
+    public string $primary_btn_label_ja = '';
 
     public string $primary_btn_url = '';
 
     public string $secondary_btn_label = 'Contact';
+    public string $secondary_btn_label_ja = '';
 
     public string $secondary_btn_url = '';
 
@@ -122,13 +130,17 @@ class Venture extends Component
             'emoji' => ['nullable', 'string', 'max:10'],
             'banner_gradient' => ['nullable', 'string', 'max:200'],
             'tag_label' => ['nullable', 'string', 'max:80'],
+            'tag_label_ja' => ['nullable', 'string', 'max:80'],
             'tag_color' => ['nullable', 'string', 'max:20'],
             'tag_bg' => ['nullable', 'string', 'max:20'],
             'accent_color' => ['nullable', 'string', 'max:20'],
             'description' => ['nullable', 'string', 'max:500'],
+            'description_ja' => ['nullable', 'string', 'max:500'],
             'long_description' => ['nullable', 'string'],
+            'long_description_ja' => ['nullable', 'string'],
             'highlights_raw' => ['nullable', 'string'],
             'section_title' => ['nullable', 'string', 'max:100'],
+            'section_title_ja' => ['nullable', 'string', 'max:100'],
             'location' => ['nullable', 'string', 'max:150'],
             'established' => ['nullable', 'string', 'max:80'],
             'email' => ['nullable', 'email', 'max:150'],
@@ -189,28 +201,36 @@ class Venture extends Component
         $v = $service->find($id);
 
         $this->name = $v->name;
+        $this->name_ja = $v->name_ja ?? '';
         $this->slug = $v->slug;
         $this->tagline = $v->tagline ?? '';
+        $this->tagline_ja = $v->tagline_ja ?? '';
         $this->category = $v->category ?? 'education';
         $this->status = $v->status ?? 'active';
         $this->emoji = $v->emoji ?? '🎓';
         $this->banner_gradient = $v->banner_gradient ?? '135deg,#0d1560,#2952e3';
         $this->tag_label = $v->tag_label ?? '';
+        $this->tag_label_ja = $v->tag_label_ja ?? '';
         $this->tag_color = $v->tag_color ?? '#2952e3';
         $this->tag_bg = $v->tag_bg ?? '#e8edfd';
         $this->accent_color = $v->accent_color ?? '#2952e3';
         $this->description = $v->description ?? '';
+        $this->description_ja = $v->description_ja ?? '';
         $this->long_description = $v->long_description ?? '';
+        $this->long_description_ja = $v->long_description_ja ?? '';
         $this->highlights_raw = $v->highlights ? implode("\n", $v->highlights) : '';
         $this->section_title = $v->section_title ?? 'What We Do';
+        $this->section_title_ja = $v->section_title_ja ?? '何をするか';
         $this->location = $v->location ?? '';
         $this->established = $v->established ?? '';
         $this->email = $v->email ?? '';
         $this->phone = $v->phone ?? '';
         $this->website_url = $v->website_url ?? '';
         $this->primary_btn_label = $v->primary_btn_label ?? 'Learn More →';
+        $this->primary_btn_label_ja = $v->primary_btn_label_ja ?? '';
         $this->primary_btn_url = $v->primary_btn_url ?? '';
         $this->secondary_btn_label = $v->secondary_btn_label ?? 'Contact';
+        $this->secondary_btn_label_ja = $v->secondary_btn_label_ja ?? '';
         $this->secondary_btn_url = $v->secondary_btn_url ?? '';
         $this->is_featured = $v->is_featured;
         $this->is_active = $v->is_active;
@@ -232,30 +252,38 @@ class Venture extends Component
 
         $data = [
             'name' => $this->name,
+            'name_ja' => $this->name_ja ?: null,
             'slug' => $this->slug ?: null,
             'tagline' => $this->tagline ?: null,
+            'tagline_ja' => $this->tagline_ja ?: null,
             'category' => $this->category,
             'status' => $this->status,
             'emoji' => $this->emoji ?: '🎓',
             'banner_gradient' => $this->banner_gradient ?: null,
             'tag_label' => $this->tag_label ?: null,
+            'tag_label_ja' => $this->tag_label_ja ?: null,
             'tag_color' => $this->tag_color ?: null,
             'tag_bg' => $this->tag_bg ?: null,
             'accent_color' => $this->accent_color ?: '#2952e3',
             'description' => $this->description ?: null,
+            'description_ja' => $this->description_ja ?: null,
             'long_description' => $this->long_description ?: null,
+            'long_description_ja' => $this->long_description_ja ?: null,
             'highlights' => $this->highlights_raw
                 ? array_values(array_filter(array_map('trim', explode("\n", $this->highlights_raw))))
                 : null,
             'section_title' => $this->section_title ?: 'What We Do',
+            'section_title_ja' => $this->section_title_ja ?: null,
             'location' => $this->location ?: null,
             'established' => $this->established ?: null,
             'email' => $this->email ?: null,
             'phone' => $this->phone ?: null,
             'website_url' => $this->website_url ?: null,
             'primary_btn_label' => $this->primary_btn_label ?: null,
+            'primary_btn_label_ja' => $this->primary_btn_label_ja ?: null,
             'primary_btn_url' => $this->primary_btn_url ?: null,
             'secondary_btn_label' => $this->secondary_btn_label ?: null,
+            'secondary_btn_label_ja' => $this->secondary_btn_label_ja ?: null,
             'secondary_btn_url' => $this->secondary_btn_url ?: null,
             'is_featured' => $this->is_featured,
             'is_active' => $this->is_active,
@@ -351,28 +379,36 @@ class Venture extends Component
         $this->resetValidation();
         $this->editingId = null;
         $this->name = '';
+        $this->name_ja = '';
         $this->slug = '';
         $this->tagline = '';
+        $this->tagline_ja = '';
         $this->category = 'education';
         $this->status = 'active';
         $this->emoji = '🎓';
         $this->banner_gradient = '135deg,#0d1560,#2952e3';
         $this->tag_label = '';
+        $this->tag_label_ja = '';
         $this->tag_color = '#2952e3';
         $this->tag_bg = '#e8edfd';
         $this->accent_color = '#2952e3';
         $this->description = '';
+        $this->description_ja = '';
         $this->long_description = '';
+        $this->long_description_ja = '';
         $this->highlights_raw = '';
         $this->section_title = 'What We Do';
+        $this->section_title_ja = '何をするか';
         $this->location = '';
         $this->established = '';
         $this->email = '';
         $this->phone = '';
         $this->website_url = '';
         $this->primary_btn_label = 'Learn More →';
+        $this->primary_btn_label_ja = '';
         $this->primary_btn_url = '';
         $this->secondary_btn_label = 'Contact';
+        $this->secondary_btn_label_ja = '';
         $this->secondary_btn_url = '';
         $this->is_featured = false;
         $this->is_active = true;

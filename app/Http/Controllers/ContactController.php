@@ -152,16 +152,19 @@ class ContactController extends Controller
 
     private function branchPayload(BranchOffice $branch): array
     {
+        $address = localized($branch, 'address');
+        $locationLabel = localized($branch, 'location_label') ?: $this->locationLabel($address);
+
         return [
-            'name' => $branch->name,
+            'name' => localized($branch, 'name'),
             'type' => 'branch',
-            'location_label' => $branch->location_label ?: $this->locationLabel($branch->address),
-            'address' => $branch->address,
+            'location_label' => $locationLabel,
+            'address' => $address,
             'phone' => $branch->phone,
             'phone_href' => $this->telHref($branch->phone),
             'email' => $branch->email,
-            'weekday_hours' => $branch->weekday_hours,
-            'saturday_hours' => $branch->saturday_hours,
+            'weekday_hours' => localized($branch, 'weekday_hours'),
+            'saturday_hours' => localized($branch, 'saturday_hours'),
             'map_embed_url' => $this->mapSrc($branch->map_embed_url),
             'map_link_url' => $branch->map_link_url ?: $branch->map_embed_url,
         ];

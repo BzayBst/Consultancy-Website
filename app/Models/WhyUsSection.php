@@ -8,8 +8,8 @@ class WhyUsSection extends Model
 {
     protected $table    = 'why_us_sections';
     protected $fillable = [
-        'section_label', 'title', 'description',
+        'section_label', 'section_label_ja', 'title', 'title_ja', 'description', 'description_ja',
         'image_path', 'image_alt',
-        'badge_number', 'badge_label',
+        'badge_number', 'badge_label', 'badge_label_ja',
     ];
 }

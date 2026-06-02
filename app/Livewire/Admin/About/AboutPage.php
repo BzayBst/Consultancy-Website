@@ -22,12 +22,16 @@ class AboutPage extends Component
     // TAB 1 — PAGE HERO
     // ─────────────────────────────────────────────────────────────────────
     public string $hero_badge = '';
+    public string $hero_badge_ja = '';
 
     public string $hero_title = '';
+    public string $hero_title_ja = '';
 
     public string $hero_highlight = '';
+    public string $hero_highlight_ja = '';
 
     public string $hero_subtitle = '';
+    public string $hero_subtitle_ja = '';
 
     // ─────────────────────────────────────────────────────────────────────
     // TAB 2 — OUR STORY
@@ -39,16 +43,22 @@ class AboutPage extends Component
     public string $story_float_icon = '🏆';
 
     public string $story_float_title = 'Best Consultancy';
+    public string $story_float_title_ja = '';
 
     public string $story_float_subtitle = 'Bhairahawa Region, 2023';
+    public string $story_float_subtitle_ja = '';
 
     public string $story_section_label = 'Our Story';
+    public string $story_section_label_ja = '';
 
     public string $story_section_title = 'How HASU Began Its Journey';
+    public string $story_section_title_ja = '';
 
     public string $story_paragraph_1 = '';
+    public string $story_paragraph_1_ja = '';
 
     public string $story_paragraph_2 = '';
+    public string $story_paragraph_2_ja = '';
 
     // Milestones list + modal
     public array $milestones = [];
@@ -110,18 +120,28 @@ class AboutPage extends Component
     {
         return [
             'hero_badge' => 'nullable|string|max:150',
+            'hero_badge_ja' => 'nullable|string|max:150',
             'hero_title' => 'required|string|max:200',
+            'hero_title_ja' => 'nullable|string|max:200',
             'hero_highlight' => 'nullable|string|max:80',
+            'hero_highlight_ja' => 'nullable|string|max:80',
             'hero_subtitle' => 'nullable|string|max:400',
+            'hero_subtitle_ja' => 'nullable|string|max:400',
 
             'story_image_upload' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
             'story_float_icon' => 'nullable|string|max:10',
             'story_float_title' => 'nullable|string|max:80',
+            'story_float_title_ja' => 'nullable|string|max:80',
             'story_float_subtitle' => 'nullable|string|max:80',
+            'story_float_subtitle_ja' => 'nullable|string|max:80',
             'story_section_label' => 'nullable|string|max:80',
+            'story_section_label_ja' => 'nullable|string|max:80',
             'story_section_title' => 'nullable|string|max:150',
+            'story_section_title_ja' => 'nullable|string|max:150',
             'story_paragraph_1' => 'nullable|string|max:1500',
+            'story_paragraph_1_ja' => 'nullable|string|max:1500',
             'story_paragraph_2' => 'nullable|string|max:1500',
+            'story_paragraph_2_ja' => 'nullable|string|max:1500',
 
             'ms_year' => 'required|string|max:10',
             'ms_title' => 'required|string|max:150',
@@ -151,9 +171,13 @@ class AboutPage extends Component
     {
         $hero = $service->getHero();
         $this->hero_badge = $hero?->badge ?? '';
+        $this->hero_badge_ja = $hero?->badge_ja ?? '';
         $this->hero_title = $hero?->title ?? 'Your Trusted Partner in';
+        $this->hero_title_ja = $hero?->title_ja ?? '';
         $this->hero_highlight = $hero?->highlight ?? 'Global Education';
+        $this->hero_highlight_ja = $hero?->highlight_ja ?? '';
         $this->hero_subtitle = $hero?->subtitle ?? '';
+        $this->hero_subtitle_ja = $hero?->subtitle_ja ?? '';
     }
 
     private function loadStory(AboutService $service): void
@@ -165,11 +189,17 @@ class AboutPage extends Component
         $this->story_image_current = $s->image_path;
         $this->story_float_icon = $s->float_badge_icon ?? '🏆';
         $this->story_float_title = $s->float_badge_title ?? 'Best Consultancy';
+        $this->story_float_title_ja = $s->float_badge_title_ja ?? '';
         $this->story_float_subtitle = $s->float_badge_subtitle ?? 'Bhairahawa Region, 2023';
+        $this->story_float_subtitle_ja = $s->float_badge_subtitle_ja ?? '';
         $this->story_section_label = $s->section_label ?? 'Our Story';
+        $this->story_section_label_ja = $s->section_label_ja ?? '';
         $this->story_section_title = $s->section_title ?? 'How HASU Began Its Journey';
+        $this->story_section_title_ja = $s->section_title_ja ?? '';
         $this->story_paragraph_1 = $s->paragraph_1 ?? '';
+        $this->story_paragraph_1_ja = $s->paragraph_1_ja ?? '';
         $this->story_paragraph_2 = $s->paragraph_2 ?? '';
+        $this->story_paragraph_2_ja = $s->paragraph_2_ja ?? '';
     }
 
     private function loadStats(AboutService $service): void
@@ -195,16 +225,24 @@ class AboutPage extends Component
     {
         $this->validate([
             'hero_badge' => 'nullable|string|max:150',
+            'hero_badge_ja' => 'nullable|string|max:150',
             'hero_title' => 'required|string|max:200',
+            'hero_title_ja' => 'nullable|string|max:200',
             'hero_highlight' => 'nullable|string|max:80',
+            'hero_highlight_ja' => 'nullable|string|max:80',
             'hero_subtitle' => 'nullable|string|max:400',
+            'hero_subtitle_ja' => 'nullable|string|max:400',
         ]);
 
         $service->saveHero([
             'badge' => $this->hero_badge,
+            'badge_ja' => $this->hero_badge_ja,
             'title' => $this->hero_title,
+            'title_ja' => $this->hero_title_ja,
             'highlight' => $this->hero_highlight,
+            'highlight_ja' => $this->hero_highlight_ja,
             'subtitle' => $this->hero_subtitle,
+            'subtitle_ja' => $this->hero_subtitle_ja,
         ]);
 
         session()->flash('success', 'Page hero saved.');
@@ -229,11 +267,17 @@ class AboutPage extends Component
         $story = $service->saveStory([
             'float_badge_icon' => $this->story_float_icon,
             'float_badge_title' => $this->story_float_title,
+            'float_badge_title_ja' => $this->story_float_title_ja,
             'float_badge_subtitle' => $this->story_float_subtitle,
+            'float_badge_subtitle_ja' => $this->story_float_subtitle_ja,
             'section_label' => $this->story_section_label,
+            'section_label_ja' => $this->story_section_label_ja,
             'section_title' => $this->story_section_title,
+            'section_title_ja' => $this->story_section_title_ja,
             'paragraph_1' => $this->story_paragraph_1,
+            'paragraph_1_ja' => $this->story_paragraph_1_ja,
             'paragraph_2' => $this->story_paragraph_2,
+            'paragraph_2_ja' => $this->story_paragraph_2_ja,
         ], $this->story_image_upload);
 
         $this->story_image_current = $story->image_path;

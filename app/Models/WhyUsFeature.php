@@ -8,7 +8,7 @@ class WhyUsFeature extends Model
 {
     protected $table = 'why_us_features';
 
-    protected $fillable = ['icon', 'title', 'description', 'sort_order', 'is_active'];
+    protected $fillable = ['icon', 'title', 'title_ja', 'description', 'description_ja', 'sort_order', 'is_active'];
 
     protected $casts = ['is_active' => 'boolean', 'sort_order' => 'integer'];
 

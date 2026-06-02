@@ -51,14 +51,29 @@
                         @error('section_label') <span class="field-error">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group">
+                        <label>Section Label (Japanese)</label>
+                        <input type="text" wire:model.live="section_label_ja" placeholder="提供するサービス">
+                        @error('section_label_ja') <span class="field-error">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group">
                         <label>Section Title <span>*</span></label>
                         <input type="text" wire:model.live="section_title" placeholder="Our Core Services">
                         @error('section_title') <span class="field-error">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group">
+                        <label>Section Title (Japanese)</label>
+                        <input type="text" wire:model.live="section_title_ja" placeholder="コアサービス">
+                        @error('section_title_ja') <span class="field-error">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group hs-full">
                         <label>Section Subtitle</label>
                         <textarea wire:model.live="section_subtitle" rows="3" placeholder="Short intro shown under the heading"></textarea>
                         @error('section_subtitle') <span class="field-error">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group hs-full">
+                        <label>Section Subtitle (Japanese)</label>
+                        <textarea wire:model.live="section_subtitle_ja" rows="3" placeholder="見出しの下に表示される短い紹介文です。"></textarea>
+                        @error('section_subtitle_ja') <span class="field-error">{{ $message }}</span> @enderror
                     </div>
                 </div>
             </div>
@@ -90,10 +105,20 @@
                             <input type="text" wire:model.live="services.{{ $i }}.title" placeholder="Admission Guidance">
                             @error("services.$i.title") <span class="field-error">{{ $message }}</span> @enderror
                         </div>
+                        <div class="form-group">
+                            <label>Title (Japanese)</label>
+                            <input type="text" wire:model.live="services_ja.{{ $i }}.title" placeholder="入学ガイダンス">
+                            @error("services_ja.$i.title") <span class="field-error">{{ $message }}</span> @enderror
+                        </div>
                         <div class="form-group hs-full">
                             <label>Description</label>
                             <textarea wire:model.live="services.{{ $i }}.description" rows="3" placeholder="Describe this service"></textarea>
                             @error("services.$i.description") <span class="field-error">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="form-group hs-full">
+                            <label>Description (Japanese)</label>
+                            <textarea wire:model.live="services_ja.{{ $i }}.description" rows="3" placeholder="このサービスについて説明してください"></textarea>
+                            @error("services_ja.$i.description") <span class="field-error">{{ $message }}</span> @enderror
                         </div>
                         {{-- <div class="form-group">
                             <label>Link Label</label>

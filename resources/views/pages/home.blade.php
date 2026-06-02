@@ -70,23 +70,23 @@
         <span class="venture-status status-{{ str_replace('_','-',$venture->status) }}">{{ $venture->status_label }}</span>
         <div class="venture-banner" style="{{ $venture->banner_style }}">
           @if($venture->banner_image)
-            <img src="{{ $venture->banner_image_url }}" class="venture-banner-img" alt="{{ $venture->name }}">
+            <img src="{{ $venture->banner_image_url }}" class="venture-banner-img" alt="{{ localized($venture, 'name') }}">
           @else
             <span style="font-size:72px;opacity:.12;user-select:none">{{ $venture->emoji }}</span>
           @endif
         </div>
         <div class="venture-logo-wrap">{{ $venture->emoji }}</div>
         <div class="venture-body">
-          @if($venture->tag_label)
-            <span class="venture-tag" style="background:{{ $venture->tag_bg ?? 'var(--blue-light)' }};color:{{ $venture->tag_color ?? 'var(--blue)' }}">{{ $venture->tag_label }}</span>
+          @if(localized($venture, 'tag_label'))
+            <span class="venture-tag" style="background:{{ $venture->tag_bg ?? 'var(--blue-light)' }};color:{{ $venture->tag_color ?? 'var(--blue)' }}">{{ localized($venture, 'tag_label') }}</span>
           @endif
-          <h3>{{ $venture->name }}</h3>
-          @if($venture->description)
-            <p>{{ \Illuminate\Support\Str::limit($venture->description, 120) }}</p>
+          <h3>{{ localized($venture, 'name') }}</h3>
+          @if(localized($venture, 'description'))
+            <p>{{ \Illuminate\Support\Str::limit(localized($venture, 'description'), 120) }}</p>
           @endif
         </div>
         <div class="venture-links">
-          <a href="{{ $venture->primary_btn_url ?: route('ventures.show', $venture->slug) }}" class="venture-link primary">{{ $venture->primary_btn_label ?: 'Learn More' }}</a>
+          <a href="{{ $venture->primary_btn_url ?: route('ventures.show', $venture->slug) }}" class="venture-link primary">{{ localized($venture, 'primary_btn_label') ?: 'Learn More' }}</a>
           {{-- <a href="{{ $venture->secondary_btn_url ?: route('contact') }}" class="venture-link outline">{{ $venture->secondary_btn_label ?: 'Contact' }}</a> --}}
         </div>
       </div>
@@ -105,14 +105,15 @@
 <section id="services" class="section">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">{{ $homeServices->section_label ?: 'What We Offer' }}</div>
-      <h2 class="section-title">{{ $homeServices->section_title ?: 'Our Core Services' }}</h2>
-      @if($homeServices->section_subtitle)
-        <p class="section-sub">{{ $homeServices->section_subtitle }}</p>
+      <div class="section-label">{{ localized($homeServices, 'section_label') ?: 'What We Offer' }}</div>
+      <h2 class="section-title">{{ localized($homeServices, 'section_title') ?: 'Our Core Services' }}</h2>
+      @if(localized($homeServices, 'section_subtitle'))
+        <p class="section-sub">{{ localized($homeServices, 'section_subtitle') }}</p>
       @endif
     </div>
     <div class="services-grid">
-      @foreach($homeServices->services as $i => $service)
+      @php $servicesToShow = localized($homeServices, 'services') ?: $homeServices->services; @endphp
+      @foreach($servicesToShow as $i => $service)
         @if(! empty($service['title']) || ! empty($service['description']))
         <div class="service-card fade-up" @if($i > 0) style="transition-delay:{{ round(($i % 6) * .1, 2) }}s" @endif>
           @if(! empty($service['icon']))
@@ -139,25 +140,25 @@
 <section id="courses" class="section" style="background:#fff">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">{{ $coursePage?->catalog_label ?: 'Check Our Course' }}</div>
-      <h2 class="section-title">{{ $coursePage?->catalog_title ?: 'Popular Language & Test Prep Courses' }}</h2>
-      <p class="section-sub">{{ $coursePage?->intro_subtitle ?: 'Prepare for your future with internationally recognized language and aptitude certifications.' }}</p>
+      <div class="section-label">{{ localized($coursePage, 'catalog_label') ?: 'Check Our Course' }}</div>
+      <h2 class="section-title">{{ localized($coursePage, 'catalog_title') ?: 'Popular Language & Test Prep Courses' }}</h2>
+      <p class="section-sub">{{ localized($coursePage, 'intro_subtitle') ?: 'Prepare for your future with internationally recognized language and aptitude certifications.' }}</p>
     </div>
     <div class="courses-grid">
       @forelse($courses as $i => $course)
       <a href="{{ route('course.show', $course->slug) }}" class="course-card course-card-link fade-up" @if($i > 0) style="transition-delay:{{ round($i * .1, 2) }}s" @endif>
         <div class="course-img">
           @if($course->image_url)
-            <img src="{{ $course->image_url }}" alt="{{ $course->title }}">
+            <img src="{{ $course->image_url }}" alt="{{ localized($course, 'title') }}">
           @endif
-          @if($course->badge)
-            <div class="course-flag">{{ $course->badge }}</div>
+          @if(localized($course, 'badge'))
+            <div class="course-flag">{{ localized($course, 'badge') }}</div>
           @endif
         </div>
         <div class="course-body">
-          <h4>{{ $course->title }}</h4>
-          @if($course->excerpt)
-            <p>{{ $course->excerpt }}</p>
+          <h4>{{ localized($course, 'title') }}</h4>
+          @if(localized($course, 'excerpt'))
+            <p>{{ localized($course, 'excerpt') }}</p>
           @endif
           <span class="course-card-cta">View Course</span>
         </div>
@@ -177,23 +178,23 @@
 <section id="study-abroad" class="section">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">{{ $studyAbroadPage?->section_label ?: 'Study Abroad' }}</div>
-      <h2 class="section-title">{{ $studyAbroadPage?->section_title ?: 'Choose Your Dream Destination' }}</h2>
-      <p class="section-sub">{{ $studyAbroadPage?->hero_subtitle ?: 'We assist students in pursuing world-class education across the globe with expert guidance at every step.' }}</p>
+      <div class="section-label">{{ localized($studyAbroadPage, 'section_label') ?: 'Study Abroad' }}</div>
+      <h2 class="section-title">{{ localized($studyAbroadPage, 'section_title') ?: 'Choose Your Dream Destination' }}</h2>
+      <p class="section-sub">{{ localized($studyAbroadPage, 'hero_subtitle') ?: 'We assist students in pursuing world-class education across the globe with expert guidance at every step.' }}</p>
     </div>
     <div class="countries-grid">
       @forelse($destinations as $i => $destination)
       <a href="{{ route('study-abroad-detail', $destination->slug) }}" class="country-card fade-up" @if($i > 0) style="transition-delay:{{ round($i * .1, 2) }}s" @endif>
         @if($destination->card_image_url)
-          <img src="{{ $destination->card_image_url }}" alt="{{ $destination->card_title ?: 'Study in ' . $destination->country }}">
+          <img src="{{ $destination->card_image_url }}" alt="{{ localized($destination, 'card_title') ?: 'Study in ' . $destination->country }}">
         @endif
         <div class="country-overlay">
           @if($destination->flag)
             <div class="country-flag">{{ $destination->flag }}</div>
           @endif
-          <h4>{{ $destination->card_title ?: 'Study in ' . $destination->country }}</h4>
-          @if($destination->card_description)
-            <span>{{ \Illuminate\Support\Str::limit($destination->card_description, 70) }}</span>
+          <h4>{{ localized($destination, 'card_title') ?: 'Study in ' . $destination->country }}</h4>
+          @if(localized($destination, 'card_description'))
+            <span>{{ \Illuminate\Support\Str::limit(localized($destination, 'card_description'), 70) }}</span>
           @endif
         </div>
       </a>
@@ -213,10 +214,10 @@
 <section id="testimonials" class="section testimonials-slider-section">
   <div class="container">
     <div class="section-head test-head fade-up">
-      <div class="section-label">{{ $homeTestimonials->section_label ?: 'Testimonials And Success Stories' }}</div>
-      <h2 class="section-title">{{ $homeTestimonials->section_title ?: 'What Our Students Say' }}</h2>
-      @if($homeTestimonials->section_subtitle)
-        <p class="section-sub">{{ $homeTestimonials->section_subtitle }}</p>
+      <div class="section-label">{{ localized($homeTestimonials, 'section_label') ?: 'Testimonials And Success Stories' }}</div>
+      <h2 class="section-title">{{ localized($homeTestimonials, 'section_title') ?: 'What Our Students Say' }}</h2>
+      @if(localized($homeTestimonials, 'section_subtitle'))
+        <p class="section-sub">{{ localized($homeTestimonials, 'section_subtitle') }}</p>
       @endif
     </div>
     <div class="test-slider fade-up">
@@ -267,19 +268,19 @@
     <div class="events-grid">
       @if($featuredEvent)
       <div class="event-featured fade-up">
-        <img src="{{ $featuredEvent->image_url }}" alt="{{ $featuredEvent->title }}">
+        <img src="{{ $featuredEvent->image_url }}" alt="{{ localized($featuredEvent, 'title') }}">
         <div class="event-featured-body">
           <div class="event-tag">{{ ucfirst($featuredEvent->status) }}</div>
-          <h3>{{ $featuredEvent->title }}</h3>
+          <h3>{{ localized($featuredEvent, 'title') }}</h3>
           <ul class="event-meta">
             @if($featuredEvent->event_date)
               <li><span>Date</span> {{ $featuredEvent->event_date->format('d M Y') }}</li>
             @endif
-            @if($featuredEvent->location)
-              <li><span>Place</span> {{ $featuredEvent->location }}</li>
+            @if(localized($featuredEvent, 'location'))
+              <li><span>Place</span> {{ localized($featuredEvent, 'location') }}</li>
             @endif
-            @if($featuredEvent->organizer)
-              <li><span>Host</span> {{ $featuredEvent->organizer }}</li>
+            @if(localized($featuredEvent, 'organizer'))
+              <li><span>Host</span> {{ localized($featuredEvent, 'organizer') }}</li>
             @endif
           </ul>
           <a href="{{ $featuredEvent->learn_more_url ?: route('events.show', $featuredEvent) }}" @if($featuredEvent->learn_more_url) target="_blank" rel="noopener" @endif class="btn btn-secondary" style="font-size:13px;padding:9px 20px">Learn More</a>
@@ -294,9 +295,9 @@
             <span>{{ $event->event_date?->format('M') }}</span>
           </div>
           <div class="event-info">
-            <h4><a href="{{ $event->learn_more_url ?: route('events.show', $event) }}" @if($event->learn_more_url) target="_blank" rel="noopener" @endif style="color:inherit;text-decoration:none">{{ $event->title }}</a></h4>
-            @if($event->description)
-              <p>{{ \Illuminate\Support\Str::limit($event->description, 100) }}</p>
+            <h4><a href="{{ $event->learn_more_url ?: route('events.show', $event) }}" @if($event->learn_more_url) target="_blank" rel="noopener" @endif style="color:inherit;text-decoration:none">{{ localized($event, 'title') }}</a></h4>
+            @if(localized($event, 'description'))
+              <p>{{ \Illuminate\Support\Str::limit(localized($event, 'description'), 100) }}</p>
             @endif
           </div>
         </div>
@@ -333,7 +334,7 @@
       <div class="blog-card fade-up" @if($i > 0) style="transition-delay:{{ $i * 0.1 }}s" @endif>
         <div class="blog-img">
           @if($blog->image_url)
-            <img src="{{ $blog->image_url }}" alt="{{ $blog->image_alt ?: $blog->title }}">
+            <img src="{{ $blog->image_url }}" alt="{{ localized($blog, 'image_alt') ?: localized($blog, 'title') }}">
           @endif
           @if($blog->published_at)
             <div class="blog-date">{{ $blog->published_at->format('M d, Y') }}</div>
@@ -343,9 +344,9 @@
           @if($blog->category)
             <div class="blog-meta">{{ $blog->category }}</div>
           @endif
-          <h4>{{ $blog->title }}</h4>
-          @if($blog->excerpt)
-            <p>{{ $blog->excerpt }}</p>
+          <h4>{{ localized($blog, 'title') }}</h4>
+          @if(localized($blog, 'excerpt'))
+            <p>{{ localized($blog, 'excerpt') }}</p>
           @endif
           <a href="{{ route('blog.show', $blog->slug) }}" class="blog-link">Learn More</a>
         </div>
@@ -379,7 +380,7 @@
     <div class="home-popup-frame">
       @foreach($homePopupBanners as $banner)
         <a href="{{ $banner->link_url ?: '#' }}" class="home-popup-slide {{ $loop->first ? 'active' : '' }}" data-popup-slide="{{ $loop->index }}" @if($banner->link_url) target="_blank" rel="noopener" @else onclick="return false" @endif>
-          <img src="{{ $banner->image_url }}" alt="{{ $banner->title ?: 'Announcement banner' }}">
+          <img src="{{ $banner->image_url }}" alt="{{ localized($banner, 'title') ?: 'Announcement banner' }}">
         </a>
       @endforeach
     </div>

@@ -23,10 +23,12 @@ class Gallery extends Component
     public ?int $editingId = null;
 
     public string $title = '';
+    public string $title_ja = '';
     public string $category = 'classes';
     public string $media_type = 'image';
     public string $link_url = '';
     public string $alt_text = '';
+    public string $alt_text_ja = '';
     public int $sort_order = 0;
     public bool $is_active = true;
     public bool $removePhoto = false;
@@ -48,10 +50,12 @@ class Gallery extends Component
     {
         return [
             'title' => ['required', 'string', 'max:150'],
+            'title_ja' => ['nullable', 'string', 'max:150'],
             'category' => ['required', 'string', 'max:60'],
             'media_type' => ['required', 'in:image,youtube,facebook'],
             'link_url' => ['nullable', 'required_unless:media_type,image', 'url', 'max:2048'],
             'alt_text' => ['nullable', 'string', 'max:180'],
+            'alt_text_ja' => ['nullable', 'string', 'max:180'],
             'sort_order' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],
             'photo' => [$this->isEdit ? 'nullable' : 'required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
@@ -88,10 +92,12 @@ class Gallery extends Component
         $this->isEdit = true;
         $this->editingId = $image->id;
         $this->title = $image->title;
+        $this->title_ja = $image->title_ja ?? '';
         $this->category = $image->category;
         $this->media_type = $image->media_type ?? 'image';
         $this->link_url = $image->link_url ?? '';
         $this->alt_text = $image->alt_text ?? '';
+        $this->alt_text_ja = $image->alt_text_ja ?? '';
         $this->sort_order = $image->sort_order;
         $this->is_active = $image->is_active;
         $this->existingPhoto = $image->image_path;
@@ -110,10 +116,12 @@ class Gallery extends Component
 
         $data = [
             'title' => $this->title,
+            'title_ja' => $this->title_ja ?: null,
             'category' => Str::slug($this->category),
             'media_type' => $this->media_type,
             'link_url' => $this->media_type === 'image' ? null : $this->link_url,
             'alt_text' => $this->alt_text ?: null,
+            'alt_text_ja' => $this->alt_text_ja ?: null,
             'sort_order' => $this->sort_order,
             'is_active' => $this->is_active,
         ];
@@ -191,10 +199,12 @@ class Gallery extends Component
         $this->resetValidation();
         $this->editingId = null;
         $this->title = '';
+        $this->title_ja = '';
         $this->category = 'classes';
         $this->media_type = 'image';
         $this->link_url = '';
         $this->alt_text = '';
+        $this->alt_text_ja = '';
         $this->sort_order = (GalleryImage::max('sort_order') ?? 0) + 1;
         $this->is_active = true;
         $this->removePhoto = false;

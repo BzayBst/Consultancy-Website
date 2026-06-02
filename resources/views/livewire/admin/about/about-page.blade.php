@@ -73,10 +73,22 @@
                     @error('hero_badge') <span class="fe">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group">
+                    <label>Badge Text (Japanese)</label>
+                    <input type="text" wire:model.live="hero_badge_ja"
+                           placeholder="例：2013年設立 · ネパール">
+                    @error('hero_badge_ja') <span class="fe">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group">
                     <label>Highlighted Word <span class="hint">Shown in gold/accent colour</span></label>
                     <input type="text" wire:model.live="hero_highlight"
                            placeholder="Global Education">
                     @error('hero_highlight') <span class="fe">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group">
+                    <label>Highlighted Word (Japanese)</label>
+                    <input type="text" wire:model.live="hero_highlight_ja"
+                           placeholder="グローバル教育">
+                    @error('hero_highlight_ja') <span class="fe">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group ab-full">
                     <label>Title <span class="req">*</span></label>
@@ -85,10 +97,20 @@
                     @error('hero_title') <span class="fe">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group ab-full">
+                    <label>Title (Japanese)</label>
+                    <input type="text" wire:model.live="hero_title_ja" placeholder="信頼できるパートナー">
+                    @error('hero_title_ja') <span class="fe">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group ab-full">
                     <label>Subtitle / Description</label>
                     <textarea wire:model.live="hero_subtitle" rows="3"
                               placeholder="For over a decade, HASU Educational Consultancy has been guiding..."></textarea>
                     @error('hero_subtitle') <span class="fe">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group ab-full">
+                    <label>Subtitle / Description (Japanese)</label>
+                    <textarea wire:model.live="hero_subtitle_ja" rows="3" placeholder="10年以上にわたり、HASUは学生を導いてきました..."></textarea>
+                    @error('hero_subtitle_ja') <span class="fe">{{ $message }}</span> @enderror
                 </div>
             </div>
         </div>
@@ -145,8 +167,16 @@
                             <input type="text" wire:model="story_float_title" placeholder="Best Consultancy">
                         </div>
                         <div class="form-group">
+                            <label>Float Badge Title (Japanese)</label>
+                            <input type="text" wire:model="story_float_title_ja" placeholder="最高のコンサルティング">
+                        </div>
+                        <div class="form-group">
                             <label>Float Badge Subtitle</label>
                             <input type="text" wire:model="story_float_subtitle" placeholder="Bhairahawa Region, 2023">
+                        </div>
+                        <div class="form-group">
+                            <label>Float Badge Subtitle (Japanese)</label>
+                            <input type="text" wire:model="story_float_subtitle_ja" placeholder="バイラワ地域, 2023">
                         </div>
                     </div>
                 </div>
@@ -159,8 +189,16 @@
                         <input type="text" wire:model="story_section_label" placeholder="Our Story">
                     </div>
                     <div class="form-group">
+                        <label>Section Label (Japanese)</label>
+                        <input type="text" wire:model="story_section_label_ja" placeholder="私たちの物語">
+                    </div>
+                    <div class="form-group">
                         <label>Section Title</label>
                         <input type="text" wire:model="story_section_title" placeholder="How HASU Began Its Journey">
+                    </div>
+                    <div class="form-group">
+                        <label>Section Title (Japanese)</label>
+                        <input type="text" wire:model="story_section_title_ja" placeholder="HASUの歩み">
                     </div>
                     <div class="form-group ab-full">
                         <label>Paragraph 1</label>
@@ -168,9 +206,17 @@
                                   placeholder="Founded in 2013 and officially registered in 2015..."></textarea>
                     </div>
                     <div class="form-group ab-full">
+                        <label>Paragraph 1 (Japanese)</label>
+                        <textarea wire:model="story_paragraph_1_ja" rows="4" placeholder="2013年に創設され、2015年に正式登録されました..."></textarea>
+                    </div>
+                    <div class="form-group ab-full">
                         <label>Paragraph 2</label>
                         <textarea wire:model="story_paragraph_2" rows="3"
                                   placeholder="We specialize in guiding students to top universities..."></textarea>
+                    </div>
+                    <div class="form-group ab-full">
+                        <label>Paragraph 2 (Japanese)</label>
+                        <textarea wire:model="story_paragraph_2_ja" rows="3" placeholder="私たちは学生を有名大学へ導くことを専門としています..."></textarea>
                     </div>
                 </div>
 

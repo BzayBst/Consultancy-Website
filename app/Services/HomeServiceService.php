@@ -27,6 +27,19 @@ class HomeServiceService
                 ->all();
         }
 
+        if (isset($data['services_ja'])) {
+            $data['services_ja'] = collect($data['services_ja'])
+                ->map(fn ($service) => [
+                    'icon' => trim($service['icon'] ?? ''),
+                    'title' => trim($service['title'] ?? ''),
+                    'description' => trim($service['description'] ?? ''),
+                    'link_label' => trim($service['link_label'] ?? ''),
+                ])
+                ->filter(fn ($service) => $service['title'] !== '' || $service['description'] !== '')
+                ->values()
+                ->all();
+        }
+
         $record = HomeService::firstOrNew(['id' => 1]);
         $record->fill($data)->save();
 

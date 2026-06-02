@@ -12,15 +12,21 @@ class Event extends Model
 
     protected $fillable = [
         'title',
+        'title_ja',
         'description',        // short (used in listing rows)
+        'description_ja',
         'long_description',   // rich detail page content
+        'long_description_ja',
         'highlights',         // JSON array of bullet points
+        'highlights_ja',
         'event_date',
         'event_end_date',
         'event_time',
         'status',
         'location',
+        'location_ja',
         'organizer',
+        'organizer_ja',
         'learn_more_url',
         'image',
         'is_active',
@@ -33,6 +39,7 @@ class Event extends Model
         'is_active'      => 'boolean',
         'is_featured'    => 'boolean',
         'highlights'     => 'array',
+        'highlights_ja'  => 'array',
     ];
 
     public function getImageUrlAttribute(): string

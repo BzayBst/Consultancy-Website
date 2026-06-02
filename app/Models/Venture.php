@@ -12,17 +12,18 @@ class Venture extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'slug', 'tagline', 'category', 'status',
-        'emoji', 'banner_gradient', 'tag_label', 'tag_color', 'tag_bg', 'accent_color',
-        'description', 'long_description', 'highlights', 'section_title',
+        'name', 'name_ja', 'slug', 'tagline', 'tagline_ja', 'category', 'status',
+        'emoji', 'banner_gradient', 'tag_label', 'tag_label_ja', 'tag_color', 'tag_bg', 'accent_color',
+        'description', 'description_ja', 'long_description', 'long_description_ja', 'highlights', 'highlights_ja', 'section_title', 'section_title_ja',
         'location', 'established', 'email', 'phone', 'website_url',
-        'primary_btn_label', 'primary_btn_url',
-        'secondary_btn_label', 'secondary_btn_url',
+        'primary_btn_label', 'primary_btn_label_ja', 'primary_btn_url',
+        'secondary_btn_label', 'secondary_btn_label_ja', 'secondary_btn_url',
         'banner_image', 'is_featured', 'is_active', 'order',
     ];
 
     protected $casts = [
         'highlights'  => 'array',
+        'highlights_ja'  => 'array',
         'is_featured' => 'boolean',
         'is_active'   => 'boolean',
         'order'       => 'integer',

@@ -37,7 +37,7 @@
             <div class="post-row {{ $post->trashed() ? 'is-trashed' : '' }}">
                 <div class="post-thumb">
                     @if($post->image_url)
-                        <img src="{{ $post->image_url }}" alt="{{ $post->image_alt ?: $post->title }}">
+                        <img src="{{ $post->image_url }}" alt="{{ localized($post, 'image_alt') ?: localized($post, 'title') }}">
                     @else
                         <div class="thumb-placeholder">Blog</div>
                     @endif
@@ -48,8 +48,8 @@
                         <span>{{ $post->published_at?->format('d M Y') ?: 'Draft date' }}</span>
                         @if($post->is_featured)<span>Featured</span>@endif
                     </div>
-                    <h3>{{ $post->title }}</h3>
-                    @if($post->excerpt)<p>{{ Str::limit($post->excerpt, 140) }}</p>@endif
+                    <h3>{{ localized($post, 'title') }}</h3>
+                    @if(localized($post, 'excerpt'))<p>{{ Str::limit(localized($post, 'excerpt'), 140) }}</p>@endif
                 </div>
                 <div class="post-actions">
                     @if($post->trashed())
@@ -94,6 +94,11 @@
                                 @error('title') <small>{{ $message }}</small> @enderror
                             </div>
                             <div class="form-group">
+                                <label>Title (Japanese)</label>
+                                <input type="text" wire:model.live="title_ja" placeholder="例：留学ガイド">
+                                @error('title_ja') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group">
                                 <label>Slug</label>
                                 <input type="text" wire:model.live="slug" placeholder="study-abroad-guide">
                                 @error('slug') <small>{{ $message }}</small> @enderror
@@ -121,6 +126,11 @@
                                 <label>Excerpt</label>
                                 <textarea wire:model.live="excerpt" rows="3" placeholder="Short summary used on cards and meta description"></textarea>
                                 @error('excerpt') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group full">
+                                <label>Excerpt (Japanese)</label>
+                                <textarea wire:model.live="excerpt_ja" rows="3" placeholder="日本語の要約"></textarea>
+                                @error('excerpt_ja') <small>{{ $message }}</small> @enderror
                             </div>
                         </div>
 
@@ -160,6 +170,12 @@
                             @error('content') <small>{{ $message }}</small> @enderror
                         </div>
 
+                        <div class="form-group full">
+                            <label>Detail Content (Japanese)</label>
+                            <textarea wire:model.live="content_ja" rows="8" placeholder="日本語で記事内容を入力"></textarea>
+                            @error('content_ja') <small>{{ $message }}</small> @enderror
+                        </div>
+
                         <div class="form-grid seo-grid">
                             <div class="form-group">
                                 <label>Meta Title</label>
@@ -167,14 +183,29 @@
                                 @error('meta_title') <small>{{ $message }}</small> @enderror
                             </div>
                             <div class="form-group">
+                                <label>Meta Title (Japanese)</label>
+                                <input type="text" wire:model.live="meta_title_ja" placeholder="日本語のSEOタイトル">
+                                @error('meta_title_ja') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group">
                                 <label>Image Alt Text</label>
                                 <input type="text" wire:model.live="image_alt" placeholder="Students at seminar">
                                 @error('image_alt') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Image Alt Text (Japanese)</label>
+                                <input type="text" wire:model.live="image_alt_ja" placeholder="画像の代替テキスト（日本語）">
+                                @error('image_alt_ja') <small>{{ $message }}</small> @enderror
                             </div>
                             <div class="form-group full">
                                 <label>Meta Description</label>
                                 <textarea wire:model.live="meta_description" rows="2" placeholder="Optional SEO description"></textarea>
                                 @error('meta_description') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group full">
+                                <label>Meta Description (Japanese)</label>
+                                <textarea wire:model.live="meta_description_ja" rows="2" placeholder="日本語のメタディスクリプション"></textarea>
+                                @error('meta_description_ja') <small>{{ $message }}</small> @enderror
                             </div>
                         </div>
                     </div>

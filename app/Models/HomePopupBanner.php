@@ -9,6 +9,11 @@ class HomePopupBanner extends Model
 {
     protected $fillable = [
         'title',
+        'title_ja',
+        'subtitle',
+        'subtitle_ja',
+        'button_label',
+        'button_label_ja',
         'image_path',
         'link_url',
         'sort_order',

@@ -12,11 +12,13 @@ class GalleryImage extends Model
 
     protected $fillable = [
         'title',
+        'title_ja',
         'category',
         'media_type',
         'link_url',
         'image_path',
         'alt_text',
+        'alt_text_ja',
         'sort_order',
         'is_active',
     ];
