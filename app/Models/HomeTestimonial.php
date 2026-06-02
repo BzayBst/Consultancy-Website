@@ -14,11 +14,13 @@ class HomeTestimonial extends Model
         'section_subtitle',
         'section_subtitle_ja',
         'testimonials',
+        'testimonials_ja',
         'is_active',
     ];
 
     protected $casts = [
         'testimonials' => 'array',
+        'testimonials_ja' => 'array',
         'is_active' => 'boolean',
     ];
 }

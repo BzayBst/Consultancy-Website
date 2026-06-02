@@ -67,6 +67,7 @@ class HomeAbout extends Component
     // ── CTA ───────────────────────────────────────────────────────────────
     #[Validate('nullable|string|max:80')]
     public string $cta_label = '';
+    public string $cta_label_ja = '';
 
     #[Validate('nullable|string|max:255')]
     public string $cta_href = '';
@@ -101,7 +102,7 @@ class HomeAbout extends Component
         $this->badges = $b;
 
         $bja = is_array($r->badges_ja) ? $r->badges_ja : [];
-        while (count($bja) < 2) $bja[] = ['icon' => '', 'label' => ''];
+        while (count($bja) < count($this->badges)) $bja[] = ['icon' => '', 'label' => ''];
         $this->badges_ja = $bja;
 
         // Perks — ensure minimum 3 rows
@@ -110,7 +111,7 @@ class HomeAbout extends Component
         $this->perks = $p;
 
         $pja = is_array($r->perks_ja) ? $r->perks_ja : [];
-        while (count($pja) < 3) $pja[] = '';
+        while (count($pja) < count($this->perks)) $pja[] = '';
         $this->perks_ja = $pja;
     }
 
@@ -118,24 +119,30 @@ class HomeAbout extends Component
     public function addBadge(): void
     {
         $this->badges[] = ['icon' => '', 'label' => ''];
+        $this->badges_ja[] = ['icon' => '', 'label' => ''];
     }
 
     public function removeBadge(int $i): void
     {
         array_splice($this->badges, $i, 1);
+        array_splice($this->badges_ja, $i, 1);
         if (empty($this->badges)) $this->badges = [['icon' => '', 'label' => '']];
+        if (empty($this->badges_ja)) $this->badges_ja = [['icon' => '', 'label' => '']];
     }
 
     // ── Perk row helpers ──────────────────────────────────────────────────
     public function addPerk(): void
     {
         $this->perks[] = '';
+        $this->perks_ja[] = '';
     }
 
     public function removePerk(int $i): void
     {
         array_splice($this->perks, $i, 1);
+        array_splice($this->perks_ja, $i, 1);
         if (empty($this->perks)) $this->perks = [''];
+        if (empty($this->perks_ja)) $this->perks_ja = [''];
     }
 
     // ── Save ──────────────────────────────────────────────────────────────
@@ -161,6 +168,26 @@ class HomeAbout extends Component
             'cta_href'      => 'nullable|string|max:255',
         ]);
 
+        $badgesJa = collect($this->badges_ja)
+            ->map(function ($badge, $index) {
+                if (empty($badge['label'])) {
+                    return null;
+                }
+
+                return [
+                    'icon' => data_get($this->badges, "{$index}.icon", ''),
+                    'label' => $badge['label'],
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
+
+        $perksJa = collect($this->perks_ja)
+            ->filter(fn ($perk) => trim((string) $perk) !== '')
+            ->values()
+            ->all();
+
         $saved = $service->save([
             'image_alt'     => $this->image_alt,
             'image_alt_ja'  => $this->image_alt_ja,
@@ -176,9 +203,9 @@ class HomeAbout extends Component
             'paragraph_2'   => $this->paragraph_2,
             'paragraph_2_ja' => $this->paragraph_2_ja,
             'badges'        => $this->badges,
-            'badges_ja'     => $this->badges_ja,
+            'badges_ja'     => $badgesJa,
             'perks'         => $this->perks,
-            'perks_ja'      => $this->perks_ja,
+            'perks_ja'      => $perksJa,
             'cta_label'     => $this->cta_label,
             'cta_label_ja'  => $this->cta_label_ja,
             'cta_href'      => $this->cta_href,

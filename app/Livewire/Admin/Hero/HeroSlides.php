@@ -179,6 +179,21 @@ class HeroSlides extends Component
     {
         $this->validate();
 
+        $featuresJa = collect($this->features_ja)
+            ->map(function ($feature, $index) {
+                if (empty($feature['label'])) {
+                    return null;
+                }
+
+                return [
+                    'icon' => $feature['icon'] ?: data_get($this->features, "{$index}.icon", ''),
+                    'label' => $feature['label'],
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
+
         // Resolve image — upload takes priority over URL
         $imagePath = null;
         $imageFile = $this->image_upload;
@@ -211,7 +226,7 @@ class HeroSlides extends Component
             'image_alt_ja'      => $this->image_alt_ja ?: null,
             'plane_emoji'       => $this->plane_emoji,
             'is_active'         => $this->is_active,
-            'features_ja'       => array_values(array_filter($this->features_ja, fn ($f) => ! empty($f['label']))),
+            'features_ja'       => $featuresJa,
         ];
 
         // Only set image_path from URL if no file upload

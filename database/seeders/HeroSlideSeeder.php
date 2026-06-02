@@ -46,6 +46,12 @@ class HeroSlideSeeder extends Seeder
                     ['icon' => '🛂', 'label' => 'Visa Processing'],
                     ['icon' => '🏫', 'label' => 'Partner Schools'],
                 ],
+                'features_ja'        => [
+                    ['icon' => '🇯🇵', 'label' => '日本留学入学サポート'],
+                    ['icon' => '📝', 'label' => 'NAT・JLPT対策'],
+                    ['icon' => '🛂', 'label' => 'ビザ申請サポート'],
+                    ['icon' => '🏫', 'label' => '提携校'],
+                ],
                 'btn_primary_label'  => 'Study in Japan',
                 'btn_primary_href'   => '#study-abroad',
                 'btn_ghost_label'    => 'Language Courses',

@@ -8,6 +8,8 @@
 
 @php
     $r = \App\Models\HomeAbout::first();
+    $badges = localized($r, 'badges') ?: $r?->badges;
+    $perks = localized($r, 'perks') ?: $r?->perks;
 @endphp
 
 @if ($r)
@@ -44,9 +46,9 @@
         @endif
 
         {{-- Badges --}}
-        @if (!empty($r->badges))
+        @if (!empty($badges))
         <div class="about-badges">
-          @foreach ($r->badges as $badge)
+          @foreach ($badges as $badge)
             @if (!empty($badge['label']))
             <div class="about-badge">
               <div class="icon">{{ $badge['icon'] ?? '' }}</div>
@@ -58,9 +60,9 @@
         @endif
 
         {{-- Perks --}}
-        @if (!empty($r->perks))
+        @if (!empty($perks))
         <ul class="about-perks">
-          @foreach ($r->perks as $perk)
+          @foreach ($perks as $perk)
             @if (trim($perk) !== '')
               <li>{{ $perk }}</li>
             @endif
@@ -77,7 +79,7 @@
               @if(setting('contact_phone_primary'))  | {{ setting('contact_phone_primary') }}  @endif
               @if(setting('contact_phone_secondary')) | {{ setting('contact_phone_secondary') }} @endif
             </strong>
-            <span>Have any questions? Call us anytime</span>
+            <span>{{ app()->getLocale() === 'ja' ? 'ご質問がございましたら、いつでもお電話ください' : 'Have any questions? Call us anytime' }}</span>
           </div>
         </div>
 

@@ -27,6 +27,19 @@ class HomeTestimonialService
                 ->all();
         }
 
+        if (isset($data['testimonials_ja'])) {
+            $data['testimonials_ja'] = collect($data['testimonials_ja'])
+                ->map(fn ($testimonial) => [
+                    'quote' => trim($testimonial['quote'] ?? ''),
+                    'name' => trim($testimonial['name'] ?? ''),
+                    'role' => trim($testimonial['role'] ?? ''),
+                    'avatar' => trim($testimonial['avatar'] ?? ''),
+                    'rating' => max(1, min(5, (int) ($testimonial['rating'] ?? 5))),
+                ])
+                ->values()
+                ->all();
+        }
+
         $record = HomeTestimonial::firstOrNew(['id' => 1]);
         $record->fill($data)->save();
 

@@ -211,6 +211,22 @@
 
 {{-- ===== TESTIMONIALS SLIDER ===== --}}
 @if($homeTestimonials?->is_active && ! empty($homeTestimonials->testimonials))
+@php
+  $testimonialsToShow = $homeTestimonials->testimonials;
+  if (app()->getLocale() !== 'en' && is_array($homeTestimonials->testimonials_ja) && count($homeTestimonials->testimonials_ja)) {
+      $testimonialsToShow = collect($homeTestimonials->testimonials)->map(function ($testimonial, $index) use ($homeTestimonials) {
+          $testimonialJa = $homeTestimonials->testimonials_ja[$index] ?? [];
+
+          return [
+              'quote' => filled($testimonialJa['quote'] ?? '') ? $testimonialJa['quote'] : ($testimonial['quote'] ?? ''),
+              'name' => filled($testimonialJa['name'] ?? '') ? $testimonialJa['name'] : ($testimonial['name'] ?? ''),
+              'role' => filled($testimonialJa['role'] ?? '') ? $testimonialJa['role'] : ($testimonial['role'] ?? ''),
+              'avatar' => $testimonial['avatar'] ?? '',
+              'rating' => $testimonial['rating'] ?? 5,
+          ];
+      })->all();
+  }
+@endphp
 <section id="testimonials" class="section testimonials-slider-section">
   <div class="container">
     <div class="section-head test-head fade-up">
@@ -223,7 +239,7 @@
     <div class="test-slider fade-up">
       <div class="test-slider-viewport">
         <div class="test-slider-track" id="testSliderTrack">
-          @foreach($homeTestimonials->testimonials as $t)
+          @foreach($testimonialsToShow as $t)
           <div class="test-slide {{ $loop->first ? 'active' : '' }}">
             <div class="test-card">
               <div class="stars">{{ str_repeat('*', (int)($t['rating'] ?? 5)) }}</div>
@@ -245,7 +261,7 @@
       <div class="test-slider-controls">
         <button type="button" class="test-arrow test-prev" id="testPrev" aria-label="Previous testimonial">←</button>
         <div class="test-dots" id="testDots">
-          @foreach($homeTestimonials->testimonials as $t)
+          @foreach($testimonialsToShow as $t)
             <button type="button" class="test-dot {{ $loop->first ? 'active' : '' }}"
                     data-slide="{{ $loop->index }}" aria-label="Testimonial {{ $loop->iteration }}"></button>
           @endforeach

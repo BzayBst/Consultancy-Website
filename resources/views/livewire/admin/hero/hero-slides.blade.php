@@ -230,8 +230,12 @@
                             <div class="feat-row">
                                 <input type="text" wire:model="features.{{ $i }}.icon"
                                        class="feat-icon-input" placeholder="🎓" maxlength="10">
-                                <input type="text" wire:model="features.{{ $i }}.label"
-                                       class="feat-label-input" placeholder="Study Abroad Guidance">
+                                <div class="feat-label-group">
+                                    <input type="text" wire:model="features.{{ $i }}.label"
+                                           class="feat-label-input" placeholder="Study Abroad Guidance">
+                                    <input type="text" wire:model="features_ja.{{ $i }}.label"
+                                           class="feat-label-input" placeholder="留学サポート">
+                                </div>
                                 <button type="button" wire:click="removeFeature({{ $i }})"
                                         class="feat-remove">✕</button>
                             </div>
@@ -248,12 +252,20 @@
                                 <input type="text" wire:model="btn_primary_label" placeholder="Get Started">
                             </div>
                             <div class="form-group">
+                                <label>Primary Button Label (Japanese)</label>
+                                <input type="text" wire:model="btn_primary_label_ja" placeholder="今すぐ始める">
+                            </div>
+                            <div class="form-group">
                                 <label>Primary Button Link</label>
                                 <input type="text" wire:model="btn_primary_href" placeholder="#about">
                             </div>
                             <div class="form-group">
                                 <label>Ghost Button Label</label>
                                 <input type="text" wire:model="btn_ghost_label" placeholder="Our Services">
+                            </div>
+                            <div class="form-group">
+                                <label>Ghost Button Label (Japanese)</label>
+                                <input type="text" wire:model="btn_ghost_label_ja" placeholder="サービスを見る">
                             </div>
                             <div class="form-group">
                                 <label>Ghost Button Link</label>
@@ -603,6 +615,7 @@ function initSortable() {
 .features-grid { display: flex; flex-direction: column; gap: 8px; }
 .feat-row { display: flex; gap: 8px; align-items: center; }
 .feat-icon-input { width: 64px !important; text-align: center; flex-shrink: 0; }
+.feat-label-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; min-width: 0; }
 .feat-label-input { flex: 1; }
 .feat-remove {
     background: #fee2e2; color: var(--red); border: none;
@@ -610,6 +623,10 @@ function initSortable() {
     cursor: pointer; font-size: 12px; flex-shrink: 0; transition: all .2s;
 }
 .feat-remove:hover { background: var(--red); color: #fff; }
+
+@media (max-width: 640px) {
+    .feat-label-group { grid-template-columns: 1fr; }
+}
 
 /* ── Upload ── */
 .upload-box {

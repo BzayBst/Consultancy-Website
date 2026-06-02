@@ -233,22 +233,14 @@
                     <input type="text"
                            wire:model.live="badges.{{ $i }}.icon"
                            class="badge-icon-input" placeholder="🏅" maxlength="10">
-                    <input type="text"
-                           wire:model.live="badges.{{ $i }}.label"
-                           class="badge-label-input" placeholder="Best Immigration Resources">
-                    <button type="button" wire:click="removeBadge({{ $i }})" class="row-remove">✕</button>
-                </div>
-                @endforeach
-                <hr style="margin:12px 0">
-                <div style="margin-top:8px; font-weight:700; color:#334155;">Japanese labels</div>
-                @foreach ($badges_ja as $i => $badgeja)
-                <div class="badge-row">
-                    <input type="text"
-                           wire:model.live="badges_ja.{{ $i }}.icon"
-                           class="badge-icon-input" placeholder="🏅" maxlength="10">
-                    <input type="text"
-                           wire:model.live="badges_ja.{{ $i }}.label"
-                           class="badge-label-input" placeholder="最高の移民リソース">
+                    <div class="badge-label-group">
+                        <input type="text"
+                               wire:model.live="badges.{{ $i }}.label"
+                               class="badge-label-input" placeholder="Best Immigration Resources">
+                        <input type="text"
+                               wire:model.live="badges_ja.{{ $i }}.label"
+                               class="badge-label-input" placeholder="最高の移民リソース">
+                    </div>
                     <button type="button" wire:click="removeBadge({{ $i }})" class="row-remove">✕</button>
                 </div>
                 @endforeach
@@ -268,20 +260,14 @@
                 @foreach ($perks as $i => $perk)
                 <div class="perk-row">
                     <span class="perk-check">✓</span>
-                    <input type="text"
-                           wire:model.live="perks.{{ $i }}"
-                           placeholder="Offer 100% Genuine Assistance">
-                    <button type="button" wire:click="removePerk({{ $i }})" class="row-remove">✕</button>
-                </div>
-                @endforeach
-                <hr style="margin:12px 0">
-                <div style="margin-top:8px; font-weight:700; color:#334155;">Japanese perks</div>
-                @foreach ($perks_ja as $i => $perkja)
-                <div class="perk-row">
-                    <span class="perk-check">✓</span>
-                    <input type="text"
-                           wire:model.live="perks_ja.{{ $i }}"
-                           placeholder="100%本物の支援を提供します">
+                    <div class="perk-label-group">
+                        <input type="text"
+                               wire:model.live="perks.{{ $i }}"
+                               placeholder="Offer 100% Genuine Assistance">
+                        <input type="text"
+                               wire:model.live="perks_ja.{{ $i }}"
+                               placeholder="100%本物のサポートを提供します">
+                    </div>
                     <button type="button" wire:click="removePerk({{ $i }})" class="row-remove">✕</button>
                 </div>
                 @endforeach
@@ -408,6 +394,7 @@
 /* ── Badge rows ── */
 .badge-row { display:flex; gap:10px; align-items:center; margin-bottom:10px; }
 .badge-icon-input  { width:70px !important; text-align:center; font-size:18px; flex-shrink:0; }
+.badge-label-group { display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1; min-width:0; }
 .badge-label-input { flex:1; }
 .row-remove { background:#fee2e2; color:var(--red); border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:13px; flex-shrink:0; transition:all .2s; display:flex; align-items:center; justify-content:center; }
 .row-remove:hover { background:var(--red); color:#fff; }
@@ -415,7 +402,13 @@
 /* ── Perk rows ── */
 .perk-row { display:flex; gap:10px; align-items:center; margin-bottom:10px; }
 .perk-check { color:var(--red); font-weight:700; font-size:16px; flex-shrink:0; }
-.perk-row input { flex:1; }
+.perk-label-group { display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1; min-width:0; }
+.perk-row input { min-width:0; }
+
+@media (max-width: 700px) {
+    .badge-label-group,
+    .perk-label-group { grid-template-columns:1fr; }
+}
 
 @media(max-width:768px){
     .ha-wrap  { padding:16px; }
