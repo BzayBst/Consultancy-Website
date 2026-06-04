@@ -286,7 +286,7 @@
             @if ($s['is_active'])
             <div class="sp-item">
                 <span class="sp-num">{{ $s['number'] }}<span class="sp-accent">{{ $s['accent'] }}</span></span>
-                <span class="sp-label">{{ $s['label'] }}</span>
+                <span class="sp-label">{{ app()->getLocale() === 'ja' && ($s['label_ja'] ?? '') ? $s['label_ja'] : $s['label'] }}</span>
             </div>
             @endif
             @endforeach
@@ -350,8 +350,8 @@
                 <div class="ab-drag">⠿</div>
                 <div class="ab-mv-icon">{{ $c['icon'] }}</div>
                 <div class="ab-list-content">
-                    <strong>{{ $c['title'] }}</strong>
-                    <span>{{ Str::limit($c['body'], 70) }}</span>
+                    <strong>{{ localized($c, 'title') }}</strong>
+                    <span>{{ Str::limit(localized($c, 'body'), 70) }}</span>
                 </div>
                 <div class="ab-list-actions">
                     <button type="button" wire:click="toggleMv({{ $c['id'] }})"
@@ -394,8 +394,18 @@
                         @error('ms_title') <span class="fe">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group">
+                        <label>Title (Japanese)</label>
+                        <input type="text" wire:model="ms_title_ja" placeholder="創業の物語">
+                        @error('ms_title_ja') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group">
                         <label>Description</label>
                         <textarea wire:model="ms_desc" rows="3" placeholder="Brief description of this milestone..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Description (Japanese)</label>
+                        <textarea wire:model="ms_desc_ja" rows="3" placeholder="このマイルストーンの簡単な説明..."></textarea>
+                        @error('ms_desc_ja') <span class="fe">{{ $message }}</span> @enderror
                     </div>
                 </form>
             </div>
@@ -448,6 +458,11 @@
                         <input type="text" wire:model.live="st_label" placeholder="Years of Experience">
                         @error('st_label') <span class="fe">{{ $message }}</span> @enderror
                     </div>
+                    <div class="form-group">
+                        <label>Label (Japanese)</label>
+                        <input type="text" wire:model.live="st_label_ja" placeholder="経験年数">
+                        @error('st_label_ja') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
                 </form>
             </div>
             <div class="modal-foot">
@@ -494,11 +509,22 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label>Card Title (Japanese)</label>
+                        <input type="text" wire:model.live="mv_title_ja" placeholder="私たちの使命">
+                        @error('mv_title_ja') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group">
                         <label>Body Text <span class="req">*</span></label>
                         <textarea wire:model.live="mv_body" rows="4"
                                   placeholder="To empower Nepali students with genuine, expert guidance..."></textarea>
                         <div class="char-count">{{ strlen($mv_body) }} / 600</div>
                         @error('mv_body') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group">
+                        <label>Body Text (Japanese)</label>
+                        <textarea wire:model.live="mv_body_ja" rows="4" placeholder="学生を支援するための本物のガイダンス..."></textarea>
+                        <div class="char-count">{{ strlen($mv_body_ja) }} / 600</div>
+                        @error('mv_body_ja') <span class="fe">{{ $message }}</span> @enderror
                     </div>
                 </form>
             </div>

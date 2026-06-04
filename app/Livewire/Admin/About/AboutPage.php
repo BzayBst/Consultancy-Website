@@ -75,7 +75,11 @@ class AboutPage extends Component
 
     public string $ms_title = '';
 
+    public string $ms_title_ja = '';
+
     public string $ms_desc = '';
+
+    public string $ms_desc_ja = '';
 
     // ─────────────────────────────────────────────────────────────────────
     // TAB 3 — STATS
@@ -96,6 +100,8 @@ class AboutPage extends Component
 
     public string $st_label = '';
 
+    public string $st_label_ja = '';
+
     // ─────────────────────────────────────────────────────────────────────
     // TAB 4 — MISSION / VISION / PURPOSE
     // ─────────────────────────────────────────────────────────────────────
@@ -113,7 +119,11 @@ class AboutPage extends Component
 
     public string $mv_title = '';
 
+    public string $mv_title_ja = '';
+
     public string $mv_body = '';
+
+    public string $mv_body_ja = '';
 
     // ── Rules ──────────────────────────────────────────────────────────────
     protected function rules(): array
@@ -302,7 +312,9 @@ class AboutPage extends Component
         $this->editingMilestoneId = $id;
         $this->ms_year = $m->year;
         $this->ms_title = $m->title;
+        $this->ms_title_ja = $m->title_ja ?? '';
         $this->ms_desc = $m->description ?? '';
+        $this->ms_desc_ja = $m->description_ja ?? '';
         $this->showMilestoneModal = true;
     }
 
@@ -311,13 +323,17 @@ class AboutPage extends Component
         $this->validate([
             'ms_year' => 'required|string|max:10',
             'ms_title' => 'required|string|max:150',
+            'ms_title_ja' => 'nullable|string|max:150',
             'ms_desc' => 'nullable|string|max:500',
+            'ms_desc_ja' => 'nullable|string|max:500',
         ]);
 
         $data = [
             'year' => $this->ms_year,
             'title' => $this->ms_title,
+            'title_ja' => $this->ms_title_ja,
             'description' => $this->ms_desc,
+            'description_ja' => $this->ms_desc_ja,
         ];
 
         if ($this->editingMilestoneId) {
@@ -372,8 +388,8 @@ class AboutPage extends Component
     private function resetMilestoneForm(): void
     {
         $this->editingMilestoneId = null;
-        $this->ms_year = $this->ms_title = $this->ms_desc = '';
-        $this->resetValidation(['ms_year', 'ms_title', 'ms_desc']);
+        $this->ms_year = $this->ms_title = $this->ms_title_ja = $this->ms_desc = $this->ms_desc_ja = '';
+        $this->resetValidation(['ms_year', 'ms_title', 'ms_desc', 'ms_title_ja', 'ms_desc_ja']);
     }
 
     // ══════════════════════════════════════════════════════════════════════
@@ -393,6 +409,7 @@ class AboutPage extends Component
         $this->st_number = $s->number;
         $this->st_accent = $s->accent;
         $this->st_label = $s->label;
+        $this->st_label_ja = $s->label_ja ?? '';
         $this->showStatModal = true;
     }
 
@@ -408,6 +425,7 @@ class AboutPage extends Component
             'number' => $this->st_number,
             'accent' => $this->st_accent,
             'label' => $this->st_label,
+            'label_ja' => $this->st_label_ja,
         ];
 
         if ($this->editingStatId) {
@@ -465,7 +483,8 @@ class AboutPage extends Component
         $this->st_number = '';
         $this->st_accent = '+';
         $this->st_label = '';
-        $this->resetValidation(['st_number', 'st_accent', 'st_label']);
+        $this->st_label_ja = '';
+        $this->resetValidation(['st_number', 'st_accent', 'st_label', 'st_label_ja']);
     }
 
     // ══════════════════════════════════════════════════════════════════════
@@ -484,7 +503,9 @@ class AboutPage extends Component
         $this->editingMvId = $id;
         $this->mv_icon = $c->icon;
         $this->mv_title = $c->title;
+        $this->mv_title_ja = $c->title_ja ?? '';
         $this->mv_body = $c->body;
+        $this->mv_body_ja = $c->body_ja ?? '';
         $this->showMvModal = true;
     }
 
@@ -493,13 +514,17 @@ class AboutPage extends Component
         $this->validate([
             'mv_icon' => 'required|string|max:10',
             'mv_title' => 'required|string|max:100',
+            'mv_title_ja' => 'nullable|string|max:100',
             'mv_body' => 'required|string|max:600',
+            'mv_body_ja' => 'nullable|string|max:600',
         ]);
 
         $data = [
             'icon' => $this->mv_icon,
             'title' => $this->mv_title,
+            'title_ja' => $this->mv_title_ja,
             'body' => $this->mv_body,
+            'body_ja' => $this->mv_body_ja,
         ];
 
         if ($this->editingMvId) {
@@ -554,8 +579,8 @@ class AboutPage extends Component
     private function resetMvForm(): void
     {
         $this->editingMvId = null;
-        $this->mv_icon = $this->mv_title = $this->mv_body = '';
-        $this->resetValidation(['mv_icon', 'mv_title', 'mv_body']);
+        $this->mv_icon = $this->mv_title = $this->mv_title_ja = $this->mv_body = $this->mv_body_ja = '';
+        $this->resetValidation(['mv_icon', 'mv_title', 'mv_body', 'mv_title_ja', 'mv_body_ja']);
     }
 
     public function render(): View

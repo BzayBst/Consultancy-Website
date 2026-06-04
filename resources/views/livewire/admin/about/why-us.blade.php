@@ -52,8 +52,8 @@
                 @foreach (array_slice(array_filter($features, fn($f) => $f['is_active']), 0, 4) as $f)
                 <div class="sp-feat-card">
                     <span class="sp-feat-icon">{{ $f['icon'] }}</span>
-                    <strong>{{ $f['title'] }}</strong>
-                    <p>{{ Str::limit($f['description'] ?? '', 60) }}</p>
+                    <strong>{{ localized($f, 'title') }}</strong>
+                    <p>{{ Str::limit(localized($f, 'description'), 60) }}</p>
                 </div>
                 @endforeach
             </div>
@@ -89,16 +89,34 @@
                     @error('section_label') <span class="fe">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group">
+                    <label>Section Label (Japanese)</label>
+                    <input type="text" wire:model.live="section_label_ja"
+                           placeholder="HASUを選ぶ理由">
+                    @error('section_label_ja') <span class="fe">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group">
                     <label>Title <span class="req">*</span></label>
                     <input type="text" wire:model.live="title"
                            placeholder="Reasons Students Trust Us">
                     @error('title') <span class="fe">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group">
+                    <label>Title (Japanese)</label>
+                    <input type="text" wire:model.live="title_ja"
+                           placeholder="学生が信頼する理由">
+                    @error('title_ja') <span class="fe">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group wu-full">
                     <label>Description</label>
                     <textarea wire:model.live="description" rows="3"
                               placeholder="With over a decade of experience and thousands of successful placements..."></textarea>
                     @error('description') <span class="fe">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group wu-full">
+                    <label>Description (Japanese)</label>
+                    <textarea wire:model.live="description_ja" rows="3"
+                              placeholder="10年以上の経験と数千の成功した配置..."></textarea>
+                    @error('description_ja') <span class="fe">{{ $message }}</span> @enderror
                 </div>
             </div>
         </div>
@@ -148,18 +166,25 @@
                         <span class="bpm-label">{{ $badge_label ?: 'Visa Success Rate' }}</span>
                     </div>
 
-                    <div class="wu-grid-2">
-                        <div class="form-group">
-                            <label>Badge Number / Text</label>
-                            <input type="text" wire:model.live="badge_number" placeholder="98%">
-                            @error('badge_number') <span class="fe">{{ $message }}</span> @enderror
+                        <div class="wu-grid-2">
+                            <div class="form-group">
+                                <label>Badge Number / Text</label>
+                                <input type="text" wire:model.live="badge_number" placeholder="98%">
+                                @error('badge_number') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Badge Label</label>
+                                <input type="text" wire:model.live="badge_label" placeholder="Visa Success Rate">
+                                @error('badge_label') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Badge Label</label>
-                            <input type="text" wire:model.live="badge_label" placeholder="Visa Success Rate">
-                            @error('badge_label') <span class="fe">{{ $message }}</span> @enderror
+                        <div class="wu-grid-2">
+                            <div class="form-group">
+                                <label>Badge Label (Japanese)</label>
+                                <input type="text" wire:model.live="badge_label_ja" placeholder="ビザ成功率">
+                                @error('badge_label_ja') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
                         </div>
-                    </div>
                 </div>
 
             </div>
@@ -184,8 +209,8 @@
         @foreach (array_filter($features, fn($f) => $f['is_active']) as $f)
         <div class="fpg-card">
             <span class="fpg-icon">{{ $f['icon'] }}</span>
-            <strong>{{ $f['title'] }}</strong>
-            <p>{{ Str::limit($f['description'] ?? '', 70) }}</p>
+            <strong>{{ localized($f, 'title') }}</strong>
+            <p>{{ Str::limit(localized($f, 'description'), 70) }}</p>
         </div>
         @endforeach
         @if (empty(array_filter($features, fn($f) => $f['is_active'])))
@@ -213,8 +238,8 @@
                 <div class="wu-feat-icon-display">{{ $f['icon'] }}</div>
 
                 <div class="wu-list-content">
-                    <strong>{{ $f['title'] }}</strong>
-                    <span>{{ Str::limit($f['description'] ?? '', 80) }}</span>
+                    <strong>{{ localized($f, 'title') }}</strong>
+                    <span>{{ Str::limit(localized($f, 'description'), 80) }}</span>
                 </div>
 
                 <div class="wu-list-actions">
@@ -283,6 +308,12 @@
                             @error('f_title') <span class="fe">{{ $message }}</span> @enderror
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Feature Title (Japanese)</label>
+                        <input type="text" wire:model.live="f_title_ja"
+                               placeholder="100%本当のサポート">
+                        @error('f_title_ja') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
                     <div class="form-group" style="margin-top:14px">
                         <label>Description</label>
                         <textarea wire:model.live="f_desc" rows="3"
@@ -290,6 +321,14 @@
                                   maxlength="400"></textarea>
                         <div class="char-count">{{ strlen($f_desc) }} / 400</div>
                         @error('f_desc') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group">
+                        <label>Description (Japanese)</label>
+                        <textarea wire:model.live="f_desc_ja" rows="3"
+                                  placeholder="虚偽の約束なし。私たちが与えるすべてのアドバイスは誠実で検証済みです。"
+                                  maxlength="400"></textarea>
+                        <div class="char-count">{{ strlen($f_desc_ja) }} / 400</div>
+                        @error('f_desc_ja') <span class="fe">{{ $message }}</span> @enderror
                     </div>
                 </form>
             </div>

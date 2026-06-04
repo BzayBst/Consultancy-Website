@@ -78,6 +78,28 @@
                     <div class="char-count">{{ strlen($section_subtitle) }} / 400</div>
                     @error('section_subtitle') <span class="fe">{{ $message }}</span> @enderror
                 </div>
+
+                {{-- Japanese translations --}}
+                <div class="form-group">
+                    <label>Section Label (日本語)</label>
+                    <input type="text" wire:model.live="section_label_ja"
+                           placeholder="コアバリュー">
+                    @error('section_label_ja') <span class="fe">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group">
+                    <label>Section Title (日本語)</label>
+                    <input type="text" wire:model.live="section_title_ja"
+                           placeholder="私たちの原則">
+                    @error('section_title_ja') <span class="fe">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group cv-full">
+                    <label>Subtitle / Description (日本語)</label>
+                    <textarea wire:model.live="section_subtitle_ja" rows="2"
+                              placeholder="私たちの価値観は単なる言葉ではなく、すべての意思決定に影響します。"
+                              maxlength="400"></textarea>
+                    <div class="char-count">{{ strlen($section_subtitle_ja) }} / 400</div>
+                    @error('section_subtitle_ja') <span class="fe">{{ $message }}</span> @enderror
+                </div>
             </div>
         </div>
         <div class="cv-actions">
@@ -213,6 +235,13 @@
                                    placeholder="Transparency">
                             @error('v_title') <span class="fe">{{ $message }}</span> @enderror
                         </div>
+
+                        <div class="form-group">
+                            <label>Value Title (日本語)</label>
+                            <input type="text" wire:model.live="v_title_ja"
+                                   placeholder="透明性">
+                            @error('v_title_ja') <span class="fe">{{ $message }}</span> @enderror
+                        </div>
                     </div>
                     <div class="form-group" style="margin-top:14px">
                         <label>Description</label>
@@ -221,6 +250,15 @@
                                   maxlength="500"></textarea>
                         <div class="char-count">{{ strlen($v_desc) }} / 500</div>
                         @error('v_desc') <span class="fe">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="form-group" style="margin-top:14px">
+                        <label>Description (日本語)</label>
+                        <textarea wire:model.live="v_desc_ja" rows="3"
+                                  placeholder="私たちは正直なスケジュールと現実的な期待を共有します。"
+                                  maxlength="500"></textarea>
+                        <div class="char-count">{{ strlen($v_desc_ja) }} / 500</div>
+                        @error('v_desc_ja') <span class="fe">{{ $message }}</span> @enderror
                     </div>
                 </form>
             </div>

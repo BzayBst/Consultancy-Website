@@ -8,7 +8,7 @@ class CoreValue extends Model
 {
     protected $table = 'core_values';
 
-    protected $fillable = ['icon', 'title', 'description', 'sort_order', 'is_active'];
+    protected $fillable = ['icon', 'title', 'description', 'title_ja', 'description_ja', 'sort_order', 'is_active'];
 
     protected $casts = ['is_active' => 'boolean', 'sort_order' => 'integer'];
 

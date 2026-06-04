@@ -67,7 +67,7 @@
         @if ($section?->badge_number)
         <div class="why-img-badge">
           <strong>{{ $section->badge_number }}</strong>
-          <span>{{ $section?->badge_label ?? '' }}</span>
+          <span>{{ localized($section, 'badge_label') ?? '' }}</span>
         </div>
         @endif
 

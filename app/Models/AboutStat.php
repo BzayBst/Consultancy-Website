@@ -8,9 +8,18 @@ class AboutStat extends Model
 {
     protected $table = 'about_stats';
 
-    protected $fillable = ['number', 'accent', 'label', 'sort_order', 'is_active'];
+    protected $fillable = ['number', 'accent', 'label', 'label_ja', 'sort_order', 'is_active'];
 
     protected $casts = ['is_active' => 'boolean', 'sort_order' => 'integer'];
+
+    public function getLabelForLocaleAttribute()
+    {
+        if (app()->getLocale() === 'ja' && $this->label_ja) {
+            return $this->label_ja;
+        }
+
+        return $this->label;
+    }
 
     public function scopeActive($q)
     {

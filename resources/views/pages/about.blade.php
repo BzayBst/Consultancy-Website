@@ -93,7 +93,7 @@
       @foreach($aboutStats as $i => $stat)
       <div class="stat-item fade-up" @if($i > 0) style="transition-delay:{{ round($i * 0.1, 2) }}s" @endif>
         <span class="stat-num">{{ $stat->number }}<span class="accent">{{ $stat->accent }}</span></span>
-        <span class="stat-label">{{ $stat->label }}</span>
+        <span class="stat-label">{{ localized($stat, 'label') }}</span>
       </div>
       @endforeach
     </div>

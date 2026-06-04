@@ -22,11 +22,20 @@ class WhyUs extends Component
     #[Validate('required|string|max:100')]
     public string $section_label = '';
 
+    #[Validate('nullable|string|max:100')]
+    public string $section_label_ja = '';
+
     #[Validate('required|string|max:200')]
     public string $title = '';
 
+    #[Validate('nullable|string|max:200')]
+    public string $title_ja = '';
+
     #[Validate('nullable|string|max:500')]
     public string $description = '';
+
+    #[Validate('nullable|string|max:500')]
+    public string $description_ja = '';
 
     #[Validate('nullable|string|max:150')]
     public string $image_alt = '';
@@ -36,6 +45,9 @@ class WhyUs extends Component
 
     #[Validate('nullable|string|max:80')]
     public string $badge_label = '';
+
+    #[Validate('nullable|string|max:80')]
+    public string $badge_label_ja = '';
 
     #[Validate('nullable|image|mimes:jpg,jpeg,png,webp|max:3072')]
     public $image_upload = null;
@@ -56,8 +68,14 @@ class WhyUs extends Component
     #[Validate('required|string|max:100')]
     public string $f_title = '';
 
+    #[Validate('nullable|string|max:100')]
+    public string $f_title_ja = '';
+
     #[Validate('nullable|string|max:400')]
     public string $f_desc = '';
+
+    #[Validate('nullable|string|max:400')]
+    public string $f_desc_ja = '';
 
     // ── Mount ─────────────────────────────────────────────────────────────
     public function mount(WhyUsService $service): void
@@ -70,11 +88,15 @@ class WhyUs extends Component
     {
         $s = $service->getSection();
         $this->section_label = $s?->section_label ?? 'Why Choose HASU';
+        $this->section_label_ja = $s?->section_label_ja ?? '';
         $this->title         = $s?->title         ?? 'Reasons Students Trust Us';
+        $this->title_ja      = $s?->title_ja      ?? '';
         $this->description   = $s?->description   ?? '';
+        $this->description_ja = $s?->description_ja ?? '';
         $this->image_alt     = $s?->image_alt     ?? '';
         $this->badge_number  = $s?->badge_number  ?? '98%';
         $this->badge_label   = $s?->badge_label   ?? 'Visa Success Rate';
+        $this->badge_label_ja = $s?->badge_label_ja ?? '';
         $this->image_current = $s?->image_path    ?? null;
     }
 
@@ -90,21 +112,29 @@ class WhyUs extends Component
         // Validate only the section fields — call validateOnly once per field
         $this->validate([
             'section_label' => 'required|string|max:100',
+            'section_label_ja' => 'nullable|string|max:100',
             'title'         => 'required|string|max:200',
+            'title_ja'      => 'nullable|string|max:200',
             'description'   => 'nullable|string|max:500',
+            'description_ja' => 'nullable|string|max:500',
             'image_alt'     => 'nullable|string|max:150',
             'badge_number'  => 'nullable|string|max:20',
             'badge_label'   => 'nullable|string|max:80',
+            'badge_label_ja' => 'nullable|string|max:80',
             'image_upload'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
         ]);
 
         $saved = $service->saveSection([
             'section_label' => $this->section_label,
+            'section_label_ja' => $this->section_label_ja,
             'title'         => $this->title,
+            'title_ja'      => $this->title_ja,
             'description'   => $this->description,
+            'description_ja' => $this->description_ja,
             'image_alt'     => $this->image_alt,
             'badge_number'  => $this->badge_number,
             'badge_label'   => $this->badge_label,
+            'badge_label_ja' => $this->badge_label_ja,
         ], $this->image_upload);
 
         $this->image_current = $saved->image_path;
@@ -128,7 +158,9 @@ class WhyUs extends Component
         $this->editingFeatureId = $id;
         $this->f_icon  = $f->icon;
         $this->f_title = $f->title;
+        $this->f_title_ja = $f->title_ja ?? '';
         $this->f_desc  = $f->description ?? '';
+        $this->f_desc_ja = $f->description_ja ?? '';
         $this->showFeatureModal = true;
     }
 
@@ -138,13 +170,17 @@ class WhyUs extends Component
         $this->validate([
             'f_icon'  => 'required|string|max:10',
             'f_title' => 'required|string|max:100',
+            'f_title_ja' => 'nullable|string|max:100',
             'f_desc'  => 'nullable|string|max:400',
+            'f_desc_ja' => 'nullable|string|max:400',
         ]);
 
         $data = [
             'icon'        => $this->f_icon,
             'title'       => $this->f_title,
+            'title_ja'    => $this->f_title_ja,
             'description' => $this->f_desc,
+            'description_ja' => $this->f_desc_ja,
         ];
 
         $wasEditing = $this->editingFeatureId;
@@ -195,9 +231,11 @@ class WhyUs extends Component
     {
         $this->f_icon  = '';
         $this->f_title = '';
+        $this->f_title_ja = '';
         $this->f_desc  = '';
+        $this->f_desc_ja = '';
         $this->editingFeatureId = null;
-        $this->resetErrorBag(); // Livewire 3 — clears all validation errors
+        $this->resetErrorBag();
     }
 
     public function render(): \Illuminate\View\View

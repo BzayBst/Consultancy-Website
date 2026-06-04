@@ -8,7 +8,7 @@ class AboutMvCard extends Model
 {
     protected $table = 'about_mv_cards';
 
-    protected $fillable = ['icon', 'title', 'body', 'sort_order', 'is_active'];
+    protected $fillable = ['icon', 'title', 'title_ja', 'body', 'body_ja', 'sort_order', 'is_active'];
 
     protected $casts = ['is_active' => 'boolean', 'sort_order' => 'integer'];
 
