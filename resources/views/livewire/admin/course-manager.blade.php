@@ -25,6 +25,12 @@
 
     @if($activeTab === 'page')
     <form wire:submit="savePage">
+        <div class="destination-subtabs">
+            @foreach(['hero' => 'Hero Banner', 'intro' => 'Intro & Catalog', 'stats' => 'Stats', 'why' => 'Why Choose', 'cta' => 'CTA'] as $tab => $label)
+                <button type="button" wire:click="setPageTab('{{ $tab }}')" class="destination-subtab {{ $pageTab === $tab ? 'active' : '' }}">{{ $label }}</button>
+            @endforeach
+        </div>
+        @if($pageTab === 'hero')
         <div class="sa-card">
             <div class="sa-card-header">
                 <h2>Hero Banner</h2>
@@ -42,9 +48,19 @@
                     @error('hero_badge') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group">
+                    <label>Badge (Japanese)</label>
+                    <input type="text" wire:model.live="hero_badge_ja" placeholder="日本語">
+                    @error('hero_badge_ja') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group">
                     <label>Highlight</label>
                     <input type="text" wire:model.live="hero_highlight">
                     @error('hero_highlight') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group">
+                    <label>Highlight (Japanese)</label>
+                    <input type="text" wire:model.live="hero_highlight_ja" placeholder="コース">
+                    @error('hero_highlight_ja') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group full">
                     <label>Title <span>*</span></label>
@@ -52,13 +68,26 @@
                     @error('hero_title') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group full">
+                    <label>Title (Japanese)</label>
+                    <input type="text" wire:model.live="hero_title_ja" placeholder="言語＆試験対策コース">
+                    @error('hero_title_ja') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group full">
                     <label>Subtitle</label>
                     <textarea rows="3" wire:model.live="hero_subtitle"></textarea>
                     @error('hero_subtitle') <small>{{ $message }}</small> @enderror
                 </div>
+                <div class="form-group full">
+                    <label>Subtitle (Japanese)</label>
+                    <textarea rows="3" wire:model.live="hero_subtitle_ja" placeholder="日本語のサブタイトル"></textarea>
+                    @error('hero_subtitle_ja') <small>{{ $message }}</small> @enderror
+                </div>
             </div>
         </div>
 
+        @endif
+
+        @if($pageTab === 'intro')
         <div class="sa-card">
             <div class="sa-card-header">
                 <h2>Intro & Catalog</h2>
@@ -70,24 +99,47 @@
                     <input type="text" wire:model.live="intro_label">
                 </div>
                 <div class="form-group">
+                    <label>Intro Label (Japanese)</label>
+                    <input type="text" wire:model.live="intro_label_ja" placeholder="セクションラベル">
+                </div>
+                <div class="form-group">
                     <label>Intro Title</label>
                     <input type="text" wire:model.live="intro_title">
+                </div>
+                <div class="form-group">
+                    <label>Intro Title (Japanese)</label>
+                    <input type="text" wire:model.live="intro_title_ja" placeholder="イントロタイトル">
                 </div>
                 <div class="form-group full">
                     <label>Intro Subtitle</label>
                     <textarea rows="3" wire:model.live="intro_subtitle"></textarea>
+                </div>
+                <div class="form-group full">
+                    <label>Intro Subtitle (Japanese)</label>
+                    <textarea rows="3" wire:model.live="intro_subtitle_ja" placeholder="イントロサブタイトル"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Catalog Label</label>
                     <input type="text" wire:model.live="catalog_label">
                 </div>
                 <div class="form-group">
+                    <label>Catalog Label (Japanese)</label>
+                    <input type="text" wire:model.live="catalog_label_ja" placeholder="カタログラベル">
+                </div>
+                <div class="form-group">
                     <label>Catalog Title</label>
                     <input type="text" wire:model.live="catalog_title">
+                </div>
+                <div class="form-group">
+                    <label>Catalog Title (Japanese)</label>
+                    <input type="text" wire:model.live="catalog_title_ja" placeholder="カタログタイトル">
                 </div>
             </div>
         </div>
 
+        @endif
+
+        @if($pageTab === 'stats')
         <div class="sa-card">
             <div class="sa-card-header with-action">
                 <div>
@@ -116,12 +168,19 @@
                             <label>Label</label>
                             <input type="text" wire:model.live="stats.{{ $i }}.label">
                         </div>
+                        <div class="form-group full">
+                            <label>Label (Japanese)</label>
+                            <input type="text" wire:model.live="stats_ja.{{ $i }}.label">
+                        </div>
                     </div>
                 </div>
                 @endforeach
             </div>
         </div>
 
+        @endif
+
+        @if($pageTab === 'why')
         <div class="sa-card">
             <div class="sa-card-header with-action">
                 <div>
@@ -136,12 +195,24 @@
                     <input type="text" wire:model.live="why_label">
                 </div>
                 <div class="form-group">
+                    <label>Label (Japanese)</label>
+                    <input type="text" wire:model.live="why_label_ja" placeholder="なぜHASU">
+                </div>
+                <div class="form-group">
                     <label>Title</label>
                     <input type="text" wire:model.live="why_title">
+                </div>
+                <div class="form-group">
+                    <label>Title (Japanese)</label>
+                    <input type="text" wire:model.live="why_title_ja" placeholder="学生が選ぶ理由">
                 </div>
                 <div class="form-group full">
                     <label>Description</label>
                     <textarea rows="3" wire:model.live="why_description"></textarea>
+                </div>
+                <div class="form-group full">
+                    <label>Description (Japanese)</label>
+                    <textarea rows="3" wire:model.live="why_description_ja"></textarea>
                 </div>
             </div>
             <div class="repeat-list">
@@ -160,9 +231,17 @@
                             <label>Title</label>
                             <input type="text" wire:model.live="why_items.{{ $i }}.title">
                         </div>
+                        <div class="form-group">
+                            <label>Title (Japanese)</label>
+                            <input type="text" wire:model.live="why_items_ja.{{ $i }}.title">
+                        </div>
                         <div class="form-group full">
                             <label>Description</label>
                             <textarea rows="2" wire:model.live="why_items.{{ $i }}.description"></textarea>
+                        </div>
+                        <div class="form-group full">
+                            <label>Description (Japanese)</label>
+                            <textarea rows="2" wire:model.live="why_items_ja.{{ $i }}.description"></textarea>
                         </div>
                     </div>
                 </div>
@@ -170,6 +249,9 @@
             </div>
         </div>
 
+        @endif
+
+        @if($pageTab === 'cta')
         <div class="sa-card">
             <div class="sa-card-header">
                 <h2>CTA</h2>
@@ -181,12 +263,24 @@
                     <input type="text" wire:model.live="cta_title">
                 </div>
                 <div class="form-group">
+                    <label>Title (Japanese)</label>
+                    <input type="text" wire:model.live="cta_title_ja" placeholder="適切なコースがわからない場合">
+                </div>
+                <div class="form-group">
                     <label>Button Label</label>
                     <input type="text" wire:model.live="cta_button_label">
+                </div>
+                <div class="form-group">
+                    <label>Button Label (Japanese)</label>
+                    <input type="text" wire:model.live="cta_button_label_ja" placeholder="今すぐ申し込む">
                 </div>
                 <div class="form-group full">
                     <label>Subtitle</label>
                     <textarea rows="3" wire:model.live="cta_subtitle"></textarea>
+                </div>
+                <div class="form-group full">
+                    <label>Subtitle (Japanese)</label>
+                    <textarea rows="3" wire:model.live="cta_subtitle_ja"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Button URL</label>
@@ -200,8 +294,14 @@
                     <label>Phone Button Label</label>
                     <input type="text" wire:model.live="cta_phone_label">
                 </div>
+                <div class="form-group">
+                    <label>Phone Button Label (Japanese)</label>
+                    <input type="text" wire:model.live="cta_phone_label_ja" placeholder="今すぐ電話する">
+                </div>
             </div>
         </div>
+
+        @endif
 
         <div class="sa-actions">
             <button type="submit" class="btn-save" wire:loading.attr="disabled">Save Page Settings</button>
@@ -330,8 +430,16 @@
                                 <input type="text" wire:model.live="badge" placeholder="Japanese">
                             </div>
                             <div class="form-group">
+                                <label>Badge (Japanese)</label>
+                                <input type="text" wire:model.live="badge_ja" placeholder="日本語">
+                            </div>
+                            <div class="form-group">
                                 <label>Tag</label>
                                 <input type="text" wire:model.live="tag" placeholder="Language - 6-12 Months">
+                            </div>
+                            <div class="form-group">
+                                <label>Tag (Japanese)</label>
+                                <input type="text" wire:model.live="tag_ja" placeholder="言語 - 6〜12ヶ月">
                             </div>
                             <div class="form-group">
                                 <label>Sort Order</label>
@@ -396,6 +504,10 @@
                                 <div class="form-group full">
                                     <textarea rows="3" wire:model.live="description.{{ $i }}.body"></textarea>
                                 </div>
+                                <div class="form-group full">
+                                    <label>Paragraph (Japanese)</label>
+                                    <textarea rows="3" wire:model.live="description_ja.{{ $i }}.body"></textarea>
+                                </div>
                             </div>
                             @empty
                             <div class="repeat-empty">No paragraphs yet. Click <strong>+ Add Paragraph</strong>.</div>
@@ -415,6 +527,10 @@
                                 </div>
                                 <div class="form-group full">
                                     <input type="text" wire:model.live="highlights.{{ $i }}.item">
+                                </div>
+                                <div class="form-group full">
+                                    <label>Item (Japanese)</label>
+                                    <input type="text" wire:model.live="highlights_ja.{{ $i }}.item">
                                 </div>
                             </div>
                             @empty
@@ -439,6 +555,18 @@
                                 </div>
                                 <div class="form-group full">
                                     <input type="text" wire:model.live="meta_items.{{ $i }}.label" placeholder="NAT - JLPT - J-TEST">
+                                </div>
+                                <div class="form-group full">
+                                    <label>Label (Japanese)</label>
+                                    <input type="text" wire:model.live="meta_items_ja.{{ $i }}.label" placeholder="NAT - JLPT - J-TEST（日本語）">
+                                </div>
+                                <div class="form-group full">
+                                    <label>Value / Note (optional)</label>
+                                    <input type="text" wire:model.live="meta_items.{{ $i }}.value" placeholder="e.g., JLPT N5">
+                                </div>
+                                <div class="form-group full">
+                                    <label>Value (Japanese)</label>
+                                    <input type="text" wire:model.live="meta_items_ja.{{ $i }}.value" placeholder="例: JLPT N5（日本語）">
                                 </div>
                             </div>
                             @empty
@@ -488,6 +616,14 @@
                                     <div class="form-group">
                                         <label>Value</label>
                                         <input type="text" wire:model.live="sidebar_items.{{ $i }}.value" placeholder="6-12 Months">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Label (Japanese)</label>
+                                        <input type="text" wire:model.live="sidebar_items_ja.{{ $i }}.label" placeholder="期間">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Value (Japanese)</label>
+                                        <input type="text" wire:model.live="sidebar_items_ja.{{ $i }}.value" placeholder="6〜12ヶ月">
                                     </div>
                                 </div>
                             </div>

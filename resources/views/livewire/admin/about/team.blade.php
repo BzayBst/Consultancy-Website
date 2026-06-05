@@ -218,10 +218,24 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Full Name (日本語)</label>
+                            <input type="text" wire:model.live="name_ja"
+                                   placeholder="例: ラム・プラサド・シャルマ">
+                            @error('name_ja') <span class="fe">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label>Designation <span class="req">*</span></label>
                             <input type="text" wire:model.live="designation"
                                    placeholder="e.g. FOUNDER &amp; CEO">
                             @error('designation') <span class="fe">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label>Designation (日本語)</label>
+                            <input type="text" wire:model.live="designation_ja"
+                                   placeholder="例: 創業者・最高経営責任者">
+                            @error('designation_ja') <span class="fe">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="form-group">
@@ -262,6 +276,17 @@
                                 @error('bio') <span class="fe">{{ $message }}</span>
                                 @else <span></span> @enderror
                                 <span class="char-count">{{ strlen($bio) }} / 500</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group tm-full">
+                            <label>Short Bio (日本語)</label>
+                            <textarea wire:model.live="bio_ja" rows="3" maxlength="500"
+                                      placeholder="11年以上にわたり学生の留学を支援してきました…"></textarea>
+                            <div style="display:flex;justify-content:space-between;margin-top:4px">
+                                @error('bio_ja') <span class="fe">{{ $message }}</span>
+                                @else <span></span> @enderror
+                                <span class="char-count">{{ strlen($bio_ja) }} / 500</span>
                             </div>
                         </div>
 

@@ -5,7 +5,9 @@
     $courses = collect($courses ?? []);
     $courseCategories = collect($courseCategories ?? []);
     $stats = collect($coursePage?->stats ?? []);
+    $stats_ja = collect($coursePage?->stats_ja ?? []);
     $whyItems = collect($coursePage?->why_items ?? []);
+    $whyItems_ja = collect($coursePage?->why_items_ja ?? []);
 @endphp
 
 @section('title', 'Courses - ' . setting('general_site_name', 'HASU Educational Consultancy'))
@@ -37,7 +39,7 @@
                 @foreach($stats as $i => $stat)
                 <div class="stat-item fade-up" style="transition-delay:{{ $i * .1 }}s">
                     <span class="stat-num">{{ $stat['number'] ?? '' }}<span class="accent">{{ $stat['accent'] ?? '' }}</span></span>
-                    <span class="stat-label">{{ $stat['label'] ?? '' }}</span>
+                    <span class="stat-label">{{ app()->getLocale() === 'ja' ? ($stats_ja->get($i)['label'] ?? $stat['label'] ?? '') : ($stat['label'] ?? '') }}</span>
                 </div>
                 @endforeach
             </div>
@@ -71,7 +73,7 @@
                     </ul>
                     @endif
                     <div class="cf-actions">
-                        <a href="{{ route('course.show', $featuredCourse->slug) }}" class="btn btn-primary">View Course Details</a>
+                        <a href="{{ route('course.show', $featuredCourse->slug) }}" class="btn btn-primary">{{ app()->getLocale() === 'ja' ? 'コースの詳細を見る' : 'View Course Details' }}</a>
                         <a href="{{ route('contact') }}" class="btn btn-secondary">Apply Now</a>
                     </div>
                 </div>
@@ -115,7 +117,7 @@
                         @endif
                         <h4>{{ localized($course, 'title') }}</h4>
                         <p>{{ localized($course, 'excerpt') }}</p>
-                        <span class="course-card-cta">View Course</span>
+                        <span class="course-card-cta">{{ app()->getLocale() === 'ja' ? 'コースを見る' : 'View Course' }}</span>
                     </div>
                 </a>
                 @empty
@@ -136,14 +138,14 @@
                     <div class="section-label courses-why-label">{{ localized($coursePage, 'why_label') ?: 'Why HASU' }}</div>
                     <h2 class="courses-why-title">{{ localized($coursePage, 'why_title') ?: 'Why Students Choose Our Courses' }}</h2>
                     <p>{{ localized($coursePage, 'why_description') }}</p>
-                    <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-primary">Book Free Assessment</a>
+                    <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-primary">{{ app()->getLocale() === 'ja' ? '無料評価を予約する' : 'Book Free Assessment' }}</a>
                 </div>
                 <div class="courses-why-grid">
-                    @foreach($whyItems as $item)
+                    @foreach($whyItems as $i => $item)
                     <div class="courses-why-item">
                         <div class="icon-wrap">{{ $item['icon'] ?? '*' }}</div>
-                        <h5>{{ $item['title'] ?? '' }}</h5>
-                        <p>{{ $item['description'] ?? '' }}</p>
+                        <h5>{{ app()->getLocale() === 'ja' ? ($whyItems_ja->get($i)['title'] ?? $item['title'] ?? '') : ($item['title'] ?? '') }}</h5>
+                        <p>{{ app()->getLocale() === 'ja' ? ($whyItems_ja->get($i)['description'] ?? $item['description'] ?? '') : ($item['description'] ?? '') }}</p>
                     </div>
                     @endforeach
                 </div>

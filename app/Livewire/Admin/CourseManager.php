@@ -16,6 +16,7 @@ class CourseManager extends Component
 
     public string $activeTab = 'page';
     public string $courseTab = 'listing';
+    public string $pageTab = 'hero';
 
     public string $hero_badge = '';
     public string $hero_badge_ja = '';
@@ -32,6 +33,7 @@ class CourseManager extends Component
     public string $intro_subtitle = '';
     public string $intro_subtitle_ja = '';
     public array $stats = [];
+    public array $stats_ja = [];
     public string $catalog_label = '';
     public string $catalog_label_ja = '';
     public string $catalog_title = '';
@@ -43,6 +45,7 @@ class CourseManager extends Component
     public string $why_description = '';
     public string $why_description_ja = '';
     public array $why_items = [];
+    public array $why_items_ja = [];
     public string $cta_title = '';
     public string $cta_title_ja = '';
     public string $cta_subtitle = '';
@@ -69,20 +72,26 @@ class CourseManager extends Component
     public string $slug = '';
     public string $category = 'language';
     public string $badge = '';
+    public string $badge_ja = '';
     public string $tag = '';
+    public string $tag_ja = '';
     public string $excerpt = '';
     public string $excerpt_ja = '';
     public bool $is_featured = false;
     public string $overview = '';
     public string $overview_ja = '';
     public array $description = [];
+    public array $description_ja = [];
     public array $meta_items = [];
+    public array $meta_items_ja = [];
     public array $highlights = [];
+    public array $highlights_ja = [];
     public string $sidebar_title = '';
     public string $sidebar_title_ja = '';
     public string $sidebar_subtitle = '';
     public string $sidebar_subtitle_ja = '';
     public array $sidebar_items = [];
+    public array $sidebar_items_ja = [];
     public int $sort_order = 0;
     public bool $is_active = true;
 
@@ -114,6 +123,7 @@ class CourseManager extends Component
         $this->intro_subtitle = $page?->intro_subtitle ?? 'From Japanese language mastery to IELTS and PTE band targets, HASU offers structured programs with mock tests, small batches, and personalized coaching.';
         $this->intro_subtitle_ja = $page?->intro_subtitle_ja ?? '';
         $this->stats = $this->normalizeRows($page?->stats ?? $this->defaultStats(), ['number', 'accent', 'label']);
+        $this->stats_ja = $this->normalizeRows($page?->stats_ja ?? $this->defaultStats(), ['number', 'accent', 'label']);
         $this->catalog_label = $page?->catalog_label ?? 'Browse All';
         $this->catalog_label_ja = $page?->catalog_label_ja ?? '';
         $this->catalog_title = $page?->catalog_title ?? 'Our Course Catalog';
@@ -125,6 +135,7 @@ class CourseManager extends Component
         $this->why_description = $page?->why_description ?? 'HASU Language Institute combines certified trainers, proven curricula, and integration with our study-abroad consultancy.';
         $this->why_description_ja = $page?->why_description_ja ?? '';
         $this->why_items = $this->normalizeRows($page?->why_items ?? $this->defaultWhyItems(), ['icon', 'title', 'description']);
+        $this->why_items_ja = $this->normalizeRows($page?->why_items_ja ?? $this->defaultWhyItems(), ['icon', 'title', 'description']);
         $this->cta_title = $page?->cta_title ?? 'Not Sure Which Course Is Right for You?';
         $this->cta_title_ja = $page?->cta_title_ja ?? '';
         $this->cta_subtitle = $page?->cta_subtitle ?? 'Visit our campus or book a free assessment. We will recommend the best program for your goals.';
@@ -145,6 +156,11 @@ class CourseManager extends Component
     public function setCourseTab(string $tab): void
     {
         $this->courseTab = $tab;
+    }
+
+    public function setPageTab(string $tab): void
+    {
+        $this->pageTab = $tab;
     }
 
     public function updatingSearch(): void
@@ -170,6 +186,7 @@ class CourseManager extends Component
             'stats.*.number' => ['nullable', 'string', 'max:20'],
             'stats.*.accent' => ['nullable', 'string', 'max:10'],
             'stats.*.label' => ['nullable', 'string', 'max:80'],
+            'stats_ja.*.label' => ['nullable', 'string', 'max:80'],
             'catalog_label' => ['nullable', 'string', 'max:80'],
             'catalog_title' => ['nullable', 'string', 'max:160'],
             'why_label' => ['nullable', 'string', 'max:80'],
@@ -178,6 +195,8 @@ class CourseManager extends Component
             'why_items.*.icon' => ['nullable', 'string', 'max:20'],
             'why_items.*.title' => ['nullable', 'string', 'max:100'],
             'why_items.*.description' => ['nullable', 'string', 'max:300'],
+            'why_items_ja.*.title' => ['nullable', 'string', 'max:100'],
+            'why_items_ja.*.description' => ['nullable', 'string', 'max:300'],
             'cta_title' => ['nullable', 'string', 'max:160'],
             'cta_subtitle' => ['nullable', 'string', 'max:500'],
             'cta_button_label' => ['nullable', 'string', 'max:80'],
@@ -202,6 +221,7 @@ class CourseManager extends Component
             'intro_subtitle' => $this->intro_subtitle,
             'intro_subtitle_ja' => $this->intro_subtitle_ja ?: null,
             'stats' => $this->cleanRows($this->stats),
+            'stats_ja' => $this->cleanRows($this->stats_ja),
             'catalog_label' => $this->catalog_label,
             'catalog_label_ja' => $this->catalog_label_ja ?: null,
             'catalog_title' => $this->catalog_title,
@@ -213,6 +233,7 @@ class CourseManager extends Component
             'why_description' => $this->why_description,
             'why_description_ja' => $this->why_description_ja ?: null,
             'why_items' => $this->cleanRows($this->why_items),
+            'why_items_ja' => $this->cleanRows($this->why_items_ja),
             'cta_title' => $this->cta_title,
             'cta_title_ja' => $this->cta_title_ja ?: null,
             'cta_subtitle' => $this->cta_subtitle,
@@ -231,23 +252,33 @@ class CourseManager extends Component
     public function addStat(): void
     {
         $this->stats[] = ['number' => '', 'accent' => '+', 'label' => ''];
+        $this->stats_ja[] = ['number' => '', 'accent' => '+', 'label' => ''];
     }
 
     public function removeStat(int $index): void
     {
         unset($this->stats[$index]);
         $this->stats = array_values($this->stats);
+        if (isset($this->stats_ja[$index])) {
+            unset($this->stats_ja[$index]);
+            $this->stats_ja = array_values($this->stats_ja);
+        }
     }
 
     public function addWhyItem(): void
     {
         $this->why_items[] = ['icon' => '', 'title' => '', 'description' => ''];
+        $this->why_items_ja[] = ['icon' => '', 'title' => '', 'description' => ''];
     }
 
     public function removeWhyItem(int $index): void
     {
         unset($this->why_items[$index]);
         $this->why_items = array_values($this->why_items);
+        if (isset($this->why_items_ja[$index])) {
+            unset($this->why_items_ja[$index]);
+            $this->why_items_ja = array_values($this->why_items_ja);
+        }
     }
 
     public function openCreate(): void
@@ -273,18 +304,24 @@ class CourseManager extends Component
         $this->tag = $course->tag ?? '';
         $this->excerpt = $course->excerpt ?? '';
         $this->excerpt_ja = $course->excerpt_ja ?? '';
+        $this->badge_ja = $course->badge_ja ?? '';
+        $this->tag_ja = $course->tag_ja ?? '';
         $this->image_current = $course->image_path;
         $this->is_featured = $course->is_featured;
         $this->overview = $course->overview ?? '';
         $this->overview_ja = $course->overview_ja ?? '';
         $this->description = $this->normalizeRows($course->description ?? [], ['body']);
+        $this->description_ja = $this->normalizeRows($course->description_ja ?? [], ['body']);
         $this->meta_items = $this->normalizeRows($course->meta_items ?? [], ['label']);
+        $this->meta_items_ja = $this->normalizeRows($course->meta_items_ja ?? [], ['label']);
         $this->highlights = $this->normalizeRows($course->highlights ?? [], ['item']);
+        $this->highlights_ja = $this->normalizeRows($course->highlights_ja ?? [], ['item']);
         $this->sidebar_title = $course->sidebar_title ?? '';
         $this->sidebar_title_ja = $course->sidebar_title_ja ?? '';
         $this->sidebar_subtitle = $course->sidebar_subtitle ?? '';
         $this->sidebar_subtitle_ja = $course->sidebar_subtitle_ja ?? '';
         $this->sidebar_items = $this->normalizeRows($course->sidebar_items ?? [], ['label', 'value']);
+        $this->sidebar_items_ja = $this->normalizeRows($course->sidebar_items_ja ?? [], ['label', 'value']);
         $this->sort_order = $course->sort_order;
         $this->is_active = $course->is_active;
         $this->showModal = true;
@@ -309,12 +346,19 @@ class CourseManager extends Component
             'is_featured' => ['boolean'],
             'overview' => ['nullable', 'string', 'max:2000'],
             'description.*.body' => ['nullable', 'string', 'max:1200'],
+            'description_ja.*.body' => ['nullable', 'string', 'max:1200'],
             'meta_items.*.label' => ['nullable', 'string', 'max:100'],
+            'meta_items_ja.*.label' => ['nullable', 'string', 'max:100'],
             'highlights.*.item' => ['nullable', 'string', 'max:200'],
+            'highlights_ja.*.item' => ['nullable', 'string', 'max:200'],
             'sidebar_title' => ['nullable', 'string', 'max:120'],
+            'sidebar_title_ja' => ['nullable', 'string', 'max:120'],
             'sidebar_subtitle' => ['nullable', 'string', 'max:400'],
+            'sidebar_subtitle_ja' => ['nullable', 'string', 'max:400'],
             'sidebar_items.*.label' => ['nullable', 'string', 'max:80'],
             'sidebar_items.*.value' => ['nullable', 'string', 'max:120'],
+            'sidebar_items_ja.*.label' => ['nullable', 'string', 'max:80'],
+            'sidebar_items_ja.*.value' => ['nullable', 'string', 'max:120'],
             'sort_order' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],
         ]);
@@ -335,20 +379,26 @@ class CourseManager extends Component
             'slug' => $slug,
             'category' => $this->category,
             'badge' => $this->badge ?: null,
+            'badge_ja' => $this->badge_ja ?: null,
             'tag' => $this->tag ?: null,
+            'tag_ja' => $this->tag_ja ?: null,
             'excerpt' => $this->excerpt ?: null,
             'excerpt_ja' => $this->excerpt_ja ?: null,
             'is_featured' => $this->is_featured,
             'overview' => $this->overview ?: null,
             'overview_ja' => $this->overview_ja ?: null,
             'description' => $this->cleanRows($this->description),
+            'description_ja' => $this->cleanRows($this->description_ja),
             'meta_items' => $this->cleanRows($this->meta_items),
+            'meta_items_ja' => $this->cleanRows($this->meta_items_ja),
             'highlights' => $this->cleanRows($this->highlights),
+            'highlights_ja' => $this->cleanRows($this->highlights_ja),
             'sidebar_title' => $this->sidebar_title ?: null,
             'sidebar_title_ja' => $this->sidebar_title_ja ?: null,
             'sidebar_subtitle' => $this->sidebar_subtitle ?: null,
             'sidebar_subtitle_ja' => $this->sidebar_subtitle_ja ?: null,
             'sidebar_items' => $this->cleanRows($this->sidebar_items),
+            'sidebar_items_ja' => $this->cleanRows($this->sidebar_items_ja),
             'sort_order' => $this->sort_order,
             'is_active' => $this->is_active,
         ];
@@ -373,45 +423,65 @@ class CourseManager extends Component
     public function addDescription(): void
     {
         $this->description[] = ['body' => ''];
+        $this->description_ja[] = ['body' => ''];
     }
 
     public function removeDescription(int $index): void
     {
         unset($this->description[$index]);
         $this->description = array_values($this->description);
+        if (isset($this->description_ja[$index])) {
+            unset($this->description_ja[$index]);
+            $this->description_ja = array_values($this->description_ja);
+        }
     }
 
     public function addMetaItem(): void
     {
         $this->meta_items[] = ['label' => ''];
+        $this->meta_items_ja[] = ['label' => ''];
     }
 
     public function removeMetaItem(int $index): void
     {
         unset($this->meta_items[$index]);
         $this->meta_items = array_values($this->meta_items);
+        if (isset($this->meta_items_ja[$index])) {
+            unset($this->meta_items_ja[$index]);
+            $this->meta_items_ja = array_values($this->meta_items_ja);
+        }
     }
 
     public function addHighlight(): void
     {
         $this->highlights[] = ['item' => ''];
+        $this->highlights_ja[] = ['item' => ''];
     }
 
     public function removeHighlight(int $index): void
     {
         unset($this->highlights[$index]);
         $this->highlights = array_values($this->highlights);
+        if (isset($this->highlights_ja[$index])) {
+            unset($this->highlights_ja[$index]);
+            $this->highlights_ja = array_values($this->highlights_ja);
+        }
     }
 
     public function addSidebarItem(): void
     {
         $this->sidebar_items[] = ['label' => '', 'value' => ''];
+        $this->sidebar_items_ja[] = ['label' => '', 'value' => ''];
     }
 
     public function removeSidebarItem(int $index): void
     {
         unset($this->sidebar_items[$index]);
         $this->sidebar_items = array_values($this->sidebar_items);
+        if (isset($this->sidebar_items_ja[$index])) {
+            unset($this->sidebar_items_ja[$index]);
+            $this->sidebar_items_ja = array_values($this->sidebar_items_ja);
+        }
     }
 
     public function toggleActive(int $id): void
@@ -472,20 +542,26 @@ class CourseManager extends Component
         $this->slug = '';
         $this->category = 'language';
         $this->badge = '';
+        $this->badge_ja = '';
         $this->tag = '';
+        $this->tag_ja = '';
         $this->excerpt = '';
         $this->excerpt_ja = '';
         $this->is_featured = false;
         $this->overview = '';
         $this->overview_ja = '';
         $this->description = [];
+        $this->description_ja = [];
         $this->meta_items = [];
+        $this->meta_items_ja = [];
         $this->highlights = [];
+        $this->highlights_ja = [];
         $this->sidebar_title = '';
         $this->sidebar_title_ja = '';
         $this->sidebar_subtitle = '';
         $this->sidebar_subtitle_ja = '';
         $this->sidebar_items = [];
+        $this->sidebar_items_ja = [];
         $this->sort_order = (Course::max('sort_order') ?? 0) + 1;
         $this->is_active = true;
         $this->image_upload = null;

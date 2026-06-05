@@ -22,6 +22,7 @@ class CoursePage extends Model
         'intro_subtitle',
         'intro_subtitle_ja',
         'stats',
+        'stats_ja',
         'catalog_label',
         'catalog_label_ja',
         'catalog_title',
@@ -33,6 +34,7 @@ class CoursePage extends Model
         'why_description',
         'why_description_ja',
         'why_items',
+        'why_items_ja',
         'cta_title',
         'cta_title_ja',
         'cta_subtitle',
@@ -47,6 +49,8 @@ class CoursePage extends Model
 
     protected $casts = [
         'stats' => 'array',
+        'stats_ja' => 'array',
         'why_items' => 'array',
+        'why_items_ja' => 'array',
     ];
 }

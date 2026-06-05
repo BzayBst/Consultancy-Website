@@ -135,9 +135,9 @@
 <section id="team" class="section" style="background:var(--light)">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">Our People</div>
-      <h2 class="section-title">Meet the HASU Team</h2>
-      <p class="section-sub">Our dedicated counselors and specialists bring years of experience, genuine care, and insider knowledge.</p>
+      <div class="section-label">{{ app()->getLocale() === 'ja' ? '私たちのチーム' : 'Our People' }}</div>
+      <h2 class="section-title">{{ app()->getLocale() === 'ja' ? 'HASUチームをご紹介します' : 'Meet the HASU Team' }}</h2>
+      <p class="section-sub">{{ app()->getLocale() === 'ja' ? '当社のカウンセラーと専門家は、長年の経験と真心、業界に精通した知識を持っています。' : 'Our dedicated counselors and specialists bring years of experience, genuine care, and insider knowledge.' }}</p>
     </div>
 
     <div class="team-grid">

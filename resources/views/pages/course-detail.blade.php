@@ -7,7 +7,7 @@
     <x-frontend.page-hero
         badge="{{ localized($course, 'badge') ?: localized($coursePage, 'hero_badge') ?: 'HASU Language Institute' }}"
         title="{{ localized($course, 'title') }}"
-        highlight="Course"
+        highlight="{{ localized($coursePage, 'hero_highlight') ?: (app()->getLocale() === 'ja' ? 'コース' : 'Course') }}"
         subtitle="{{ localized($course, 'excerpt') ?: localized($coursePage, 'hero_subtitle') }}"
         :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'All Courses', 'url' => route('courses')], ['label' => localized($course, 'title')]]"
     />
@@ -38,7 +38,7 @@
 
             @if(! empty(localized($course, 'highlights')))
             <div class="cd-highlights">
-              <h3>What You Will Learn</h3>
+              <h3>{{ app()->getLocale() === 'ja' ? '学べること' : 'What You Will Learn' }}</h3>
               <ul>
                 @foreach(localized($course, 'highlights') as $highlight)
                   @if(! empty($highlight['item']))
@@ -50,7 +50,7 @@
             @endif
 
             <div class="cd-mobile-apply">
-              <a href="{{ route('contact') }}" class="btn btn-primary btn-block">Apply Now</a>
+              <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-primary btn-block">{{ localized($coursePage, 'cta_button_label') ?: (app()->getLocale() === 'ja' ? '申し込む' : 'Apply Now') }}</a>
             </div>
           </div>
 
@@ -66,8 +66,8 @@
                 @endforeach
               </ul>
               @endif
-              <a href="{{ route('contact') }}" class="btn btn-primary btn-block cd-apply-btn">Apply Now</a>
-              <a href="tel:+97756493528" class="btn btn-secondary btn-block" style="margin-top:10px">Call 056-493528</a>
+              <a href="{{ $coursePage?->cta_button_url ?: route('contact') }}" class="btn btn-primary btn-block cd-apply-btn">{{ localized($coursePage, 'cta_button_label') ?: (app()->getLocale() === 'ja' ? '申し込む' : 'Apply Now') }}</a>
+              <a href="tel:+97756493528" class="btn btn-secondary btn-block" style="margin-top:10px">{{ localized($coursePage, 'cta_phone_label') ?: (app()->getLocale() === 'ja' ? '電話する' : 'Call 056-493528') }}</a>
             </div>
           </aside>
         </div>
@@ -78,9 +78,9 @@
     <section id="cd-popular" class="section">
       <div class="container">
         <div class="section-head fade-up">
-          <div class="section-label">More Courses</div>
-          <h2 class="section-title">Other Popular Courses</h2>
-          <p class="section-sub">Explore our other language and test-prep programs at HASU Language Institute.</p>
+          <div class="section-label">{{ app()->getLocale() === 'ja' ? 'その他のコース' : 'More Courses' }}</div>
+          <h2 class="section-title">{{ app()->getLocale() === 'ja' ? '人気のあるコース' : 'Other Popular Courses' }}</h2>
+          <p class="section-sub">{{ app()->getLocale() === 'ja' ? 'HASUの他の言語および試験対策プログラムをご覧ください。' : 'Explore our other language and test-prep programs at HASU Language Institute.' }}</p>
         </div>
         <div class="courses-grid cd-popular-grid">
           @foreach($otherCourses as $i => $other)
@@ -96,15 +96,15 @@
             <div class="course-body">
               <h4>{{ localized($other, 'title') }}</h4>
               <p>{{ localized($other, 'excerpt') }}</p>
-              <span class="course-card-cta">View Course</span>
+              <span class="course-card-cta">{{ app()->getLocale() === 'ja' ? 'コースを見る' : 'View Course' }}</span>
             </div>
           </a>
           @endforeach
           <a href="{{ route('courses') }}" class="course-card course-card-link fade-up" style="transition-delay:.2s">
             <div class="course-body">
-              <h4>View All Courses</h4>
-              <p>Browse the full list of language and test-prep programs at HASU.</p>
-              <span class="course-card-cta">Browse All</span>
+              <h4>{{ localized($coursePage, 'catalog_title') ?: (app()->getLocale() === 'ja' ? 'すべてのコースを見る' : 'View All Courses') }}</h4>
+              <p>{{ app()->getLocale() === 'ja' ? 'HASUの言語および試験対策プログラムの完全なリストを参照してください。' : 'Browse the full list of language and test-prep programs at HASU.' }}</p>
+              <span class="course-card-cta">{{ localized($coursePage, 'catalog_label') ?: (app()->getLocale() === 'ja' ? 'すべて表示' : 'Browse All') }}</span>
             </div>
           </a>
         </div>

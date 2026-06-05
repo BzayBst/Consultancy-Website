@@ -37,9 +37,12 @@ class Team extends Component
     /* ------------------------------------------------------------------ */
 
     public string  $name           = '';
+    public string  $name_ja        = '';
     public string  $slug           = '';
     public string  $designation    = '';
+    public string  $designation_ja = '';
     public string  $bio            = '';
+    public string  $bio_ja         = '';
     public string  $email          = '';
     public string  $phone          = '';
     public int     $order          = 0;
@@ -78,9 +81,12 @@ class Team extends Component
     {
         return [
             'name'            => ['required', 'string', 'max:100'],
+            'name_ja'         => ['nullable', 'string', 'max:100'],
             'slug'            => ['nullable', 'string', 'max:120'],
             'designation'     => ['required', 'string', 'max:100'],
+            'designation_ja'  => ['nullable', 'string', 'max:100'],
             'bio'             => ['nullable', 'string', 'max:500'],
+            'bio_ja'          => ['nullable', 'string', 'max:500'],
             'email'           => ['nullable', 'email', 'max:150'],
             'phone'           => ['nullable', 'string', 'max:20'],
             'order'           => ['required', 'integer', 'min:0'],
@@ -132,9 +138,12 @@ class Team extends Component
         $team = $service->find($id);
 
         $this->name          = $team->name;
+        $this->name_ja       = $team->name_ja ?? '';
         $this->slug          = $team->slug;
         $this->designation   = $team->designation;
+        $this->designation_ja = $team->designation_ja ?? '';
         $this->bio           = $team->bio           ?? '';
+        $this->bio_ja        = $team->bio_ja ?? '';
         $this->email         = $team->email          ?? '';
         $this->phone         = $team->phone          ?? '';
         $this->order         = $team->order;
@@ -165,9 +174,12 @@ class Team extends Component
 
         $data = [
             'name'         => $this->name,
+            'name_ja'      => $this->name_ja ?: null,
             'slug'         => $this->slug        ?: null,
             'designation'  => $this->designation,
+            'designation_ja' => $this->designation_ja ?: null,
             'bio'          => $this->bio          ?: null,
+            'bio_ja'       => $this->bio_ja ?: null,
             'email'        => $this->email        ?: null,
             'phone'        => $this->phone        ?: null,
             'order'        => $this->order,
@@ -253,9 +265,12 @@ class Team extends Component
         $this->resetValidation();
         $this->editingId       = null;
         $this->name            = '';
+        $this->name_ja         = '';
         $this->slug            = '';
         $this->designation     = '';
+        $this->designation_ja  = '';
         $this->bio             = '';
+        $this->bio_ja          = '';
         $this->email           = '';
         $this->phone           = '';
         $this->order           = 0;
