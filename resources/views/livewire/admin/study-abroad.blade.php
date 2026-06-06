@@ -42,9 +42,19 @@
                     @error('hero_badge') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group">
+                    <label>Badge (JP)</label>
+                    <input type="text" wire:model.live="hero_badge_ja" placeholder="Japanese badge">
+                    @error('hero_badge_ja') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group">
                     <label>Highlight</label>
                     <input type="text" wire:model.live="hero_highlight">
                     @error('hero_highlight') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group">
+                    <label>Highlight (JP)</label>
+                    <input type="text" wire:model.live="hero_highlight_ja" placeholder="Japanese highlight">
+                    @error('hero_highlight_ja') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group full">
                     <label>Title <span>*</span></label>
@@ -52,9 +62,19 @@
                     @error('hero_title') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group full">
+                    <label>Title (JP)</label>
+                    <input type="text" wire:model.live="hero_title_ja" placeholder="Japanese title">
+                    @error('hero_title_ja') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group full">
                     <label>Subtitle</label>
                     <textarea rows="3" wire:model.live="hero_subtitle"></textarea>
                     @error('hero_subtitle') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group full">
+                    <label>Subtitle (JP)</label>
+                    <textarea rows="3" wire:model.live="hero_subtitle_ja" placeholder="Japanese subtitle"></textarea>
+                    @error('hero_subtitle_ja') <small>{{ $message }}</small> @enderror
                 </div>
             </div>
         </div>
@@ -71,9 +91,19 @@
                     @error('section_label') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group">
+                    <label>Section Label (JP)</label>
+                    <input type="text" wire:model.live="section_label_ja" placeholder="Japanese section label">
+                    @error('section_label_ja') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group">
                     <label>Section Title <span>*</span></label>
                     <input type="text" wire:model.live="section_title">
                     @error('section_title') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group">
+                    <label>Section Title (JP)</label>
+                    <input type="text" wire:model.live="section_title_ja" placeholder="Japanese section title">
+                    @error('section_title_ja') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group">
                     <label>CTA Title</label>
@@ -81,14 +111,29 @@
                     @error('cta_title') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group">
+                    <label>CTA Title (JP)</label>
+                    <input type="text" wire:model.live="cta_title_ja" placeholder="Japanese CTA title">
+                    @error('cta_title_ja') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group">
                     <label>CTA Button Label</label>
                     <input type="text" wire:model.live="cta_button_label">
                     @error('cta_button_label') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group">
+                    <label>CTA Button Label (JP)</label>
+                    <input type="text" wire:model.live="cta_button_label_ja" placeholder="Japanese button label">
+                    @error('cta_button_label_ja') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group full">
                     <label>CTA Subtitle</label>
                     <textarea rows="3" wire:model.live="cta_subtitle"></textarea>
                     @error('cta_subtitle') <small>{{ $message }}</small> @enderror
+                </div>
+                <div class="form-group full">
+                    <label>CTA Subtitle (JP)</label>
+                    <textarea rows="3" wire:model.live="cta_subtitle_ja" placeholder="Japanese CTA subtitle"></textarea>
+                    @error('cta_subtitle_ja') <small>{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group full">
                     <label>CTA Button URL</label>
@@ -230,10 +275,20 @@
                                 <input type="text" wire:model.live="card_title" placeholder="Study in Japan">
                                 @error('card_title') <small>{{ $message }}</small> @enderror
                             </div>
+                            <div class="form-group">
+                                <label>Card Title (JP)</label>
+                                <input type="text" wire:model.live="card_title_ja" placeholder="日本語のタイトル">
+                                @error('card_title_ja') <small>{{ $message }}</small> @enderror
+                            </div>
                             <div class="form-group full">
                                 <label>Card Description</label>
                                 <textarea rows="3" wire:model.live="card_description"></textarea>
                                 @error('card_description') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group full">
+                                <label>Card Description (JP)</label>
+                                <textarea rows="3" wire:model.live="card_description_ja" placeholder="日本語の説明"></textarea>
+                                @error('card_description_ja') <small>{{ $message }}</small> @enderror
                             </div>
                         </div>
 
@@ -264,6 +319,10 @@
                             <label>Overview Text</label>
                             <textarea rows="8" wire:model.live="overview"></textarea>
                         </div>
+                        <div class="form-group full">
+                            <label>Overview Text (JP)</label>
+                            <textarea rows="8" wire:model.live="overview_ja" placeholder="日本語の概要"></textarea>
+                        </div>
                     </div>
                     @endif
 
@@ -279,8 +338,16 @@
                                 <input type="text" wire:model.live="benefits_title" placeholder="Why Study in Japan?">
                             </div>
                             <div class="form-group">
+                                <label>Benefits Title (JP)</label>
+                                <input type="text" wire:model.live="benefits_title_ja" placeholder="日本語の見出し">
+                            </div>
+                            <div class="form-group">
                                 <label>Benefits Description</label>
                                 <textarea rows="3" wire:model.live="benefits_description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Benefits Description (JP)</label>
+                                <textarea rows="3" wire:model.live="benefits_description_ja" placeholder="日本語の説明"></textarea>
                             </div>
                         </div>
                         <div class="repeat-list">
@@ -299,9 +366,17 @@
                                         <label>Title</label>
                                         <input type="text" wire:model.live="benefits.{{ $i }}.title">
                                     </div>
+                                    <div class="form-group">
+                                        <label>Title (JP)</label>
+                                        <input type="text" wire:model.live="benefits.{{ $i }}.title_ja" placeholder="日本語の見出し">
+                                    </div>
                                     <div class="form-group full">
                                         <label>Description</label>
                                         <textarea rows="2" wire:model.live="benefits.{{ $i }}.description"></textarea>
+                                    </div>
+                                    <div class="form-group full">
+                                        <label>Description (JP)</label>
+                                        <textarea rows="2" wire:model.live="benefits.{{ $i }}.description_ja" placeholder="日本語の説明"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -353,6 +428,10 @@
                         <div class="form-group full">
                             <label>Scholarship Text</label>
                             <textarea rows="7" wire:model.live="scholarship_text"></textarea>
+                        </div>
+                        <div class="form-group full">
+                            <label>Scholarship Text (JP)</label>
+                            <textarea rows="7" wire:model.live="scholarship_text_ja" placeholder="日本語の奨学金情報"></textarea>
                         </div>
                     </div>
                     @endif

@@ -74,7 +74,7 @@
                     @endif
                     <div class="cf-actions">
                         <a href="{{ route('course.show', $featuredCourse->slug) }}" class="btn btn-primary">{{ app()->getLocale() === 'ja' ? 'コースの詳細を見る' : 'View Course Details' }}</a>
-                        <a href="{{ route('contact') }}" class="btn btn-secondary">Apply Now</a>
+                        <a href="{{ route('contact') }}" class="btn btn-secondary">{{ app()->getLocale() === 'ja' ? '申し込む' : 'Apply Now' }}</a>
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                 </div>
                 @if($courseCategories->isNotEmpty())
                 <div class="course-filters" id="courseFilters">
-                    <button type="button" class="cf-filter-btn active" data-filter="all">All</button>
+                    <button type="button" class="cf-filter-btn active" data-filter="all">{{ app()->getLocale() === 'ja' ? 'すべて' : 'All' }}</button>
                     @foreach($courseCategories as $category)
                         <button type="button" class="cf-filter-btn" data-filter="{{ $category }}">{{ Str::headline($category) }}</button>
                     @endforeach
@@ -122,8 +122,8 @@
                 </a>
                 @empty
                 <div class="sa-empty">
-                    <strong>No courses added yet.</strong>
-                    <span>Please add courses from the admin CMS.</span>
+                    <strong>{{ app()->getLocale() === 'ja' ? 'まだコースが追加されていません。' : 'No courses added yet.' }}</strong>
+                    <span>{{ app()->getLocale() === 'ja' ? 'CMSからコースを追加してください。' : 'Please add courses from the admin CMS.' }}</span>
                 </div>
                 @endforelse
             </div>

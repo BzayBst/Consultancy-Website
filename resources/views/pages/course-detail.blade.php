@@ -56,9 +56,9 @@
 
           <aside class="cd-sidebar fade-up" style="transition-delay:.1s">
             <div class="cd-sidebar-card">
-              <div class="cd-sidebar-flag">{{ localized($course, 'badge') ?: 'Course' }}</div>
-              <h3>{{ localized($course, 'sidebar_title') ?: 'Enroll Today' }}</h3>
-              <p>{{ localized($course, 'sidebar_subtitle') ?: 'Book your placement test and start your learning journey.' }}</p>
+              <div class="cd-sidebar-flag">{{ localized($course, 'badge') ?: (app()->getLocale() === 'ja' ? 'コース' : 'Course') }}</div>
+              <h3>{{ localized($course, 'sidebar_title') ?: (app()->getLocale() === 'ja' ? '今すぐ登録' : 'Enroll Today') }}</h3>
+              <p>{{ localized($course, 'sidebar_subtitle') ?: (app()->getLocale() === 'ja' ? '適性検査を予約して学習を始めましょう。' : 'Book your placement test and start your learning journey.') }}</p>
               @if(! empty(localized($course, 'sidebar_items')))
               <ul class="cd-sidebar-info">
                 @foreach(localized($course, 'sidebar_items') as $item)

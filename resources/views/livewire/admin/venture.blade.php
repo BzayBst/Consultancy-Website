@@ -236,11 +236,15 @@
                             <label>Venture Name <span class="req">*</span></label>
                             <input type="text" wire:model.live="name" placeholder="e.g. HASU Language Institute">
                             @error('name') <span class="fe">{{ $message }}</span> @enderror
+                            <small class="form-optional">日本語 (Japanese)</small>
+                            <input type="text" wire:model.live="name_ja" placeholder="例: HASU語学研究所">
                         </div>
                         <div class="form-group">
                             <label>Tagline</label>
                             <input type="text" wire:model="tagline" placeholder="Short headline for hero section">
                             @error('tagline') <span class="fe">{{ $message }}</span> @enderror
+                            <small class="form-optional">日本語 (Japanese)</small>
+                            <input type="text" wire:model="tagline_ja" placeholder="例: 信頼の留学コンサルティング">
                         </div>
                         <div class="form-group">
                             <label>URL Slug</label>
@@ -278,11 +282,15 @@
                             <div style="display:flex;justify-content:flex-end;margin-top:3px">
                                 <span class="char-count">{{ strlen($description) }} / 500</span>
                             </div>
+                            <small class="form-optional">日本語 (Japanese)</small>
+                            <textarea wire:model.live="description_ja" rows="2" maxlength="500" placeholder="短い説明…"></textarea>
                         </div>
                         <div class="form-group vt-full">
                             <label>Full Detail Description <span class="form-optional">(shown on detail page)</span></label>
                             <textarea wire:model="long_description" rows="6"
                                       placeholder="Full details about this venture — its services, history, and value proposition…"></textarea>
+                            <small class="form-optional">日本語 (Japanese)</small>
+                            <textarea wire:model="long_description_ja" rows="6" placeholder="詳細説明…"></textarea>
                         </div>
                         <div class="form-group vt-full">
                             <label>
@@ -292,10 +300,15 @@
                             <textarea wire:model="highlights_raw" rows="4"
                                       placeholder="Admission & university placement&#10;Visa documentation & processing&#10;Scholarship & financial guidance"></textarea>
                             <small class="form-hint">Each line = one bullet on the detail page.</small>
+
+                            <small class="form-optional" style="margin-top:8px">日本語 (Japanese)</small>
+                            <textarea wire:model="highlights_raw_ja" rows="4" placeholder="出願・大学選定&#10;ビザ手続き&#10;奨学金サポート"></textarea>
                         </div>
                         <div class="form-group">
                             <label>Section Title for Highlights</label>
                             <input type="text" wire:model="section_title" placeholder="What We Do">
+                            <small class="form-optional">日本語 (Japanese)</small>
+                            <input type="text" wire:model="section_title_ja" placeholder="何をするか">
                         </div>
                         <div class="form-group">
                             <label>Emoji Logo</label>
@@ -324,6 +337,8 @@
                         <div class="form-group">
                             <label>Tag Label <span class="form-optional">(e.g. "Education · Est. 2013")</span></label>
                             <input type="text" wire:model.live="tag_label" placeholder="Education · Est. 2013">
+                            <small class="form-optional">日本語 (Japanese)</small>
+                            <input type="text" wire:model.live="tag_label_ja" placeholder="教育 · 設立 2013">
                         </div>
                         <div class="form-group">
                             <label>Tag Colors</label>
@@ -379,6 +394,8 @@
                         <div class="form-group">
                             <label>Primary Button Label</label>
                             <input type="text" wire:model="primary_btn_label" placeholder="Learn More →">
+                            <small class="form-optional">日本語 (Japanese)</small>
+                            <input type="text" wire:model="primary_btn_label_ja" placeholder="詳しくはこちら →">
                         </div>
                         <div class="form-group">
                             <label>Primary Button URL</label>
@@ -387,6 +404,8 @@
                         <div class="form-group">
                             <label>Secondary Button Label</label>
                             <input type="text" wire:model="secondary_btn_label" placeholder="Contact">
+                            <small class="form-optional">日本語 (Japanese)</small>
+                            <input type="text" wire:model="secondary_btn_label_ja" placeholder="お問い合わせ">
                         </div>
                         <div class="form-group">
                             <label>Secondary Button URL</label>

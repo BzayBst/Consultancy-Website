@@ -205,24 +205,24 @@
 
     {{-- ===== PAGE HERO ===== --}}
     <x-frontend.page-hero
-        badge="Memories & Moments"
-        title="Gallery Section"
-        highlight="Gallery"
-        subtitle="Glimpses of our vibrant classes, study abroad seminars, and successful visa grant celebrations."
-        :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'Gallery']]"
+        badge="{{ app()->getLocale() === 'ja' ? '思い出' : 'Memories & Moments' }}"
+        title="{{ app()->getLocale() === 'ja' ? 'ギャラリー' : 'Gallery Section' }}"
+        highlight="{{ app()->getLocale() === 'ja' ? 'ギャラリー' : 'Gallery' }}"
+        subtitle="{{ app()->getLocale() === 'ja' ? 'HASUの活気ある授業、留学セミナー、ビザ取得の喜びの瞬間をご覧ください。' : 'Glimpses of our vibrant classes, study abroad seminars, and successful visa grant celebrations.' }}"
+        :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => app()->getLocale() === 'ja' ? 'ギャラリー' : 'Gallery']]"
     />
 
     <section class="gallery-section">
         <div class="container">
             <div class="courses-listing-head fade-up">
                 <div>
-                    <div class="section-label" style="margin-bottom:8px">Visual Journey</div>
-                    <h2 class="section-title" style="margin-bottom:0;text-align:left">Life at HASU</h2>
+                    <div class="section-label" style="margin-bottom:8px">{{ app()->getLocale() === 'ja' ? 'ビジュアルジャーニー' : 'Visual Journey' }}</div>
+                    <h2 class="section-title" style="margin-bottom:0;text-align:left">{{ app()->getLocale() === 'ja' ? 'HASUでの生活' : 'Life at HASU' }}</h2>
                 </div>
 
                 @if($galleryCategories->isNotEmpty())
                 <div class="course-filters" id="galleryFilters">
-                    <button type="button" class="cf-filter-btn active" data-filter="all">All</button>
+                    <button type="button" class="cf-filter-btn active" data-filter="all">{{ app()->getLocale() === 'ja' ? 'すべて' : 'All' }}</button>
                     @foreach($galleryCategories as $category)
                         <button type="button" class="cf-filter-btn" data-filter="{{ $category }}">
                             {{ Str::headline($category) }}
@@ -245,7 +245,7 @@
                             @if($i > 0) style="transition-delay:{{ round(($i % 4) * 0.1, 2) }}s" @endif
                         >
                             <img src="{{ $image->image_url }}" alt="{{ localized($image, 'alt_text') ?: localized($image, 'title') }}">
-                            <span class="gallery-media-badge">Photo</span>
+                            <span class="gallery-media-badge">{{ app()->getLocale() === 'ja' ? '写真' : 'Photo' }}</span>
                             <div class="gallery-overlay">
                                 <h4>{{ localized($image, 'title') }}</h4>
                             </div>
@@ -278,8 +278,8 @@
             </div>
             @else
             <div class="gallery-empty fade-up">
-                <strong>Gallery coming soon</strong>
-                <span>Images added from the CMS will appear here automatically.</span>
+                <strong>{{ app()->getLocale() === 'ja' ? 'ギャラリーは近日公開予定' : 'Gallery coming soon' }}</strong>
+                <span>{{ app()->getLocale() === 'ja' ? 'CMSから追加された画像はここに自動的に表示されます。' : 'Images added from the CMS will appear here automatically.' }}</span>
             </div>
             @endif
         </div>
@@ -289,10 +289,10 @@
         <div class="container">
             <div class="cta-inner">
                 <div class="cta-text fade-up">
-                    <h2>Ready to Be Part of Our Success Story?</h2>
-                    <p>Enroll in our classes today or consult with our experts to start your study abroad journey.</p>
+                    <h2>{{ app()->getLocale() === 'ja' ? '成功の一部になりませんか？' : 'Ready to Be Part of Our Success Story?' }}</h2>
+                    <p>{{ app()->getLocale() === 'ja' ? '今すぐクラスに登録するか、専門家に相談して留学の旅を始めましょう。' : 'Enroll in our classes today or consult with our experts to start your study abroad journey.' }}</p>
                     <div class="cta-actions">
-                        <a href="{{ route('contact') }}" class="btn btn-cta-primary">Contact Us</a>
+                        <a href="{{ route('contact') }}" class="btn btn-cta-primary">{{ app()->getLocale() === 'ja' ? 'お問い合わせ' : 'Contact Us' }}</a>
                     </div>
                 </div>
             </div>

@@ -69,6 +69,9 @@ class Venture extends Component
 
     public string $highlights_raw = '';
 
+    // Japanese highlights (one per line)
+    public string $highlights_raw_ja = '';
+
     public string $section_title = 'What We Do';
     public string $section_title_ja = '何をするか';
 
@@ -139,6 +142,7 @@ class Venture extends Component
             'long_description' => ['nullable', 'string'],
             'long_description_ja' => ['nullable', 'string'],
             'highlights_raw' => ['nullable', 'string'],
+            'highlights_raw_ja' => ['nullable', 'string'],
             'section_title' => ['nullable', 'string', 'max:100'],
             'section_title_ja' => ['nullable', 'string', 'max:100'],
             'location' => ['nullable', 'string', 'max:150'],
@@ -219,6 +223,7 @@ class Venture extends Component
         $this->long_description = $v->long_description ?? '';
         $this->long_description_ja = $v->long_description_ja ?? '';
         $this->highlights_raw = $v->highlights ? implode("\n", $v->highlights) : '';
+        $this->highlights_raw_ja = $v->highlights_ja ? implode("\n", $v->highlights_ja) : '';
         $this->section_title = $v->section_title ?? 'What We Do';
         $this->section_title_ja = $v->section_title_ja ?? '何をするか';
         $this->location = $v->location ?? '';
@@ -271,6 +276,9 @@ class Venture extends Component
             'long_description_ja' => $this->long_description_ja ?: null,
             'highlights' => $this->highlights_raw
                 ? array_values(array_filter(array_map('trim', explode("\n", $this->highlights_raw))))
+                : null,
+            'highlights_ja' => $this->highlights_raw_ja
+                ? array_values(array_filter(array_map('trim', explode("\n", $this->highlights_raw_ja))))
                 : null,
             'section_title' => $this->section_title ?: 'What We Do',
             'section_title_ja' => $this->section_title_ja ?: null,
@@ -397,6 +405,7 @@ class Venture extends Component
         $this->long_description = '';
         $this->long_description_ja = '';
         $this->highlights_raw = '';
+        $this->highlights_raw_ja = '';
         $this->section_title = 'What We Do';
         $this->section_title_ja = '何をするか';
         $this->location = '';

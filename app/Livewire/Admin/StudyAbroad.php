@@ -207,7 +207,7 @@ class StudyAbroad extends Component
         $this->benefits_title_ja = $destination->benefits_title_ja ?? '';
         $this->benefits_description = $destination->benefits_description ?? '';
         $this->benefits_description_ja = $destination->benefits_description_ja ?? '';
-        $this->benefits = $this->normalizeRows($destination->benefits ?? [], ['icon', 'title', 'description']);
+        $this->benefits = $this->normalizeRows($destination->benefits ?? [], ['icon', 'title', 'title_ja', 'description', 'description_ja']);
         $this->courses = $this->normalizeRows($destination->courses ?? [], ['tag', 'title', 'description']);
         $this->scholarship_text = $destination->scholarship_text ?? '';
         $this->scholarship_text_ja = $destination->scholarship_text_ja ?? '';
@@ -245,7 +245,9 @@ class StudyAbroad extends Component
             'benefits_description_ja' => ['nullable', 'string', 'max:500'],
             'benefits.*.icon' => ['nullable', 'string', 'max:20'],
             'benefits.*.title' => ['nullable', 'string', 'max:120'],
+            'benefits.*.title_ja' => ['nullable', 'string', 'max:120'],
             'benefits.*.description' => ['nullable', 'string', 'max:400'],
+            'benefits.*.description_ja' => ['nullable', 'string', 'max:400'],
             'courses.*.tag' => ['nullable', 'string', 'max:80'],
             'courses.*.title' => ['nullable', 'string', 'max:120'],
             'courses.*.description' => ['nullable', 'string', 'max:400'],
@@ -340,7 +342,7 @@ class StudyAbroad extends Component
 
     public function addBenefit(): void
     {
-        $this->benefits[] = ['icon' => '', 'title' => '', 'description' => ''];
+        $this->benefits[] = ['icon' => '', 'title' => '', 'title_ja' => '', 'description' => '', 'description_ja' => ''];
     }
 
     public function removeBenefit(int $index): void

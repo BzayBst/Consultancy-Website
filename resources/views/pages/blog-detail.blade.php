@@ -60,14 +60,14 @@
                             <p class="bd-excerpt">{{ localized($post, 'excerpt') }}</p>
                         @endif
                         <div class="bd-content">
-                            {!! localized($post, 'content') ?: '<p>Content coming soon.</p>' !!}
+                            {!! localized($post, 'content') ?: (app()->getLocale() === 'ja' ? '<p>コンテンツはまもなく公開されます。</p>' : '<p>Content coming soon.</p>') !!}
                         </div>
                     </div>
                 </article>
 
                 <aside class="bd-sidebar fade-up" style="transition-delay:.1s">
                     <div class="bd-sidebar-card">
-                        <h3>More Articles</h3>
+                        <h3>{{ app()->getLocale() === 'ja' ? 'その他の記事' : 'More Articles' }}</h3>
                         @forelse($otherPosts as $other)
                             <a href="{{ route('blog.show', $other->slug) }}" class="bd-other">
                                 <div class="bd-other-img">
@@ -81,7 +81,7 @@
                                 </div>
                             </a>
                         @empty
-                            <p style="color:#64748b;font-size:13px;line-height:1.6">More articles will appear here as they are published.</p>
+                            <p style="color:#64748b;font-size:13px;line-height:1.6">{{ app()->getLocale() === 'ja' ? '公開され次第、ここに記事が表示されます。' : 'More articles will appear here as they are published.' }}</p>
                         @endforelse
                     </div>
                 </aside>

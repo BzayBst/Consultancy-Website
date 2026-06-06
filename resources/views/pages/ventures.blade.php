@@ -8,20 +8,20 @@
 
 {{-- ===== PAGE HERO ===== --}}
 <x-frontend.page-hero
-    badge="One Family · Many Ventures · Endless Opportunities"
-    title="Growing Together,"
-    highlight="Building Futures"
-    subtitle="Explore the HASU family of ventures — each dedicated to education, language, and opportunity for Nepali students and communities."
-    :breadcrumbs="[['label'=>'Home','url'=>route('home')],['label'=>'Our Ventures']]"
+    badge="{{ app()->getLocale() === 'ja' ? '家族とベンチャー' : 'One Family · Many Ventures · Endless Opportunities' }}"
+    title="{{ app()->getLocale() === 'ja' ? 'ともに成長する' : 'Growing Together,' }}"
+    highlight="{{ app()->getLocale() === 'ja' ? '未来を築く' : 'Building Futures' }}"
+    subtitle="{{ app()->getLocale() === 'ja' ? 'HASUのベンチャー群を紹介します — 教育、語学、そしてネパールの学生と地域への機会に取り組んでいます。' : 'Explore the HASU family of ventures — each dedicated to education, language, and opportunity for Nepali students and communities.' }}"
+    :breadcrumbs="[['label'=> (app()->getLocale() === 'ja' ? 'ホーム' : 'Home'),'url'=>route('home')],['label'=> (app()->getLocale() === 'ja' ? 'ベンチャー' : 'Our Ventures')]]"
 />
 
 {{-- ===== INTRO ===== --}}
 <section id="ventures-intro" class="section">
     <div class="container">
         <div class="ventures-page-intro fade-up">
-            <div class="section-label">Our Business</div>
-            <h2 class="section-title">A Family of Ventures Under One Roof</h2>
-            <p class="section-sub">Beyond education consultancy, HASU operates a growing portfolio of companies united by one mission — empowering people to grow, learn, and succeed at home and abroad.</p>
+            <div class="section-label">{{ app()->getLocale() === 'ja' ? '事業一覧' : 'Our Business' }}</div>
+            <h2 class="section-title">{{ app()->getLocale() === 'ja' ? '一つ屋根の下のベンチャー群' : 'A Family of Ventures Under One Roof' }}</h2>
+            <p class="section-sub">{{ app()->getLocale() === 'ja' ? 'HASUは教育コンサルティングに加え、学習、イベント、その他の分野で人々の成長と成功を支援する複数のベンチャーを運営しています。' : 'Beyond education consultancy, HASU operates a growing portfolio of companies united by one mission — empowering people to grow, learn, and succeed at home and abroad.' }}</p>
         </div>
     </div>
 </section>
@@ -71,7 +71,7 @@
                         </a>
                         @else
                         <a href="{{ route('ventures.show', $featured->slug) }}" class="btn btn-primary">
-                            View Full Details →
+                            {{ app()->getLocale() === 'ja' ? '詳細を見る →' : 'View Full Details →' }}
                         </a>
                         @endif
                         @if(localized($featured, 'secondary_btn_label'))
@@ -94,15 +94,15 @@
     <div class="container">
         <div class="ventures-listing-head fade-up">
             <div>
-                <div class="section-label" style="margin-bottom:8px">Browse All</div>
-                <h2 class="section-title" style="margin-bottom:0;text-align:left">Our Venture Portfolio</h2>
+                <div class="section-label" style="margin-bottom:8px">{{ app()->getLocale() === 'ja' ? 'すべて表示' : 'Browse All' }}</div>
+                <h2 class="section-title" style="margin-bottom:0;text-align:left">{{ app()->getLocale() === 'ja' ? '私たちのベンチャー' : 'Our Venture Portfolio' }}</h2>
             </div>
             <div class="venture-filters" id="ventureFilters">
-                <button class="vf-btn active" data-filter="all">All</button>
-                <button class="vf-btn" data-filter="education">Education</button>
-                <button class="vf-btn" data-filter="language">Language</button>
-                <button class="vf-btn" data-filter="business">Business</button>
-                <button class="vf-btn" data-filter="innovation">Innovation</button>
+                <button class="vf-btn active" data-filter="all">{{ app()->getLocale() === 'ja' ? 'すべて' : 'All' }}</button>
+                <button class="vf-btn" data-filter="education">{{ app()->getLocale() === 'ja' ? '教育' : 'Education' }}</button>
+                <button class="vf-btn" data-filter="language">{{ app()->getLocale() === 'ja' ? '言語' : 'Language' }}</button>
+                <button class="vf-btn" data-filter="business">{{ app()->getLocale() === 'ja' ? 'ビジネス' : 'Business' }}</button>
+                <button class="vf-btn" data-filter="innovation">{{ app()->getLocale() === 'ja' ? 'イノベーション' : 'Innovation' }}</button>
             </div>
         </div>
 
@@ -139,7 +139,7 @@
                 <div class="venture-links">
                     <a href="{{ $venture->primary_btn_url ?? route('ventures.show', $venture->slug) }}"
                        class="venture-link primary">
-                        {{ localized($venture, 'primary_btn_label') ?? 'Learn More →' }}
+                        {{ localized($venture, 'primary_btn_label') ?? (app()->getLocale() === 'ja' ? '詳細を見る →' : 'Learn More →') }}
                     </a>
                     @if(localized($venture, 'secondary_btn_label'))
                     <a href="{{ $venture->secondary_btn_url ?? route('contact') }}"
@@ -159,39 +159,39 @@
 <section id="venture-eco" class="section">
     <div class="container">
         <div class="section-head fade-up">
-            <div class="section-label">How It Works</div>
-            <h2 class="section-title">One Ecosystem, Complete Support</h2>
-            <p class="section-sub">Our ventures don't operate in silos — they work together so every student gets seamless support from language prep to landing abroad.</p>
+            <div class="section-label">{{ app()->getLocale() === 'ja' ? '仕組み' : 'How It Works' }}</div>
+            <h2 class="section-title">{{ app()->getLocale() === 'ja' ? '一つのエコシステム、完全なサポート' : 'One Ecosystem, Complete Support' }}</h2>
+            <p class="section-sub">{{ app()->getLocale() === 'ja' ? 'HASUのベンチャーは連携して動きます。語学準備から海外渡航まで、学生に途切れないサポートを提供します。' : "Our ventures don't operate in silos — they work together so every student gets seamless support from language prep to landing abroad." }}</p>
         </div>
         <div class="venture-eco-grid">
             <div class="eco-card fade-up">
                 <div class="eco-step">01</div>
                 <div class="eco-icon">🗣️</div>
-                <h4>Learn &amp; Prepare</h4>
-                <p>Start at HASU Language Institute — master Japanese, IELTS, or PTE with expert trainers before you apply.</p>
+                <h4>{{ app()->getLocale() === 'ja' ? '学ぶ・準備する' : 'Learn &amp; Prepare' }}</h4>
+                <p>{{ app()->getLocale() === 'ja' ? 'HASU語学研究所で学び、専門の講師とともに日本語やIELTS、PTEを習得しましょう。' : 'Start at HASU Language Institute — master Japanese, IELTS, or PTE with expert trainers before you apply.' }}</p>
             </div>
             <div class="eco-card fade-up" style="transition-delay:.1s">
                 <div class="eco-step">02</div>
                 <div class="eco-icon">🎓</div>
-                <h4>Apply &amp; Place</h4>
-                <p>HASU Educational Consultancy handles university selection, applications, scholarships, and visa processing.</p>
+                <h4>{{ app()->getLocale() === 'ja' ? '出願・配置' : 'Apply &amp; Place' }}</h4>
+                <p>{{ app()->getLocale() === 'ja' ? 'HASU Educational Consultancyが大学選び、出願、奨学金、ビザ手続きを支援します。' : 'HASU Educational Consultancy handles university selection, applications, scholarships, and visa processing.' }}</p>
             </div>
             <div class="eco-card fade-up" style="transition-delay:.2s">
                 <div class="eco-step">03</div>
                 <div class="eco-icon">✈️</div>
-                <h4>Depart &amp; Thrive</h4>
-                <p>Pre-departure briefings, document services, and alumni community keep you supported long after you land.</p>
+                <h4>{{ app()->getLocale() === 'ja' ? '出発・成長' : 'Depart &amp; Thrive' }}</h4>
+                <p>{{ app()->getLocale() === 'ja' ? '出発前の説明、書類サービス、卒業生コミュニティにより、渡航後もサポートが続きます。' : 'Pre-departure briefings, document services, and alumni community keep you supported long after you land.' }}</p>
             </div>
         </div>
     </div>
 </section>
 
 <x-frontend.cta-banner
-    title="Ready to Begin Your Global Journey?"
-    subtitle="Book a free counseling session today — let HASU guide you to the education you deserve."
-    btn-label="Book Free Counseling"
+    title="{{ app()->getLocale() === 'ja' ? 'グローバルな旅を始めませんか？' : 'Ready to Begin Your Global Journey?' }}"
+    subtitle="{{ app()->getLocale() === 'ja' ? '無料カウンセリングを今すぐ予約 — HASUがあなたの学びをサポートします。' : 'Book a free counseling session today — let HASU guide you to the education you deserve.' }}"
+    btn-label="{{ app()->getLocale() === 'ja' ? '無料カウンセリングを予約する' : 'Book Free Counseling' }}"
     btn-link="{{ route('contact') }}"
-    btn2-label="Our Services"
+    btn2-label="{{ app()->getLocale() === 'ja' ? 'サービス' : 'Our Services' }}"
     btn2-link="{{ route('home') }}#services"
 />
 

@@ -170,8 +170,8 @@
         <div class="vd-hero-inner fade-up">
             <div class="vd-hero-content">
                 <div class="breadcrumb">
-                    <a href="{{ route('home') }}">Home</a><span>›</span>
-                    <a href="{{ route('ventures') }}">Our Ventures</a><span>›</span>
+                    <a href="{{ route('home') }}">{{ app()->getLocale() === 'ja' ? 'ホーム' : 'Home' }}</a><span>›</span>
+                    <a href="{{ route('ventures') }}">{{ app()->getLocale() === 'ja' ? 'ベンチャー' : 'Our Ventures' }}</a><span>›</span>
                     <span style="color:rgba(255,255,255,.9)">{{ localized($venture, 'name') }}</span>
                 </div>
                 <div class="vd-hero-brand">
@@ -199,7 +199,7 @@
                         {{ localized($venture, 'primary_btn_label') }}
                     </a>
                     @else
-                    <a href="{{ route('contact') }}" class="btn btn-primary">Book Free Counseling</a>
+                    <a href="{{ route('contact') }}" class="btn btn-primary">{{ app()->getLocale() === 'ja' ? '無料カウンセリングを予約する' : 'Book Free Counseling' }}</a>
                     @endif
                     @if($venture->phone)
                     <a href="tel:{{ $venture->phone }}" class="btn btn-outline vd-btn-outline">
@@ -232,25 +232,25 @@
             @if($venture->location)
             <div class="vd-info-item">
                 <div class="vd-info-icon">📍</div>
-                <div><strong>Location</strong><span>{{ $venture->location }}</span></div>
+                <div><strong>{{ app()->getLocale() === 'ja' ? '所在地' : 'Location' }}</strong><span>{{ $venture->location }}</span></div>
             </div>
             @endif
             @if($venture->established)
             <div class="vd-info-item">
                 <div class="vd-info-icon">📅</div>
-                <div><strong>Established</strong><span>{{ $venture->established }}</span></div>
+                <div><strong>{{ app()->getLocale() === 'ja' ? '創業' : 'Established' }}</strong><span>{{ $venture->established }}</span></div>
             </div>
             @endif
             @if($venture->email)
             <div class="vd-info-item">
                 <div class="vd-info-icon">✉</div>
-                <div><strong>Email</strong><span>{{ $venture->email }}</span></div>
+                <div><strong>{{ app()->getLocale() === 'ja' ? 'メール' : 'Email' }}</strong><span>{{ $venture->email }}</span></div>
             </div>
             @endif
             @if($venture->phone)
             <div class="vd-info-item">
                 <div class="vd-info-icon">📞</div>
-                <div><strong>Contact</strong><span>{{ $venture->phone }}</span></div>
+                <div><strong>{{ app()->getLocale() === 'ja' ? '連絡先' : 'Contact' }}</strong><span>{{ $venture->phone }}</span></div>
             </div>
             @endif
         </div>
@@ -279,7 +279,7 @@
 
                 @if(localized($venture, 'highlights') && count(localized($venture, 'highlights')))
                 <div class="cd-highlights">
-                    <h3>{{ localized($venture, 'section_title') ?? 'What We Do' }}</h3>
+                    <h3>{{ localized($venture, 'section_title') ?? (app()->getLocale() === 'ja' ? '何をするか' : 'What We Do') }}</h3>
                     <ul>
                         @foreach(localized($venture, 'highlights') as $point)
                         <li>{{ $point }}</li>
@@ -297,32 +297,32 @@
                     @if(localized($venture, 'tagline'))
                     <p>{{ localized($venture, 'tagline') }}</p>
                     @else
-                    <p>Get in touch with our team to learn more about this venture.</p>
+                    <p>{{ app()->getLocale() === 'ja' ? 'このベンチャーについて詳しくはチームまでお問い合わせください。' : 'Get in touch with our team to learn more about this venture.' }}</p>
                     @endif
 
                     <ul class="cd-sidebar-info">
                         @if($venture->category)
-                        <li><span>Category</span><strong>{{ ucfirst($venture->category) }}</strong></li>
+                        <li><span>{{ app()->getLocale() === 'ja' ? 'カテゴリ' : 'Category' }}</span><strong>{{ ucfirst($venture->category) }}</strong></li>
                         @endif
                         @if($venture->status)
-                        <li><span>Status</span><strong>{{ $venture->status_label }}</strong></li>
+                        <li><span>{{ app()->getLocale() === 'ja' ? 'ステータス' : 'Status' }}</span><strong>{{ $venture->status_label }}</strong></li>
                         @endif
                         @if($venture->location)
-                        <li><span>📍 Location</span><strong>{{ $venture->location }}</strong></li>
+                        <li><span>{{ app()->getLocale() === 'ja' ? '所在地' : '📍 Location' }}</span><strong>{{ $venture->location }}</strong></li>
                         @endif
                         @if($venture->established)
-                        <li><span>📅 Since</span><strong>{{ $venture->established }}</strong></li>
+                        <li><span>{{ app()->getLocale() === 'ja' ? '設立' : '📅 Since' }}</span><strong>{{ $venture->established }}</strong></li>
                         @endif
                         @if($venture->email)
-                        <li><span>✉ Email</span><strong>{{ $venture->email }}</strong></li>
+                        <li><span>{{ app()->getLocale() === 'ja' ? 'メール' : '✉ Email' }}</span><strong>{{ $venture->email }}</strong></li>
                         @endif
                         @if($venture->phone)
-                        <li><span>📞 Phone</span><strong>{{ $venture->phone }}</strong></li>
+                        <li><span>{{ app()->getLocale() === 'ja' ? '電話' : '📞 Phone' }}</span><strong>{{ $venture->phone }}</strong></li>
                         @endif
                         @if($venture->website_url)
-                        <li><span>🌐 Website</span>
+                        <li><span>{{ app()->getLocale() === 'ja' ? 'ウェブサイト' : '🌐 Website' }}</span>
                             <strong><a href="{{ $venture->website_url }}" target="_blank"
-                                       style="color:#2952e3;text-decoration:none">Visit →</a></strong>
+                                       style="color:#2952e3;text-decoration:none">{{ app()->getLocale() === 'ja' ? '訪問 →' : 'Visit →' }}</a></strong>
                         </li>
                         @endif
                     </ul>
@@ -334,7 +334,7 @@
                     </a>
                     @else
                     <a href="{{ route('contact') }}" class="btn btn-primary btn-block">
-                        Get in Touch
+                        {{ app()->getLocale() === 'ja' ? 'お問い合わせ' : 'Get in Touch' }}
                     </a>
                     @endif
 
@@ -346,12 +346,12 @@
                     @else
                     <a href="tel:{{ setting('general_phone', '+97756493528') }}"
                        class="btn btn-secondary btn-block">
-                        📞 Call Us
+                        {{ app()->getLocale() === 'ja' ? '📞 お電話はこちら' : '📞 Call Us' }}
                     </a>
                     @endif
 
                     <div class="vd-share">
-                        <p>Share this venture</p>
+                        <p>{{ app()->getLocale() === 'ja' ? 'このベンチャーを共有' : 'Share this venture' }}</p>
                         <div class="vd-share-links">
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}"
                                target="_blank" class="vd-share-link" title="Share on Facebook">📘</a>
@@ -373,9 +373,9 @@
 <section id="vd-related">
     <div class="container">
         <div class="section-head fade-up">
-            <div class="section-label">Explore More</div>
-            <h2 class="section-title">Other HASU Ventures</h2>
-            <p class="section-sub">Discover how our family of ventures works together to support your complete journey.</p>
+            <div class="section-label">{{ app()->getLocale() === 'ja' ? 'もっと見る' : 'Explore More' }}</div>
+            <h2 class="section-title">{{ app()->getLocale() === 'ja' ? 'その他のHASUベンチャー' : 'Other HASU Ventures' }}</h2>
+            <p class="section-sub">{{ app()->getLocale() === 'ja' ? '私たちのベンチャー群があなたの留学をどのように支えるかをご覧ください。' : 'Discover how our family of ventures works together to support your complete journey.' }}</p>
         </div>
         <div class="vd-related-grid">
             @foreach($otherVentures as $i => $other)
@@ -389,12 +389,12 @@
                 @if(localized($other, 'description'))
                 <p>{{ Str::limit(localized($other, 'description'), 80) }}</p>
                 @endif
-                <span class="vd-related-link">View Venture →</span>
+                <span class="vd-related-link">{{ app()->getLocale() === 'ja' ? 'ベンチャーを見る →' : 'View Venture →' }}</span>
             </a>
             @endforeach
         </div>
         <div class="vd-back-wrap fade-up">
-            <a href="{{ route('ventures') }}" class="btn btn-secondary">← Back to All Ventures</a>
+            <a href="{{ route('ventures') }}" class="btn btn-secondary">{{ app()->getLocale() === 'ja' ? '← すべてのベンチャーに戻る' : '← Back to All Ventures' }}</a>
         </div>
     </div>
 </section>

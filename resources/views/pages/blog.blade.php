@@ -25,10 +25,10 @@
 
 @section('content')
     <x-frontend.page-hero
-        badge="News & Insights"
-        title="Blog Section"
-        highlight="Blog"
-        subtitle="Stay updated with the best study abroad tips, scholarship guides, and updates from HASU Educational Consultancy."
+        badge="{{ app()->getLocale() === 'ja' ? 'ニュースとインサイト' : 'News & Insights' }}"
+        title="{{ app()->getLocale() === 'ja' ? 'ブログ' : 'Blog Section' }}"
+        highlight="{{ app()->getLocale() === 'ja' ? 'ブログ' : 'Blog' }}"
+        subtitle="{{ app()->getLocale() === 'ja' ? 'HASU教育コンサルティングからの留学のヒント、奨学金ガイド、および最新情報を入手してください。' : 'Stay updated with the best study abroad tips, scholarship guides, and updates from HASU Educational Consultancy.' }}"
         :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'Blogs']]"
     />
 
@@ -36,8 +36,8 @@
         <div class="container">
             <div class="courses-listing-head fade-up">
                 <div>
-                    <div class="section-label" style="margin-bottom:8px">Latest Articles</div>
-                    <h2 class="section-title" style="margin-bottom:0;text-align:left">Read Our Insights</h2>
+                    <div class="section-label" style="margin-bottom:8px">{{ app()->getLocale() === 'ja' ? '最新の記事' : 'Latest Articles' }}</div>
+                    <h2 class="section-title" style="margin-bottom:0;text-align:left">{{ app()->getLocale() === 'ja' ? 'インサイトを読む' : 'Read Our Insights' }}</h2>
                 </div>
             </div>
 
@@ -62,13 +62,13 @@
                         @if(localized($post, 'excerpt'))
                             <p class="blog-excerpt">{{ localized($post, 'excerpt') }}</p>
                         @endif
-                        <span class="blog-read-more">Read Full Article</span>
+                        <span class="blog-read-more">{{ app()->getLocale() === 'ja' ? '続きを読む' : 'Read Full Article' }}</span>
                     </div>
                 </a>
                 @empty
                 <div class="blog-empty">
-                    <strong>No blog posts added yet.</strong>
-                    <span>Posts added from the CMS will appear here automatically.</span>
+                    <strong>{{ app()->getLocale() === 'ja' ? 'まだブログ投稿が追加されていません。' : 'No blog posts added yet.' }}</strong>
+                    <span>{{ app()->getLocale() === 'ja' ? 'CMSから追加された投稿はここに自動的に表示されます。' : 'Posts added from the CMS will appear here automatically.' }}</span>
                 </div>
                 @endforelse
             </div>
