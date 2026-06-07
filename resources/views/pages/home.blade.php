@@ -10,59 +10,15 @@
 <x-frontend.hero />
 
 {{-- ===== ABOUT THE COMPANY ===== --}}
-{{-- <section id="about" class="section">
-  <div class="container">
-    <div class="about-inner">
-
-      <div class="about-img-wrap fade-up">
-        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b6175?w=700&q=80" alt="About HASU">
-        <div class="about-exp-badge">
-          <strong>{{ setting('general_established') ? (date('Y') - (int)setting('general_established')) : '11' }}</strong>
-          <span>Years of Experience</span>
-        </div>
-      </div>
-
-      <div class="about-content fade-up" style="transition-delay:.15s">
-        <div class="section-label">About The Company</div>
-        <h2 class="section-title">Your Trusted Partner in Global Education</h2>
-        <p>Established in {{ setting('general_established', '2013') }} and officially registered in 2015, HASU International Educational Pvt. Ltd. is the best educational consultancy in Bhairahawa. We guide Nepali students to higher education opportunities in Japan, Australia, Canada, the US, UK, and New Zealand through comprehensive counseling and application support.</p>
-        <p>We specialize in Japanese language prep (NAT, JLPT, J-TEST), English exams (IELTS, PTE), and full visa processing — ensuring a smooth journey from planning to placement.</p>
-        <div class="about-badges">
-          <div class="about-badge"><div class="icon">🏅</div><span>Best Immigration Resources</span></div>
-          <div class="about-badge"><div class="icon">🛂</div><span>Visa Assistance</span></div>
-        </div>
-        <ul class="about-perks">
-          <li>Offer 100% Genuine Assistance</li>
-          <li>It's Faster &amp; Reliable Execution</li>
-          <li>Accurate &amp; Expert Advice</li>
-        </ul>
-        <div class="about-contact">
-          <div class="phone-icon">📞</div>
-          <div>
-            <strong>
-              {{ setting('contact_phone_landline', '056-493528') }}
-              @if(setting('contact_phone_primary'))  | {{ setting('contact_phone_primary') }}  @endif
-              @if(setting('contact_phone_secondary')) | {{ setting('contact_phone_secondary') }} @endif
-            </strong>
-            <span>Have any questions? Call us anytime</span>
-          </div>
-        </div>
-        <br>
-        <a href="{{ route('about') }}" class="btn btn-primary">Know More</a>
-      </div>
-
-    </div>
-  </div>
-</section> --}}
 <x-frontend.home-about />
 
 {{-- ===== OUR VENTURES ===== --}}
 <section id="ventures">
   <div class="container">
     <div class="ventures-intro fade-up">
-      <div class="section-label">Our Business</div>
-      <h2 class="section-title">Our Ventures</h2>
-      <p class="section-sub">Beyond education consultancy, we run a family of ventures united by one mission - empowering people to grow, learn, and succeed.</p>
+      <div class="section-label">{{ __('Our Business') }}</div>
+      <h2 class="section-title">{{ __('Our Ventures') }}</h2>
+      <p class="section-sub">{{ __('Beyond education consultancy, we run a family of ventures united by one mission - empowering people to grow, learn, and succeed.') }}</p>
     </div>
     <div class="ventures-grid">
       @forelse($ventures as $i => $venture)
@@ -86,14 +42,15 @@
           @endif
         </div>
         <div class="venture-links">
-          <a href="{{ $venture->primary_btn_url ?: route('ventures.show', $venture->slug) }}" class="venture-link primary">{{ localized($venture, 'primary_btn_label') ?: 'Learn More' }}</a>
-          {{-- <a href="{{ $venture->secondary_btn_url ?: route('contact') }}" class="venture-link outline">{{ $venture->secondary_btn_label ?: 'Contact' }}</a> --}}
+          <a href="{{ $venture->primary_btn_url ?: route('ventures.show', $venture->slug) }}" class="venture-link primary">
+            {{ localized($venture, 'primary_btn_label') ?: __('Learn More') }}
+          </a>
         </div>
       </div>
       @empty
       <div class="sa-empty">
-        <strong>No ventures added yet.</strong>
-        <span>Ventures added from the CMS will appear here automatically.</span>
+        <strong>{{ __('No ventures added yet.') }}</strong>
+        <span>{{ __('Ventures added from the CMS will appear here automatically.') }}</span>
       </div>
       @endforelse
     </div>
@@ -105,8 +62,8 @@
 <section id="services" class="section">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">{{ localized($homeServices, 'section_label') ?: 'What We Offer' }}</div>
-      <h2 class="section-title">{{ localized($homeServices, 'section_title') ?: 'Our Core Services' }}</h2>
+      <div class="section-label">{{ localized($homeServices, 'section_label') ?: __('What We Offer') }}</div>
+      <h2 class="section-title">{{ localized($homeServices, 'section_title') ?: __('Our Core Services') }}</h2>
       @if(localized($homeServices, 'section_subtitle'))
         <p class="section-sub">{{ localized($homeServices, 'section_subtitle') }}</p>
       @endif
@@ -125,9 +82,6 @@
           @if(! empty($service['description']))
             <p>{{ $service['description'] }}</p>
           @endif
-          {{-- @if(! empty($service['link_label']) && ! empty($service['link_url']))
-            <a href="{{ $service['link_url'] }}" class="read-more">{{ $service['link_label'] }}</a>
-          @endif --}}
         </div>
         @endif
       @endforeach
@@ -140,9 +94,9 @@
 <section id="courses" class="section" style="background:#fff">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">{{ localized($coursePage, 'catalog_label') ?: 'Check Our Course' }}</div>
-      <h2 class="section-title">{{ localized($coursePage, 'catalog_title') ?: 'Popular Language & Test Prep Courses' }}</h2>
-      <p class="section-sub">{{ localized($coursePage, 'intro_subtitle') ?: 'Prepare for your future with internationally recognized language and aptitude certifications.' }}</p>
+      <div class="section-label">{{ localized($coursePage, 'catalog_label') ?: __('Check Our Course') }}</div>
+      <h2 class="section-title">{{ localized($coursePage, 'catalog_title') ?: __('Popular Language & Test Prep Courses') }}</h2>
+      <p class="section-sub">{{ localized($coursePage, 'intro_subtitle') ?: __('Prepare for your future with internationally recognized language and aptitude certifications.') }}</p>
     </div>
     <div class="courses-grid">
       @forelse($courses as $i => $course)
@@ -160,17 +114,17 @@
           @if(localized($course, 'excerpt'))
             <p>{{ localized($course, 'excerpt') }}</p>
           @endif
-          <span class="course-card-cta">View Course</span>
+          <span class="course-card-cta">{{ __('View Course') }}</span>
         </div>
       </a>
       @empty
       <div class="sa-empty">
-        <strong>No courses added yet.</strong>
-        <span>Courses added from the CMS will appear here automatically.</span>
+        <strong>{{ __('No courses added yet.') }}</strong>
+        <span>{{ __('Courses added from the CMS will appear here automatically.') }}</span>
       </div>
       @endforelse
     </div>
-    <div class="courses-cta"><a href="{{ route('courses') }}" class="btn btn-primary">More Courses</a></div>
+    <div class="courses-cta"><a href="{{ route('courses') }}" class="btn btn-primary">{{ __('More Courses') }}</a></div>
   </div>
 </section>
 
@@ -178,21 +132,21 @@
 <section id="study-abroad" class="section">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">{{ localized($studyAbroadPage, 'section_label') ?: 'Study Abroad' }}</div>
-      <h2 class="section-title">{{ localized($studyAbroadPage, 'section_title') ?: 'Choose Your Dream Destination' }}</h2>
-      <p class="section-sub">{{ localized($studyAbroadPage, 'hero_subtitle') ?: 'We assist students in pursuing world-class education across the globe with expert guidance at every step.' }}</p>
+      <div class="section-label">{{ localized($studyAbroadPage, 'section_label') ?: __('Study Abroad') }}</div>
+      <h2 class="section-title">{{ localized($studyAbroadPage, 'section_title') ?: __('Choose Your Dream Destination') }}</h2>
+      <p class="section-sub">{{ localized($studyAbroadPage, 'hero_subtitle') ?: __('We assist students in pursuing world-class education across the globe with expert guidance at every step.') }}</p>
     </div>
     <div class="countries-grid">
       @forelse($destinations as $i => $destination)
       <a href="{{ route('study-abroad-detail', $destination->slug) }}" class="country-card fade-up" @if($i > 0) style="transition-delay:{{ round($i * .1, 2) }}s" @endif>
         @if($destination->card_image_url)
-          <img src="{{ $destination->card_image_url }}" alt="{{ localized($destination, 'card_title') ?: 'Study in ' . $destination->country }}">
+          <img src="{{ $destination->card_image_url }}" alt="{{ localized($destination, 'card_title') ?: __('Study in') . ' ' . $destination->country }}">
         @endif
         <div class="country-overlay">
           @if($destination->flag)
             <div class="country-flag">{{ $destination->flag }}</div>
           @endif
-          <h4>{{ localized($destination, 'card_title') ?: 'Study in ' . $destination->country }}</h4>
+          <h4>{{ localized($destination, 'card_title') ?: __('Study in') . ' ' . $destination->country }}</h4>
           @if(localized($destination, 'card_description'))
             <span>{{ \Illuminate\Support\Str::limit(localized($destination, 'card_description'), 70) }}</span>
           @endif
@@ -200,12 +154,12 @@
       </a>
       @empty
       <div class="sa-empty">
-        <strong>No destinations added yet.</strong>
-        <span>Study abroad destinations added from the CMS will appear here automatically.</span>
+        <strong>{{ __('No destinations added yet.') }}</strong>
+        <span>{{ __('Study abroad destinations added from the CMS will appear here automatically.') }}</span>
       </div>
       @endforelse
     </div>
-    <div class="study-cta"><a href="{{ route('study-abroad') }}" class="btn btn-secondary">More Countries</a></div>
+    <div class="study-cta"><a href="{{ route('study-abroad') }}" class="btn btn-secondary">{{ __('More Countries') }}</a></div>
   </div>
 </section>
 
@@ -216,11 +170,10 @@
   if (app()->getLocale() !== 'en' && is_array($homeTestimonials->testimonials_ja) && count($homeTestimonials->testimonials_ja)) {
       $testimonialsToShow = collect($homeTestimonials->testimonials)->map(function ($testimonial, $index) use ($homeTestimonials) {
           $testimonialJa = $homeTestimonials->testimonials_ja[$index] ?? [];
-
           return [
-              'quote' => filled($testimonialJa['quote'] ?? '') ? $testimonialJa['quote'] : ($testimonial['quote'] ?? ''),
-              'name' => filled($testimonialJa['name'] ?? '') ? $testimonialJa['name'] : ($testimonial['name'] ?? ''),
-              'role' => filled($testimonialJa['role'] ?? '') ? $testimonialJa['role'] : ($testimonial['role'] ?? ''),
+              'quote'  => filled($testimonialJa['quote']  ?? '') ? $testimonialJa['quote']  : ($testimonial['quote']  ?? ''),
+              'name'   => filled($testimonialJa['name']   ?? '') ? $testimonialJa['name']   : ($testimonial['name']   ?? ''),
+              'role'   => filled($testimonialJa['role']   ?? '') ? $testimonialJa['role']   : ($testimonial['role']   ?? ''),
               'avatar' => $testimonial['avatar'] ?? '',
               'rating' => $testimonial['rating'] ?? 5,
           ];
@@ -230,8 +183,8 @@
 <section id="testimonials" class="section testimonials-slider-section">
   <div class="container">
     <div class="section-head test-head fade-up">
-      <div class="section-label">{{ localized($homeTestimonials, 'section_label') ?: 'Testimonials And Success Stories' }}</div>
-      <h2 class="section-title">{{ localized($homeTestimonials, 'section_title') ?: 'What Our Students Say' }}</h2>
+      <div class="section-label">{{ localized($homeTestimonials, 'section_label') ?: __('Testimonials And Success Stories') }}</div>
+      <h2 class="section-title">{{ localized($homeTestimonials, 'section_title') ?: __('What Our Students Say') }}</h2>
       @if(localized($homeTestimonials, 'section_subtitle'))
         <p class="section-sub">{{ localized($homeTestimonials, 'section_subtitle') }}</p>
       @endif
@@ -259,14 +212,14 @@
         </div>
       </div>
       <div class="test-slider-controls">
-        <button type="button" class="test-arrow test-prev" id="testPrev" aria-label="Previous testimonial">←</button>
+        <button type="button" class="test-arrow test-prev" id="testPrev" aria-label="{{ __('Previous testimonial') }}">←</button>
         <div class="test-dots" id="testDots">
           @foreach($testimonialsToShow as $t)
             <button type="button" class="test-dot {{ $loop->first ? 'active' : '' }}"
-                    data-slide="{{ $loop->index }}" aria-label="Testimonial {{ $loop->iteration }}"></button>
+                    data-slide="{{ $loop->index }}" aria-label="{{ __('Testimonial') }} {{ $loop->iteration }}"></button>
           @endforeach
         </div>
-        <button type="button" class="test-arrow test-next" id="testNext" aria-label="Next testimonial">→</button>
+        <button type="button" class="test-arrow test-next" id="testNext" aria-label="{{ __('Next testimonial') }}">→</button>
       </div>
     </div>
   </div>
@@ -277,8 +230,16 @@
 <section id="events" class="section">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">{{ $eventSection['section_label'] ?? 'Latest Events' }}</div>
-      <h2 class="section-title">{{ $eventSection['title'] ?? 'Upcoming & Recent Events' }}</h2>
+      <div class="section-label">
+        {{ (app()->getLocale() !== 'en' && ! empty($eventSection['section_label_ja']))
+            ? $eventSection['section_label_ja']
+            : ($eventSection['section_label'] ?? __('Latest Events')) }}
+      </div>
+      <h2 class="section-title">
+        {{ (app()->getLocale() !== 'en' && ! empty($eventSection['title_ja']))
+            ? $eventSection['title_ja']
+            : ($eventSection['title'] ?? __('Upcoming & Recent Events')) }}
+      </h2>
     </div>
     @if($featuredEvent || $events->isNotEmpty())
     <div class="events-grid">
@@ -290,16 +251,20 @@
           <h3>{{ localized($featuredEvent, 'title') }}</h3>
           <ul class="event-meta">
             @if($featuredEvent->event_date)
-              <li><span>Date</span> {{ $featuredEvent->event_date->format('d M Y') }}</li>
+              <li><span>{{ __('Date') }}</span> {{ $featuredEvent->event_date->format('d M Y') }}</li>
             @endif
             @if(localized($featuredEvent, 'location'))
-              <li><span>Place</span> {{ localized($featuredEvent, 'location') }}</li>
+              <li><span>{{ __('Place') }}</span> {{ localized($featuredEvent, 'location') }}</li>
             @endif
             @if(localized($featuredEvent, 'organizer'))
-              <li><span>Host</span> {{ localized($featuredEvent, 'organizer') }}</li>
+              <li><span>{{ __('Host') }}</span> {{ localized($featuredEvent, 'organizer') }}</li>
             @endif
           </ul>
-          <a href="{{ $featuredEvent->learn_more_url ?: route('events.show', $featuredEvent) }}" @if($featuredEvent->learn_more_url) target="_blank" rel="noopener" @endif class="btn btn-secondary" style="font-size:13px;padding:9px 20px">Learn More</a>
+          <a href="{{ $featuredEvent->learn_more_url ?: route('events.show', $featuredEvent) }}"
+             @if($featuredEvent->learn_more_url) target="_blank" rel="noopener" @endif
+             class="btn btn-secondary" style="font-size:13px;padding:9px 20px">
+            {{ __('Learn More') }}
+          </a>
         </div>
       </div>
       @endif
@@ -311,7 +276,13 @@
             <span>{{ $event->event_date?->format('M') }}</span>
           </div>
           <div class="event-info">
-            <h4><a href="{{ $event->learn_more_url ?: route('events.show', $event) }}" @if($event->learn_more_url) target="_blank" rel="noopener" @endif style="color:inherit;text-decoration:none">{{ localized($event, 'title') }}</a></h4>
+            <h4>
+              <a href="{{ $event->learn_more_url ?: route('events.show', $event) }}"
+                 @if($event->learn_more_url) target="_blank" rel="noopener" @endif
+                 style="color:inherit;text-decoration:none">
+                {{ localized($event, 'title') }}
+              </a>
+            </h4>
             @if(localized($event, 'description'))
               <p>{{ \Illuminate\Support\Str::limit(localized($event, 'description'), 100) }}</p>
             @endif
@@ -320,8 +291,8 @@
         @empty
           @unless($featuredEvent)
           <div class="sa-empty">
-            <strong>No events added yet.</strong>
-            <span>Events added from the CMS will appear here automatically.</span>
+            <strong>{{ __('No events added yet.') }}</strong>
+            <span>{{ __('Events added from the CMS will appear here automatically.') }}</span>
           </div>
           @endunless
         @endforelse
@@ -329,11 +300,11 @@
     </div>
     @else
     <div class="sa-empty fade-up">
-      <strong>No events added yet.</strong>
-      <span>Events added from the CMS will appear here automatically.</span>
+      <strong>{{ __('No events added yet.') }}</strong>
+      <span>{{ __('Events added from the CMS will appear here automatically.') }}</span>
     </div>
     @endif
-    <div class="events-cta"><a href="{{ route('events') }}" class="btn btn-primary">More Events</a></div>
+    <div class="events-cta"><a href="{{ route('events') }}" class="btn btn-primary">{{ __('More Events') }}</a></div>
   </div>
 </section>
 
@@ -341,9 +312,9 @@
 <section id="blog" class="section">
   <div class="container">
     <div class="section-head fade-up">
-      <div class="section-label">Latest Blog Posts</div>
-      <h2 class="section-title">News & Insights</h2>
-      <p class="section-sub">Stay informed with the latest updates on study abroad, visa rules, and exam tips.</p>
+      <div class="section-label">{{ __('Latest Blog Posts') }}</div>
+      <h2 class="section-title">{{ __('News & Insights') }}</h2>
+      <p class="section-sub">{{ __('Stay informed with the latest updates on study abroad, visa rules, and exam tips.') }}</p>
     </div>
     <div class="blog-grid">
       @forelse($latestBlogPosts as $i => $blog)
@@ -364,48 +335,54 @@
           @if(localized($blog, 'excerpt'))
             <p>{{ localized($blog, 'excerpt') }}</p>
           @endif
-          <a href="{{ route('blog.show', $blog->slug) }}" class="blog-link">Learn More</a>
+          <a href="{{ route('blog.show', $blog->slug) }}" class="blog-link">{{ __('Learn More') }}</a>
         </div>
       </div>
       @empty
       <div class="sa-empty">
-        <strong>No blog posts added yet.</strong>
-        <span>Posts added from the CMS will appear here automatically.</span>
+        <strong>{{ __('No blog posts added yet.') }}</strong>
+        <span>{{ __('Posts added from the CMS will appear here automatically.') }}</span>
       </div>
       @endforelse
     </div>
-    <div class="blog-cta"><a href="{{ route('blog') }}" class="btn btn-secondary">More Blogs</a></div>
+    <div class="blog-cta"><a href="{{ route('blog') }}" class="btn btn-secondary">{{ __('More Blogs') }}</a></div>
   </div>
 </section>
 
 {{-- ===== CTA BANNER ===== --}}
 <x-frontend.cta-banner
-    title="Reach Out to Our Consultant Now"
-    subtitle="Free counseling sessions available — take the first step toward your dream education abroad."
-    btn-label="Book Free Counseling"
+    title="{{ __('Reach Out to Our Consultant Now') }}"
+    subtitle="{{ __('Free counseling sessions available — take the first step toward your dream education abroad.') }}"
+    btn-label="{{ __('Book Free Counseling') }}"
     btn-link="#"
-    btn2-label="Learn More"
+    btn2-label="{{ __('Learn More') }}"
     btn2-link="{{ route('about') }}"
 />
 
 @if(($homePopupBanners ?? collect())->isNotEmpty())
 <div class="home-popup" id="homePopup" aria-hidden="true">
   <div class="home-popup-backdrop" data-popup-close></div>
-  <div class="home-popup-dialog" role="dialog" aria-modal="true" aria-label="Home page announcement">
-    <button type="button" class="home-popup-close" data-popup-close aria-label="Close popup">x</button>
+  <div class="home-popup-dialog" role="dialog" aria-modal="true" aria-label="{{ __('Home page announcement') }}">
+    <button type="button" class="home-popup-close" data-popup-close aria-label="{{ __('Close popup') }}">x</button>
     <div class="home-popup-frame">
       @foreach($homePopupBanners as $banner)
-        <a href="{{ $banner->link_url ?: '#' }}" class="home-popup-slide {{ $loop->first ? 'active' : '' }}" data-popup-slide="{{ $loop->index }}" @if($banner->link_url) target="_blank" rel="noopener" @else onclick="return false" @endif>
-          <img src="{{ $banner->image_url }}" alt="{{ localized($banner, 'title') ?: 'Announcement banner' }}">
+        <a href="{{ $banner->link_url ?: '#' }}"
+           class="home-popup-slide {{ $loop->first ? 'active' : '' }}"
+           data-popup-slide="{{ $loop->index }}"
+           @if($banner->link_url) target="_blank" rel="noopener" @else onclick="return false" @endif>
+          <img src="{{ $banner->image_url }}" alt="{{ localized($banner, 'title') ?: __('Announcement banner') }}">
         </a>
       @endforeach
     </div>
     @if($homePopupBanners->count() > 1)
-      <button type="button" class="home-popup-nav prev" id="homePopupPrev" aria-label="Previous banner">‹</button>
-      <button type="button" class="home-popup-nav next" id="homePopupNext" aria-label="Next banner">›</button>
+      <button type="button" class="home-popup-nav prev" id="homePopupPrev" aria-label="{{ __('Previous banner') }}">‹</button>
+      <button type="button" class="home-popup-nav next" id="homePopupNext" aria-label="{{ __('Next banner') }}">›</button>
       <div class="home-popup-dots">
         @foreach($homePopupBanners as $banner)
-          <button type="button" class="{{ $loop->first ? 'active' : '' }}" data-popup-dot="{{ $loop->index }}" aria-label="Show banner {{ $loop->iteration }}"></button>
+          <button type="button"
+                  class="{{ $loop->first ? 'active' : '' }}"
+                  data-popup-dot="{{ $loop->index }}"
+                  aria-label="{{ __('Show banner') }} {{ $loop->iteration }}"></button>
         @endforeach
       </div>
     @endif

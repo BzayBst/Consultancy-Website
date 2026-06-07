@@ -49,6 +49,7 @@ class StudyAbroad extends Component
     public string $slug = '';
     public string $flag = '';
     public string $card_tag = '';
+    public string $card_tag_ja = '';
     public string $card_title = '';
     public string $card_title_ja = '';
     public string $card_description = '';
@@ -197,6 +198,7 @@ class StudyAbroad extends Component
         $this->slug = $destination->slug;
         $this->flag = $destination->flag ?? '';
         $this->card_tag = $destination->card_tag ?? '';
+        $this->card_tag_ja = $destination->card_tag_ja ?? '';
         $this->card_title = $destination->card_title ?? '';
         $this->card_title_ja = $destination->card_title_ja ?? '';
         $this->card_description = $destination->card_description ?? '';
@@ -208,12 +210,12 @@ class StudyAbroad extends Component
         $this->benefits_description = $destination->benefits_description ?? '';
         $this->benefits_description_ja = $destination->benefits_description_ja ?? '';
         $this->benefits = $this->normalizeRows($destination->benefits ?? [], ['icon', 'title', 'title_ja', 'description', 'description_ja']);
-        $this->courses = $this->normalizeRows($destination->courses ?? [], ['tag', 'title', 'description']);
+        $this->courses = $this->normalizeRows($destination->courses ?? [], ['tag', 'tag_ja', 'title', 'title_ja', 'description', 'description_ja']);
         $this->scholarship_text = $destination->scholarship_text ?? '';
         $this->scholarship_text_ja = $destination->scholarship_text_ja ?? '';
-        $this->cities = $this->normalizeRows($destination->cities ?? [], ['title', 'description', 'image']);
-        $this->universities = $this->normalizeRows($destination->universities ?? [], ['name', 'logo']);
-        $this->faqs = $this->normalizeRows($destination->faqs ?? [], ['question', 'answer']);
+        $this->cities = $this->normalizeRows($destination->cities ?? [], ['title', 'title_ja', 'description', 'description_ja', 'image']);
+        $this->universities = $this->normalizeRows($destination->universities ?? [], ['name', 'name_ja', 'logo']);
+        $this->faqs = $this->normalizeRows($destination->faqs ?? [], ['question', 'question_ja', 'answer', 'answer_ja']);
         $this->sort_order = $destination->sort_order;
         $this->is_active = $destination->is_active;
         $this->card_image_current = $destination->card_image;
@@ -233,6 +235,7 @@ class StudyAbroad extends Component
             'slug' => ['nullable', 'string', 'max:140'],
             'flag' => ['nullable', 'string', 'max:20'],
             'card_tag' => ['nullable', 'string', 'max:120'],
+            'card_tag_ja' => ['nullable', 'string', 'max:120'],
             'card_title' => ['nullable', 'string', 'max:160'],
             'card_title_ja' => ['nullable', 'string', 'max:160'],
             'card_description' => ['nullable', 'string', 'max:500'],
@@ -249,19 +252,27 @@ class StudyAbroad extends Component
             'benefits.*.description' => ['nullable', 'string', 'max:400'],
             'benefits.*.description_ja' => ['nullable', 'string', 'max:400'],
             'courses.*.tag' => ['nullable', 'string', 'max:80'],
+            'courses.*.tag_ja' => ['nullable', 'string', 'max:80'],
             'courses.*.title' => ['nullable', 'string', 'max:120'],
+            'courses.*.title_ja' => ['nullable', 'string', 'max:120'],
             'courses.*.description' => ['nullable', 'string', 'max:400'],
+            'courses.*.description_ja' => ['nullable', 'string', 'max:400'],
             'scholarship_text' => ['nullable', 'string', 'max:1000'],
             'scholarship_text_ja' => ['nullable', 'string', 'max:1000'],
             'cities.*.title' => ['nullable', 'string', 'max:120'],
+            'cities.*.title_ja' => ['nullable', 'string', 'max:120'],
             'cities.*.description' => ['nullable', 'string', 'max:400'],
+            'cities.*.description_ja' => ['nullable', 'string', 'max:400'],
             'cities.*.image' => ['nullable', 'string', 'max:500'],
             'cityImageUploads.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
             'universities.*.name' => ['nullable', 'string', 'max:160'],
+            'universities.*.name_ja' => ['nullable', 'string', 'max:160'],
             'universities.*.logo' => ['nullable', 'string', 'max:500'],
             'universityLogoUploads.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:3072'],
             'faqs.*.question' => ['nullable', 'string', 'max:220'],
+            'faqs.*.question_ja' => ['nullable', 'string', 'max:220'],
             'faqs.*.answer' => ['nullable', 'string', 'max:800'],
+            'faqs.*.answer_ja' => ['nullable', 'string', 'max:800'],
             'sort_order' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],
             'card_image_upload' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
@@ -302,6 +313,7 @@ class StudyAbroad extends Component
             'slug' => $slug,
             'flag' => $this->flag ?: null,
             'card_tag' => $this->card_tag ?: null,
+            'card_tag_ja' => $this->card_tag_ja ?: null,
             'card_title' => $this->card_title ?: 'Study in ' . $this->country,
             'card_title_ja' => $this->card_title_ja ?: null,
             'card_description' => $this->card_description ?: null,
@@ -353,7 +365,7 @@ class StudyAbroad extends Component
 
     public function addCourse(): void
     {
-        $this->courses[] = ['tag' => '', 'title' => '', 'description' => ''];
+        $this->courses[] = ['tag' => '', 'tag_ja' => '', 'title' => '', 'title_ja' => '', 'description' => '', 'description_ja' => ''];
     }
 
     public function removeCourse(int $index): void
@@ -364,7 +376,7 @@ class StudyAbroad extends Component
 
     public function addCity(): void
     {
-        $this->cities[] = ['title' => '', 'description' => '', 'image' => ''];
+        $this->cities[] = ['title' => '', 'title_ja' => '', 'description' => '', 'description_ja' => '', 'image' => ''];
     }
 
     public function removeCity(int $index): void
@@ -377,7 +389,7 @@ class StudyAbroad extends Component
 
     public function addUniversity(): void
     {
-        $this->universities[] = ['name' => '', 'logo' => ''];
+        $this->universities[] = ['name' => '', 'name_ja' => '', 'logo' => ''];
     }
 
     public function removeUniversity(int $index): void
@@ -390,7 +402,7 @@ class StudyAbroad extends Component
 
     public function addFaq(): void
     {
-        $this->faqs[] = ['question' => '', 'answer' => ''];
+        $this->faqs[] = ['question' => '', 'question_ja' => '', 'answer' => '', 'answer_ja' => ''];
     }
 
     public function removeFaq(int $index): void
@@ -456,6 +468,7 @@ class StudyAbroad extends Component
         $this->slug = '';
         $this->flag = '';
         $this->card_tag = '';
+        $this->card_tag_ja = '';
         $this->card_title = '';
         $this->card_title_ja = '';
         $this->card_description = '';

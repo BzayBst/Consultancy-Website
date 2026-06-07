@@ -102,11 +102,17 @@
                     <label>Section Label</label>
                     <input type="text" wire:model.live="section_label" placeholder="LATEST EVENTS">
                     @error('section_label') <span class="fe">{{ $message }}</span> @enderror
+                    <small class="form-optional">日本語 (Japanese)</small>
+                    <input type="text" wire:model.live="section_label_ja" placeholder="最新イベント">
+                    @error('section_label_ja') <span class="fe">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group">
                     <label>Title <span class="req">*</span></label>
                     <input type="text" wire:model.live="title" placeholder="Upcoming &amp; Recent Events">
                     @error('title') <span class="fe">{{ $message }}</span> @enderror
+                    <small class="form-optional">日本語 (Japanese)</small>
+                    <input type="text" wire:model.live="title_ja" placeholder="今後のイベント・最近のイベント">
+                    @error('title_ja') <span class="fe">{{ $message }}</span> @enderror
                 </div>
             </div>
         </div>
@@ -247,7 +253,6 @@
                 </div>
                 <div class="ev-list-actions">
                     @if(! $event->trashed())
-                       
                         <button wire:click="toggleFeatured({{ $event->id }})"
                                 class="ev-btn-feat {{ $event->is_featured?'active':'' }}"
                                 title="{{ $event->is_featured?'Remove featured':'Set as featured' }}">
@@ -341,17 +346,23 @@
 
                 <form wire:submit="save" id="eventForm">
 
-                    {{-- ── TAB: Basic Info ── --}}
+                    {{-- ══ TAB: Basic Info ══ --}}
                     <div id="mtab-basic" class="mtab-panel active">
                         <div class="ev-grid-2">
 
+                            {{-- Title --}}
                             <div class="form-group ev-full">
                                 <label>Event Title <span class="req">*</span></label>
                                 <input type="text" wire:model.live="ev_title"
                                        placeholder="e.g. Free IELTS Seminar – Bhairahawa">
                                 @error('ev_title') <span class="fe">{{ $message }}</span> @enderror
+                                <small class="form-optional">日本語 (Japanese)</small>
+                                <input type="text" wire:model.live="ev_title_ja"
+                                       placeholder="例: 無料IELTSセミナー – バイラワ">
+                                @error('ev_title_ja') <span class="fe">{{ $message }}</span> @enderror
                             </div>
 
+                            {{-- Short Description --}}
                             <div class="form-group ev-full">
                                 <label>Short Description
                                     <span class="form-hint-inline">— shown in event list rows (max 400 chars)</span>
@@ -362,8 +373,16 @@
                                     @error('description') <span class="fe">{{ $message }}</span> @else <span></span> @enderror
                                     <span class="char-count">{{ strlen($description) }} / 400</span>
                                 </div>
+                                <small class="form-optional">日本語 (Japanese)</small>
+                                <textarea wire:model.live="description_ja" rows="2" maxlength="400"
+                                          placeholder="IELTSの準備戦略とバンドスコアに関するウォークインセミナー。"></textarea>
+                                <div style="display:flex;justify-content:flex-end;margin-top:4px">
+                                    <span class="char-count">{{ strlen($description_ja) }} / 400</span>
+                                </div>
+                                @error('description_ja') <span class="fe">{{ $message }}</span> @enderror
                             </div>
 
+                            {{-- Date / End Date / Time / Status --}}
                             <div class="form-group">
                                 <label>Event Date <span class="req">*</span></label>
                                 <input type="date" wire:model.live="event_date">
@@ -392,20 +411,31 @@
                                 @error('status') <span class="fe">{{ $message }}</span> @enderror
                             </div>
 
+                            {{-- Location --}}
                             <div class="form-group">
                                 <label>Location <span class="form-optional">(optional)</span></label>
                                 <input type="text" wire:model.live="location"
                                        placeholder="e.g. Bharatpur, Chitwan">
                                 @error('location') <span class="fe">{{ $message }}</span> @enderror
+                                <small class="form-optional">日本語 (Japanese)</small>
+                                <input type="text" wire:model.live="location_ja"
+                                       placeholder="例: チトワン県バラトプル">
+                                @error('location_ja') <span class="fe">{{ $message }}</span> @enderror
                             </div>
 
+                            {{-- Organizer --}}
                             <div class="form-group">
                                 <label>Organizer <span class="form-optional">(optional)</span></label>
                                 <input type="text" wire:model.live="organizer"
                                        placeholder="e.g. HASU Educational Consultancy">
                                 @error('organizer') <span class="fe">{{ $message }}</span> @enderror
+                                <small class="form-optional">日本語 (Japanese)</small>
+                                <input type="text" wire:model.live="organizer_ja"
+                                       placeholder="例: HASUエデュケーショナルコンサルタンシー">
+                                @error('organizer_ja') <span class="fe">{{ $message }}</span> @enderror
                             </div>
 
+                            {{-- Learn More URL --}}
                             <div class="form-group ev-full">
                                 <label>Learn More / Register URL <span class="form-optional">(optional)</span></label>
                                 <input type="url" wire:model="learn_more_url"
@@ -414,6 +444,7 @@
                                 <small class="form-hint">If blank, the "Learn More" button links to the Contact page.</small>
                             </div>
 
+                            {{-- Toggles --}}
                             <div class="form-group ev-full">
                                 <div class="ev-toggles-row">
                                     <label class="toggle-label">
@@ -436,7 +467,7 @@
                         </div>
                     </div>
 
-                    {{-- ── TAB: Detail Page ── --}}
+                    {{-- ══ TAB: Detail Page ══ --}}
                     <div id="mtab-detail" class="mtab-panel">
 
                         <div class="detail-info-banner">
@@ -444,28 +475,45 @@
                             when visitors click "Learn More". Leave blank to skip the detail page.
                         </div>
 
-                        <div class="form-group" style="margin-bottom:20px">
-                            <label>Long Description
-                                <span class="form-hint-inline">— supports basic HTML tags</span>
-                            </label>
-                            <textarea wire:model="long_description" rows="10"
-                                      placeholder="&lt;p&gt;Write a full description of the event here…&lt;/p&gt;&#10;&lt;p&gt;You can use &lt;strong&gt;bold&lt;/strong&gt;, &lt;em&gt;italic&lt;/em&gt;, and &lt;ul&gt;&lt;li&gt;lists&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;"></textarea>
-                            @error('long_description') <span class="fe">{{ $message }}</span> @enderror
+                        {{-- Long Description --}}
+                        <div class="ev-grid-2" style="margin-bottom:20px">
+                            <div class="form-group ev-full">
+                                <label>Long Description
+                                    <span class="form-hint-inline">— supports basic HTML tags</span>
+                                </label>
+                                <textarea wire:model="long_description" rows="8"
+                                          placeholder="&lt;p&gt;Write a full description of the event here…&lt;/p&gt;"></textarea>
+                                @error('long_description') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="form-group ev-full">
+                                <label>Long Description <span class="form-optional">日本語 (Japanese)</span></label>
+                                <textarea wire:model="long_description_ja" rows="8"
+                                          placeholder="&lt;p&gt;イベントの詳細をここに記入…&lt;/p&gt;"></textarea>
+                                @error('long_description_ja') <span class="fe">{{ $message }}</span> @enderror
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Highlights / What to Expect
-                                <span class="form-hint-inline">— one bullet point per line</span>
-                            </label>
-                            <textarea wire:model="highlights_raw" rows="6"
-                                      placeholder="Free entry for all students&#10;Bring your academic transcripts&#10;JLPT N4+ level recommended&#10;Seats are limited — arrive early"></textarea>
-                            @error('highlights_raw') <span class="fe">{{ $message }}</span> @enderror
-                            <small class="form-hint">
-                                Each line becomes one ✓ bullet on the detail page under "What to Expect".
-                            </small>
+                        {{-- Highlights --}}
+                        <div class="ev-grid-2">
+                            <div class="form-group ev-full">
+                                <label>Highlights / What to Expect
+                                    <span class="form-hint-inline">— one bullet point per line</span>
+                                </label>
+                                <textarea wire:model="highlights_raw" rows="5"
+                                          placeholder="Free entry for all students&#10;Bring your academic transcripts&#10;Seats are limited — arrive early"></textarea>
+                                @error('highlights_raw') <span class="fe">{{ $message }}</span> @enderror
+                                <small class="form-hint">Each line becomes one ✓ bullet on the detail page.</small>
+                            </div>
+                            <div class="form-group ev-full">
+                                <label>Highlights <span class="form-optional">日本語 (Japanese)</span></label>
+                                <textarea wire:model="highlights_raw_ja" rows="5"
+                                          placeholder="全学生無料入場&#10;学業成績書をご持参ください&#10;席数制限あり — お早めに"></textarea>
+                                @error('highlights_raw_ja') <span class="fe">{{ $message }}</span> @enderror
+                                <small class="form-hint">各行が詳細ページの ✓ 箇条書きになります。</small>
+                            </div>
                         </div>
 
-                        {{-- Preview of highlights --}}
+                        {{-- Highlights preview --}}
                         @if(trim($highlights_raw))
                         <div class="highlights-preview">
                             <strong>Preview — What to Expect</strong>
@@ -479,7 +527,7 @@
 
                     </div>
 
-                    {{-- ── TAB: Image ── --}}
+                    {{-- ══ TAB: Image ══ --}}
                     <div id="mtab-photo" class="mtab-panel">
                         <div class="ev-grid-2">
                             <div class="form-group">
@@ -697,8 +745,6 @@ function switchModalTab(btn, id) {
 .ev-has-detail { font-size:10px;font-weight:600;background:#ede9fe;color:#6d28d9;padding:2px 8px;border-radius:20px; }
 .ev-trashed-badge { font-size:12px;color:#991b1b;background:#fee2e2;padding:4px 10px;border-radius:20px;font-weight:600; }
 .ev-list-actions { display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap; }
-.ev-btn-view { font-size:14px;width:32px;height:32px;border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;background:#fff;transition:all .2s;display:flex;align-items:center;justify-content:center;text-decoration:none; }
-.ev-btn-view:hover { background:var(--blue-light);border-color:var(--blue); }
 .ev-btn-feat { font-size:16px;width:32px;height:32px;border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;background:#fff;transition:all .2s;display:flex;align-items:center;justify-content:center; }
 .ev-btn-feat:hover,.ev-btn-feat.active { background:#fef9c3;border-color:#fde68a; }
 .ev-toggle { font-size:12px;padding:5px 12px;border:none;border-radius:20px;cursor:pointer;font-weight:600;white-space:nowrap;transition:all .2s; }
@@ -727,7 +773,8 @@ function switchModalTab(btn, id) {
 .ev-full   { grid-column:1/-1; }
 .form-group { display:flex;flex-direction:column;gap:6px; }
 .form-group label { font-size:13px;font-weight:600;color:var(--navy); }
-.form-optional,.form-hint-inline { font-size:12px;font-weight:400;color:#94a3b8; }
+.form-optional { font-size:12px;font-weight:400;color:#94a3b8; }
+.form-hint-inline { font-size:12px;font-weight:400;color:#94a3b8; }
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -741,7 +788,7 @@ function switchModalTab(btn, id) {
 .fe        { font-size:12px;color:var(--red); }
 .char-count{ font-size:11px;color:#94a3b8; }
 
-/* Toggles row */
+/* Toggles */
 .ev-toggles-row { display:flex;gap:28px;flex-wrap:wrap; }
 .toggle-label { display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;font-weight:500;color:var(--navy); }
 .toggle-switch { position:relative;width:44px;height:24px;flex-shrink:0; }

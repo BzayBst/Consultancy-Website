@@ -67,12 +67,15 @@
                 <div class="form-group"><label>Branch Name *</label><input type="text" wire:model.live="branch_name" placeholder="Kathmandu Branch"></div>
                 <div class="form-group"><label>Branch Name (Japanese)</label><input type="text" wire:model.live="branch_name_ja"></div>
                 <div class="form-group"><label>Location Label</label><input type="text" wire:model.live="branch_location_label" placeholder="Kathmandu, Nepal"></div>
+                <div class="form-group"><label>Location Label (Japanese)</label><input type="text" wire:model.live="branch_location_label_ja"></div>
                 <div class="form-group full"><label>Address</label><textarea rows="3" wire:model.live="branch_address"></textarea></div>
                 <div class="form-group full"><label>Address (Japanese)</label><textarea rows="3" wire:model.live="branch_address_ja"></textarea></div>
                 <div class="form-group"><label>Phone</label><input type="text" wire:model.live="branch_phone" placeholder="01-XXXXXXX | 9841XXXXXX"></div>
                 <div class="form-group"><label>Email</label><input type="email" wire:model.live="branch_email" placeholder="branch@hasuedu.com"></div>
                 <div class="form-group"><label>Weekday Hours</label><input type="text" wire:model.live="branch_weekday_hours" placeholder="Sun-Fri 9AM-5PM"></div>
+                <div class="form-group"><label>Weekday Hours (Japanese)</label><input type="text" wire:model.live="branch_weekday_hours_ja"></div>
                 <div class="form-group"><label>Saturday Hours</label><input type="text" wire:model.live="branch_saturday_hours" placeholder="Sat 10AM-2PM"></div>
+                <div class="form-group"><label>Saturday Hours (Japanese)</label><input type="text" wire:model.live="branch_saturday_hours_ja"></div>
                 <div class="form-group"><label>Sort Order</label><input type="number" min="0" wire:model.live="branch_sort_order"></div>
                 <div class="form-group"><label>Map Link URL</label><input type="url" wire:model.live="branch_map_link_url" placeholder="https://maps.app.goo.gl/..."></div>
                 <div class="form-group full"><label>Map Embed URL or Iframe</label><textarea rows="3" wire:model.live="branch_map_embed_url" placeholder="Paste Google Maps embed URL or iframe code"></textarea></div>

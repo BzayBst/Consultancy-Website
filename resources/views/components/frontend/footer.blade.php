@@ -3,10 +3,10 @@
   $logo       = setting('general_logo');
   $siteName   = setting('general_site_name', 'HASU Educational Consultancy');
   $footerDesc = setting('general_copyright', 'Empowering students with expert guidance to academic success.');
-  $address    = setting('contact_address', 'Birendra Campus Gate Bhairahawa-11, Rupandehi');
-  $phone1     = setting('contact_phone_landline', '056-493528');
-  $phone2     = setting('contact_phone_primary',  '9853646493');
-  $phone3     = setting('contact_phone_secondary','9802924850');
+  $address    = setting('contact_address', 'Nepal');
+  $phone1     = setting('contact_phone_landline', '0123456789');
+  $phone2     = setting('contact_phone_primary',  '9000000000');
+  $phone3     = setting('contact_phone_secondary','9000000000');
   $email      = setting('contact_email_primary',  'info@hasuedu.com');
   $facebook   = setting('social_facebook');
   $linkedin   = setting('social_linkedin');
@@ -61,11 +61,11 @@
       <div class="footer-col">
         <h5>{{ $isJa ? 'クイックリンク' : 'Quick Links' }}</h5>
         <ul>
-          <li><a href="{{ route('home') }}">Home</a></li>
-          <li><a href="{{ route('about') }}">About Us</a></li>
-          <li><a href="{{ route('home') }}#services">Our Services</a></li>
-          <li><a href="{{ route('home') }}#blog">Study Blog Posts</a></li>
-          <li><a href="{{ route('contact') }}">Contact Us</a></li>
+          <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
+          <li><a href="{{ route('about') }}">{{ __('About Us') }}</a></li>
+          <li><a href="{{ route('home') }}#services">{{ __('Our Services') }}</a></li>
+          <li><a href="{{ route('blog') }}">{{ __('Study Blog Posts') }}</a></li>
+          <li><a href="{{ route('contact') }}">{{ __('Contact Us') }}</a></li>
         </ul>
       </div>
 
@@ -85,7 +85,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p>© {{ $year }} {{ $siteName }}. All Rights Reserved.</p>
+      <p>© {{ $year }} {{ $siteName }}. {{ __('All Rights Reserved') }}.</p>
       
     </div>
   </div>

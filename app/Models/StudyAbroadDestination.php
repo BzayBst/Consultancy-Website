@@ -12,43 +12,60 @@ class StudyAbroadDestination extends Model
 
     protected $fillable = [
         'country',
-        'name_ja',
         'slug',
         'flag',
+
+        // Card / listing
         'card_tag',
+        'card_tag_ja',
         'card_title',
         'card_title_ja',
         'card_description',
         'card_description_ja',
         'card_image',
+
+        // Detail page – overview
         'overview',
         'overview_ja',
+
+        // Detail page – benefits section
         'benefits_title',
         'benefits_title_ja',
         'benefits_description',
         'benefits_description_ja',
-        'requirements_ja',
-        'benefits',
-        'courses',
+        'benefits',          // JSON array: [{icon, title, title_ja, description, description_ja}]
+
+        // Detail page – courses section
+        'courses',           // JSON array: [{tag, tag_ja, title, title_ja, description, description_ja}]
+
+        // Detail page – scholarship section
         'scholarship_text',
         'scholarship_text_ja',
-        'cities',
-        'universities',
-        'faqs',
+
+        // Detail page – cities section
+        'cities',            // JSON array: [{title, title_ja, description, description_ja, image}]
+
+        // Detail page – institutions section
+        'universities',      // JSON array: [{name, name_ja, logo}]
+
+        // Detail page – FAQs section
+        'faqs',              // JSON array: [{question, question_ja, answer, answer_ja}]
+
         'sort_order',
         'is_active',
     ];
 
     protected $casts = [
-        'benefits' => 'array',
-        'requirements_ja' => 'array',
-        'courses' => 'array',
-        'cities' => 'array',
+        'benefits'    => 'array',
+        'courses'     => 'array',
+        'cities'      => 'array',
         'universities' => 'array',
-        'faqs' => 'array',
-        'sort_order' => 'integer',
-        'is_active' => 'boolean',
+        'faqs'        => 'array',
+        'sort_order'  => 'integer',
+        'is_active'   => 'boolean',
     ];
+
+    /* ── Accessors ── */
 
     public function getCardImageUrlAttribute(): ?string
     {
@@ -61,6 +78,8 @@ class StudyAbroadDestination extends Model
             : asset('storage/' . $this->card_image);
     }
 
+    /* ── Scopes ── */
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
@@ -70,6 +89,8 @@ class StudyAbroadDestination extends Model
     {
         return $query->orderBy('sort_order')->orderBy('country');
     }
+
+    /* ── Boot ── */
 
     protected static function boot(): void
     {

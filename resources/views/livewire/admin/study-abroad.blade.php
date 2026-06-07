@@ -271,6 +271,11 @@
                                 @error('card_tag') <small>{{ $message }}</small> @enderror
                             </div>
                             <div class="form-group">
+                                <label>Card Tag (JP)</label>
+                                <input type="text" wire:model.live="card_tag_ja" placeholder="アジア - ハイテク・文化">
+                                @error('card_tag_ja') <small>{{ $message }}</small> @enderror
+                            </div>
+                            <div class="form-group">
                                 <label>Card Title</label>
                                 <input type="text" wire:model.live="card_title" placeholder="Study in Japan">
                                 @error('card_title') <small>{{ $message }}</small> @enderror
@@ -362,6 +367,7 @@
                                         <label>Icon</label>
                                         <input type="text" wire:model.live="benefits.{{ $i }}.icon" placeholder="*">
                                     </div>
+                                    <div class="form-group">{{-- spacer --}}</div>
                                     <div class="form-group">
                                         <label>Title</label>
                                         <input type="text" wire:model.live="benefits.{{ $i }}.title">
@@ -406,12 +412,24 @@
                                         <input type="text" wire:model.live="courses.{{ $i }}.tag" placeholder="Technology">
                                     </div>
                                     <div class="form-group">
+                                        <label>Tag (JP)</label>
+                                        <input type="text" wire:model.live="courses.{{ $i }}.tag_ja" placeholder="テクノロジー">
+                                    </div>
+                                    <div class="form-group">
                                         <label>Title</label>
                                         <input type="text" wire:model.live="courses.{{ $i }}.title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Title (JP)</label>
+                                        <input type="text" wire:model.live="courses.{{ $i }}.title_ja" placeholder="日本語のタイトル">
                                     </div>
                                     <div class="form-group full">
                                         <label>Description</label>
                                         <textarea rows="2" wire:model.live="courses.{{ $i }}.description"></textarea>
+                                    </div>
+                                    <div class="form-group full">
+                                        <label>Description (JP)</label>
+                                        <textarea rows="2" wire:model.live="courses.{{ $i }}.description_ja" placeholder="日本語の説明"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -451,10 +469,14 @@
                                 </div>
                                 <div class="form-grid no-pad">
                                     <div class="form-group">
-                                        <label>City</label>
+                                        <label>City Name</label>
                                         <input type="text" wire:model.live="cities.{{ $i }}.title">
                                     </div>
                                     <div class="form-group">
+                                        <label>City Name (JP)</label>
+                                        <input type="text" wire:model.live="cities.{{ $i }}.title_ja" placeholder="日本語の都市名">
+                                    </div>
+                                    <div class="form-group full">
                                         <label>City Image</label>
                                         <label class="upload-box small-upload">
                                             @if(! empty($cityImageUploads[$i]))
@@ -472,6 +494,10 @@
                                     <div class="form-group full">
                                         <label>Description</label>
                                         <textarea rows="2" wire:model.live="cities.{{ $i }}.description"></textarea>
+                                    </div>
+                                    <div class="form-group full">
+                                        <label>Description (JP)</label>
+                                        <textarea rows="2" wire:model.live="cities.{{ $i }}.description_ja" placeholder="日本語の説明"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -501,6 +527,10 @@
                                         <input type="text" wire:model.live="universities.{{ $i }}.name">
                                     </div>
                                     <div class="form-group">
+                                        <label>Name (JP)</label>
+                                        <input type="text" wire:model.live="universities.{{ $i }}.name_ja" placeholder="日本語の機関名">
+                                    </div>
+                                    <div class="form-group full">
                                         <label>Logo</label>
                                         <label class="upload-box small-upload">
                                             @if(! empty($universityLogoUploads[$i]))
@@ -542,8 +572,16 @@
                                     <input type="text" wire:model.live="faqs.{{ $i }}.question">
                                 </div>
                                 <div class="form-group full">
+                                    <label>Question (JP)</label>
+                                    <input type="text" wire:model.live="faqs.{{ $i }}.question_ja" placeholder="日本語の質問">
+                                </div>
+                                <div class="form-group full">
                                     <label>Answer</label>
                                     <textarea rows="3" wire:model.live="faqs.{{ $i }}.answer"></textarea>
+                                </div>
+                                <div class="form-group full">
+                                    <label>Answer (JP)</label>
+                                    <textarea rows="3" wire:model.live="faqs.{{ $i }}.answer_ja" placeholder="日本語の回答"></textarea>
                                 </div>
                             </div>
                             @empty

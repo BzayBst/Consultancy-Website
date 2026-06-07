@@ -16,7 +16,7 @@
     @endif
   </div>
   <div class="topbar-right">
-    <a href="#">FAQs</a>
-    <a href="#">Privacy Policy</a>
+    <a href="#">{{ __('FAQs') }}</a>
+    <a href="#">{{ __('Privacy Policy') }}</a>
   </div>
 </div>
